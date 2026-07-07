@@ -42,6 +42,12 @@ builds up over time.
 - **Platform (the part we build):** post a mission → upload a solution video →
   peer review → a "most-liked" gallery.
 
+## Notes (building in public)
+
+- [Product concept](notes/product-concept.md) — the missions, and why "textbook vs. platform" is the fork in the road.
+- [Market landscape](notes/market-landscape.md) — US & China scan: HF/LeRobot, NVIDIA, Makeblock, DJI, and the gaps.
+- [Positioning & pitch](notes/positioning-and-pitch.md) — value proposition, a Korean glossary for developers, and the pitch.
+
 ## Status
 
 Early work in progress. We are building in public. Week 1: choosing and

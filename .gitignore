@@ -6,4 +6,9 @@ node_modules/
 /docs/
 /reference/
 /viewer/
+/explorations/
 /.claude/
+
+# Local only — never publish (third-party course material, conversation dumps)
+/MBA_course/
+*-local-command-caveat*.txt
