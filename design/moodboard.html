@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Physical Playground — Design Moodboard & Prompt Studio</title>
+<style>
+  :root{ --bg:#0c0e14; --bg2:#12151f; --fg:#eef1f7; --muted:#9aa3b5; --line:#242a38; --card:#141826;
+    --teal:#39e0c8; --pink:#ff5d8f; --gold:#ffcf4d; --blue:#2ec4ff; }
+  @media (prefers-color-scheme: light){ :root{ --bg:#f6f7fb; --bg2:#eef0f7; --fg:#161a24; --muted:#5a6478; --line:#dde1ec; --card:#fff; --teal:#0bb3a0; --pink:#e23a70; --gold:#c98a00; --blue:#1289c9; } }
+  *{box-sizing:border-box;} body{margin:0; background:var(--bg); color:var(--fg); line-height:1.6;
+    font-family:-apple-system,"Segoe UI",Roboto,sans-serif;}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .wrap{max-width:1100px; margin:0 auto; padding:26px 22px 80px;}
+  h1{font-size:26px; margin:0 0 4px; letter-spacing:-.01em;}
+  .sub{color:var(--muted); font-size:14px; margin-bottom:24px;}
+  h2{font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:var(--teal); margin:34px 0 12px; border-top:1px solid var(--line); padding-top:20px;}
+  a{color:var(--teal);}
+
+  /* prompt cards */
+  .prompts{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:14px;}
+  .pc{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px;}
+  .pc .name{font-weight:800; font-size:14px; color:var(--gold); margin-bottom:6px;}
+  .pc textarea{width:100%; min-height:130px; background:var(--bg2); color:var(--fg); border:1px solid var(--line);
+    border-radius:9px; padding:10px; font-family:ui-monospace,monospace; font-size:12px; line-height:1.5; resize:vertical;}
+  .pc .copy{margin-top:8px; background:var(--teal); color:#04120f; border:none; border-radius:8px; padding:6px 12px; font-weight:800; font-size:12px; cursor:pointer;}
+  .tips{background:var(--bg2); border:1px dashed var(--line); border-radius:12px; padding:14px 16px; font-size:13px;}
+  .tips code{background:var(--card); padding:1px 6px; border-radius:5px; font-size:12px;}
+
+  /* reference slots */
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px;}
+  .slot{background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden; display:flex; flex-direction:column;}
+  .slot .hd{display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-bottom:1px solid var(--line);}
+  .slot .id{font-family:ui-monospace,monospace; font-weight:800; color:var(--teal); font-size:13px;}
+  .slot .vibe{font-size:11px; color:var(--muted);}
+  .drop{aspect-ratio:16/10; display:flex; align-items:center; justify-content:center; text-align:center;
+    color:var(--muted); font-size:12px; padding:10px; cursor:pointer; background:var(--bg2); position:relative;}
+  .drop.over{outline:2px dashed var(--teal); outline-offset:-6px;}
+  .drop img{width:100%; height:100%; object-fit:cover; position:absolute; inset:0;}
+  .slot textarea{border:none; border-top:1px solid var(--line); background:transparent; color:var(--fg);
+    font-size:12px; padding:8px 10px; resize:vertical; min-height:44px; font-family:inherit; outline:none;}
+  .slot .url{border:none; border-top:1px solid var(--line); background:transparent; color:var(--muted);
+    font-size:11px; padding:6px 10px; outline:none; font-family:ui-monospace,monospace;}
+  .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+  .btn2{background:transparent; border:1px solid var(--line); color:var(--fg); border-radius:8px; padding:6px 12px; font-size:12px; cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎨 Design Moodboard & Prompt Studio</h1>
+  <div class="sub">Re-Volt "playground" vibe for Physical Playground. Drop reference shots (Re-Volt screenshots you
+    save, or your own generations) into the named slots below, then say things like <b>"RV-03's lighting"</b> when
+    you talk to Claude. Prompts up top are starting points for Gemini/ChatGPT video &amp; image gen.</div>
+
+  <h2>① Prompt Studio — landing hero (slightly-moving loop)</h2>
+  <div class="prompts" id="promptWrap"></div>
+
+  <h2>② Prompt template (fill the [slots])</h2>
+  <div class="tips mono" style="white-space:pre-wrap; font-size:12px;">A [tiny toy RC car / small toy robot arm], [action: slowly rolling / idling / gently waving], through a giant [ENVIRONMENT: sunlit toy-store aisle / kitchen table / kid's bedroom floor scattered with toys / botanical garden], shot in [tilt-shift macro] so the real world looks like a toy set. [Late-90s toy-commercial] mood, warm golden-hour light, shallow depth of field, soft bokeh. Camera: [very slow dolly-in / static with gentle parallax]. Seamless loop, 16:9, no text, lots of empty space in the [upper-left] for a headline. Playful but premium — plastic and bright, never cheap.</div>
+
+  <h2>③ Tips (so the video actually works as a hero)</h2>
+  <div class="tips">
+    <ul style="margin:0; padding-left:18px;">
+      <li><b>Tilt-shift / macro</b> is the whole trick — it makes a real scene read as a <i>toy world</i> (that's the Re-Volt feeling).</li>
+      <li><b>Subtle motion only.</b> A hero behind text must not distract: slow dolly, idle sway, dust motes. Ask for <code>seamless loop</code>.</li>
+      <li><b>Negative space</b> — tell it to leave a clear area for your headline (e.g. upper-left).</li>
+      <li><b>No baked-in text</b> in the generation. Add your wordmark in HTML/CSS on top.</li>
+      <li><b>Veo (Gemini):</b> describe camera + lighting + loop. <b>Sora (ChatGPT):</b> similar; add duration (e.g. "4-second loop").</li>
+      <li>Generate a few, keep the calmest. 80/20 rule: the hero is the 20% playful — don't overcook it.</li>
+    </ul>
+  </div>
+
+  <h2>③ Reference slots (drop images here — named for our chats)</h2>
+  <div class="row" style="margin-bottom:12px;">
+    <span class="sub" style="margin:0;">Drag an image file in, or paste a URL. Saved in your browser (localStorage).</span>
+    <button class="btn2" onclick="clearAll()">Clear all</button>
+  </div>
+  <div class="grid" id="grid"></div>
+
+  <h2>④ Where to grab Re-Volt screenshots (I can't crawl them — bot-blocked)</h2>
+  <div class="tips">
+    Save a few from these, then drop into the slots:
+    <a href="https://www.mobygames.com/game/369/re-volt/screenshots/" target="_blank">MobyGames screenshots</a> ·
+    <a href="https://revolt.fandom.com/wiki/Toy_World_1" target="_blank">Re-Volt Wiki: Toy World</a> ·
+    <a href="https://en.wikipedia.org/wiki/Re-Volt" target="_blank">Wikipedia</a> ·
+    <a href="https://re-volt.io/" target="_blank">Re-Volt community</a>.
+    (Reference only — evoke the feeling, don't ship their art. See ADR 0001.)
+  </div>
+</div>
+
+<script>
+  // ── Prompt Studio cards ──
+  const PROMPTS = [
+    ["Hero A — Toy-store aisle",
+      "A tiny toy RC car with a small robotic arm on top, slowly rolling down a giant sunlit toy-store aisle lined with oversized colorful boxes, shot in tilt-shift macro so it looks like a toy set. Late-90s toy-commercial mood, warm golden light, shallow depth of field, soft bokeh. Very slow dolly-in. Seamless 4-second loop, 16:9, no text, empty space upper-left for a headline. Plastic and bright, premium not cheap."],
+    ["Hero B — Bedroom floor",
+      "Macro tilt-shift shot of a small toy robot arm gently waving on a wooden bedroom floor scattered with building blocks and a toy dinosaur, warm afternoon sun through a window, dust motes floating. Static camera with gentle parallax, extremely subtle motion. Seamless loop, 16:9, nostalgic, no text, negative space on the right."],
+    ["Hero C — Backyard grand-prix",
+      "A plastic RC toy car idling on a miniature cardboard start line in a sunlit backyard garden, blades of grass towering like a jungle, tilt-shift so the world feels giant. Cinematic golden hour, shallow focus, a leaf drifting down slowly. Seamless loop, 16:9, calm, no text, headline space upper-left."],
+    ["Icon set — later (still image)",
+      "A set of 6 minimal 3D toy-plastic icons on transparent background: RC car, robot arm, checkered flag, trophy, joystick, wrench. Glossy molded-plastic look, bright primary colors (teal, pink, gold), soft studio lighting, consistent style, isometric, no text."]
+  ];
+  const pw = document.getElementById('promptWrap');
+  PROMPTS.forEach(([n,t]) => {
+    const d = document.createElement('div'); d.className='pc';
+    d.innerHTML = `<div class="name">${n}</div><textarea readonly>${t}</textarea><button class="copy">📋 Copy</button>`;
+    d.querySelector('.copy').onclick = () => { navigator.clipboard.writeText(t); d.querySelector('.copy').textContent='✓ Copied'; setTimeout(()=>d.querySelector('.copy').textContent='📋 Copy',1200); };
+    pw.appendChild(d);
+  });
+
+  // ── Named reference slots ──
+  const SLOTS = [
+    ["RV-01","Toy World — bright chaos"], ["RV-02","Supermarket aisle"], ["RV-03","Museum — calm/premium"],
+    ["RV-04","Suburban street"], ["RV-05","The plastic car close-up"], ["RV-06","Tilt-shift wide shot"],
+    ["RV-07","Warm lighting / mood"], ["RV-08","HUD / UI reference"], ["RV-09","Color palette pull"],
+    ["GEN-01","My generation #1"], ["GEN-02","My generation #2"], ["GEN-03","My generation #3"],
+  ];
+  const KEY='pp-moodboard';
+  let store = {}; try { store = JSON.parse(localStorage.getItem(KEY)||'{}'); } catch(e){}
+  const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){ alert('저장 공간 부족 — 큰 이미지는 URL로 붙여넣으세요'); } };
+  const grid = document.getElementById('grid');
+
+  function render(){
+    grid.innerHTML='';
+    SLOTS.forEach(([id,vibe]) => {
+      const s = store[id] || {};
+      const el = document.createElement('div'); el.className='slot';
+      el.innerHTML =
+        `<div class="hd"><span class="id">${id}</span><span class="vibe">${vibe}</span></div>`+
+        `<div class="drop" data-id="${id}">${s.img?`<img src="${s.img}">`:'drop image / click'}</div>`+
+        `<input class="url" data-id="${id}" placeholder="or paste image URL…" value="${s.img&&/^https?:/.test(s.img)?s.img:''}">`+
+        `<textarea data-id="${id}" placeholder="notes (what to borrow from this)…">${s.note||''}</textarea>`;
+      grid.appendChild(el);
+    });
+    bind();
+  }
+  function setImg(id,src){ store[id]=Object.assign(store[id]||{},{img:src}); save(); render(); }
+  function bind(){
+    grid.querySelectorAll('.drop').forEach(d=>{
+      const id=d.dataset.id;
+      d.onclick=()=>{ const i=document.createElement('input'); i.type='file'; i.accept='image/*';
+        i.onchange=e=>readFile(e.target.files[0],id); i.click(); };
+      d.ondragover=e=>{e.preventDefault(); d.classList.add('over');};
+      d.ondragleave=()=>d.classList.remove('over');
+      d.ondrop=e=>{e.preventDefault(); d.classList.remove('over'); const f=e.dataTransfer.files[0]; if(f) readFile(f,id); };
+    });
+    grid.querySelectorAll('input.url').forEach(inp=>{ inp.onchange=()=>setImg(inp.dataset.id, inp.value.trim()); });
+    grid.querySelectorAll('textarea').forEach(t=>{ t.oninput=()=>{ store[t.dataset.id]=Object.assign(store[t.dataset.id]||{},{note:t.value}); save(); }; });
+  }
+  function readFile(f,id){ if(!f) return; const r=new FileReader(); r.onload=()=>setImg(id,r.result); r.readAsDataURL(f); }
+  function clearAll(){ if(confirm('Clear all slots?')){ store={}; save(); render(); } }
+  render();
+</script>
+</body>
+</html>
