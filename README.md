@@ -12,7 +12,7 @@ The idea mixes two things:
 
 - The **peer-review** learning model of École 42 — students learn by
   reviewing each other's work, not by listening to a teacher.
-- Korean **playground games** — the same kind of games you saw in *Squid Game*.
+- **Playground games** — the kind of simple games you saw in *Squid Game*.
 
 ## The missions
 
@@ -22,7 +22,7 @@ We start very easy, so even an elementary-school kid can finish mission 1.
    back, left and right. (Goal: a warm first win, with a low bar for success.)
 2. **Pick & place** — Grab an object and move it. A ladder of small steps that
    slowly get harder.
-3. **"Red Light, Green Light"** (무궁화꽃이 피었습니다) — The robot moves while
+3. **"Red Light, Green Light"** — The robot moves while
    you speak, and stops the moment you stop talking. Voice input, end-of-speech
    detection, background noise, and many languages make this an open problem —
    which is exactly why peer review matters here.
@@ -46,7 +46,7 @@ builds up over time.
 
 - [Product concept](docs/01-concept/product-concept.md) — the missions, and why "textbook vs. platform" is the fork in the road.
 - [Market landscape](docs/02-market/market-landscape.md) — US & China scan: HF/LeRobot, NVIDIA, Makeblock, DJI, and the gaps.
-- [Positioning & pitch](docs/03-positioning/positioning-and-pitch.md) — value proposition, a Korean glossary for developers, and the pitch.
+- [Positioning & pitch](docs/03-positioning/positioning-and-pitch.md) — value proposition, a glossary for developers, and the pitch.
 
 ## Hands-on lab (learning in public)
 

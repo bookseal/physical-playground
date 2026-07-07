@@ -33,10 +33,10 @@ gallery"** — the structure you actually learn by doing.
 - Design intent: pick & place is the "Hello World" of manipulation. Slice the steps small enough that
   everyone succeeds at their own level.
 
-### Mission 3 — "Red Light, Green Light" (무궁화꽃이 피었습니다) ⭐
+### Mission 3 — "Red Light, Green Light" ⭐
 - The robot moves **while you say the phrase**, and **stops the instant you stop talking.**
 - Open variations (the creative space):
-  - how, and how accurately, to do Korean speech recognition
+  - how, and how accurately, to do speech recognition (in any language)
   - how fast you detect **end-of-speech** (minimizing latency = a real engineering problem)
   - background noise and speaker separation
   - an English version ("Red Light, Green Light"), speed changes, fake-outs…
@@ -45,9 +45,8 @@ gallery"** — the structure you actually learn by doing.
   what makes peer review meaningful.
 
 ### Why this sequence works
-1. **"Red Light, Green Light" is a top-tier demo:** a Korean game the whole world knows (thanks to
-   *Squid Game*), understandable in 3 seconds on stage, carrying a "made by a Korean team" story. A
-   robot playing it is hard to forget.
+1. **"Red Light, Green Light" is a top-tier demo:** a game the whole world already knows (thanks to
+   *Squid Game*), understandable in 3 seconds on stage. A robot playing it is hard to forget.
 2. The curve from mission 1→3 is pedagogically sound: attachment (emotion) → fundamentals (a win) →
    open problem (creativity + competition). The likes gallery explodes at mission 3.
 3. The tech stack lines up exactly with what's already free/cheap: SO-101-class low-cost arms +

@@ -46,8 +46,8 @@
   (Jetson-based open-source robot kit) and [Physical AI Learning](https://docs.nvidia.com/learning/physical-ai/):
   a fully free-documented sim-to-real workflow on the SO-101 (calibration → demo collection → GR00T policy
   post-training).
-- **Implication:** to make a curriculum, we can *start* by translating + curating the free material HF and
-  NVIDIA already built into **Korean and a Korean context** — legal because the licenses are open source.
+- **Implication:** to make a curriculum, we can *start* by **curating and structuring** the free material HF
+  and NVIDIA already built into a guided, peer-reviewed path — legal because the licenses are open source.
 
 ### Vizuara AI Labs — proof that paid adult bootcamps exist
 - [Modern Robot Learning from Scratch Bootcamp](https://robotlearningbootcamp.vizuara.ai/): 10 weeks live,
@@ -66,28 +66,27 @@ to entry, not our target.
   **Uses education as a talent pipeline, not a marketing cost.**
 - **UBTECH** (public company): ~$800 Alpha Mini humanoid; sells school AI-curriculum packages.
 - **Implication:** don't compete with China on hardware cost (impossible). **Use cheap Chinese hardware as
-  a "component" and sell the Korean-language learning experience on top.**
+  a "component" and sell the learning experience — the peer-review community and guided path — on top.**
 
 ## 5. Gap analysis — the empty spaces (candidate positions for us)
 
-1. **No Korean-language content:** the LeRobot course and NVIDIA material are all in English. There is
-   essentially no Korean path for a Korean SW developer moving into Physical AI.
-2. **The adult-developer-reskilling segment (B) is immature worldwide:** K-12 is saturated; adults have
+1. **The adult-developer-reskilling segment (B) is immature worldwide:** K-12 is saturated; adults have
    only a few players like Vizuara. Yet the "SW developer → Physical AI transition" demand is structurally
    set to grow.
+2. **No peer-review / community layer:** the big players ship content and hardware, but nobody runs the
+   "post your solution → get reviewed → best rises" loop. Content gets copied; a community and its records
+   don't.
 3. **No learning-persistence mechanism:** low completion rates plague all online education even after you
    buy a kit and start a course — and a **habit-verification / group-pressure retention loop** (which we've
    run before at ~90% retention) is exactly the fix.
-4. A niche that works in Korea ≠ a niche that works in the US. **First market: Korea (the Korean-language
-   content gap); expansion: Asian markets with similar education systems.**
 
 ## 6. Hypothesis position (v0)
 
-> **"A Physical AI academy for Korean developers"**
-> = cheap Chinese hardware (SO-101 class) + the US open-source stack (LeRobot / GR00T, curated in Korean) +
-> a habit-based learning-persistence community + our own learning process as content (learning in public).
+> **"A Physical AI academy for developers — worldwide, English-first, like a Reddit for robot missions."**
+> = cheap Chinese hardware (SO-101 class) + the open-source stack (LeRobot / GR00T) +
+> a peer-review + habit-based learning-persistence community + our own learning process as content (learning in public).
 
-- **Monetization ladder (hypothesis):** free Korean tutorials (acquisition) → paid cohort bootcamp (the
+- **Monetization ladder (hypothesis):** free tutorials (acquisition) → paid cohort bootcamp (the
   Vizuara model) → kit-bundle sales (the Makeblock ladder) → B2B corporate reskilling.
 - **Why "learn while building" holds up:** the content *is* the learning log. Its only cost is time, and
   since the toy projects have to be done anyway, a single block of time yields learning + content +
@@ -96,5 +95,5 @@ to entry, not our target.
 ## 7. Next validation actions
 
 - [ ] Confirm real SO-101 kit price & shipping (Amazon / AliExpress) — a toy project *and* the first content.
-- [ ] Complete the HF Robotics Course firsthand while writing a Korean learning log → test the response.
-- [ ] Survey existing Korean players (ROBOTIS? robot tracks at Korean coding academies?) — gauge local density.
+- [ ] Complete the HF Robotics Course firsthand while writing a public learning log → test the response.
+- [ ] Survey existing players in the adult-developer robotics-learning space → gauge competitive density.

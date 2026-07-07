@@ -1,6 +1,6 @@
 # Physical AI 튜토리얼 레퍼런스 모음 (외부 자료)
 
-> 우리 커리큘럼(토닥토닥 → pick&place → 무궁화꽃)을 만들 때 참고할 **공개 튜토리얼 원자료**.
+> 우리 커리큘럼(토닥토닥 → pick&place → Red Light Green Light)을 만들 때 참고할 **공개 튜토리얼 원자료**.
 > 조사일 2026-07-07. 각 항목: 무엇인지 · 링크 · **하드웨어/OS 요구** · 우리 미션과의 연결.
 > ⚠️ **핵심 결론**: SO-101을 *시뮬레이션*으로 돌리는 NVIDIA 경로는 전부 **Ubuntu Linux + NVIDIA RTX GPU 전용**.
 > macOS에서 당장 되는 건 **HF LeRobot + MuJoCo gym**(SO-101 아님). 자세한 건 `lab/tutorials/00_sim-setup-before-pat-me.md`.
@@ -19,7 +19,7 @@
   - 09 Strategy1 도메인 랜덤화(teleop) · 10 GR00T · 11 Sim 평가 · 12 실물 평가
   - 13 co-training · 14 Cosmos 합성데이터 · 15 SAGE · 16 결론
   - Reference: quick_reference / datasets-and-models / troubleshooting
-- **우리 연결**: 05~08이 "pat me 직전까지 세팅"의 정석 뼈대. 우리 무궁화꽃 과제의 sim-to-real 논리도 여기서 차용.
+- **우리 연결**: 05~08이 "pat me 직전까지 세팅"의 정석 뼈대. 우리 Red Light Green Light 과제의 sim-to-real 논리도 여기서 차용.
 
 ### A2. 코드: isaac-sim/Sim-to-Real-SO-101-Workshop (Docker)
 - **링크**: https://github.com/isaac-sim/Sim-to-Real-SO-101-Workshop
@@ -46,14 +46,14 @@
 
 ### B3. HF Robotics Course (무료, 개념→실습)
 - **링크**: https://huggingface.co/learn/robotics-course/unit0/1
-- **내용**: 고전 로보틱스 → 학습기반 → LeRobot 실습 → SOTA. 유닛당 30~45분 자율진도. **우리 커리큘럼 한국어 큐레이션의 원본.**
+- **내용**: 고전 로보틱스 → 학습기반 → LeRobot 실습 → SOTA. 유닛당 30~45분 자율진도. **우리 커리큘럼 큐레이션의 원본.**
 
 ## C. NVIDIA GR00T × LeRobot (모델 후훈련) — 심화
 
 - **Isaac GR00T in LeRobot**: https://huggingface.co/blog/nvidia/nvidia-isaac-gr00t-in-lerobot
 - **GR00T N1.5 SO-101 튜닝**: https://huggingface.co/blog/nvidia/gr00t-n1-5-so101-tuning
 - **IsaacLab-Arena에서 정책 평가**: https://huggingface.co/blog/nvidia/generalist-robotpolicy-eval-isaaclab-arena-lerobot · 문서 https://isaac-sim.github.io/IsaacLab-Arena/
-- **우리 연결**: 무궁화꽃(음성→정지)까지 가면 VLA/정책 학습 단계에서 참고. 지금 단계(세팅)에선 읽기만.
+- **우리 연결**: Red Light Green Light(음성→정지)까지 가면 VLA/정책 학습 단계에서 참고. 지금 단계(세팅)에선 읽기만.
 
 ## D. 커뮤니티 / 참고
 
@@ -72,4 +72,4 @@
 | A2 Workshop(Docker) | ✅ | Linux only | RTX 6000/5090급 | 클라우드 GPU에서 재현 |
 | A3 LeIsaac+Seeed | ✅ | Ubuntu 22.04 | RTX 3080↑ | SO-101 sim 최단 경로(Linux 있으면) |
 | B1/B2 LeRobot gym | ❌(Panda/pusht) | **macOS OK** | 불필요 | **오늘 Mac에서 툴체인 익히기** |
-| B3 HF Course | 개념 | 무관 | 무관 | 한국어 커리큘럼 원본 |
+| B3 HF Course | 개념 | 무관 | 무관 | 커리큘럼 원본 |
