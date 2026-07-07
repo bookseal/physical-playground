@@ -1,0 +1,9 @@
+.DS_Store
+node_modules/
+
+# Private working docs — kept local, not published
+/CLAUDE.md
+/docs/
+/reference/
+/viewer/
+/.claude/
