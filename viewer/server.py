@@ -82,6 +82,19 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Content-Length", str(len(body)))
             self.end_headers()
             self.wfile.write(body)
+        elif url.path.startswith("/assets/"):  # 랜딩 페이지의 상대 이미지 서빙 (site/assets/)
+            full = safe_path("site" + url.path)
+            if not full:
+                self.send_json({"error": "not found"}, 404)
+                return
+            ctype = mimetypes.guess_type(full)[0] or "application/octet-stream"
+            with open(full, "rb") as f:
+                body = f.read()
+            self.send_response(200)
+            self.send_header("Content-Type", ctype)
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
         elif url.path == "/raw":
             rel = parse_qs(url.query).get("path", [""])[0]
             full = safe_path(rel)
