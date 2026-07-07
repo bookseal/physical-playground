@@ -44,3 +44,29 @@ GitHub-style "contributor edits + PR" feature — and is a build-but-don't-use f
 ## Revisit when
 - We start **charging** (→ do the `CREDITS.md` + model-license audit; confirm GR00T-in-paid-product terms).
 - GitHub's PR flow becomes a real friction for non-technical contributors (→ reconsider a lightweight custom editor).
+
+---
+
+## Appendix — What is an ADR? (for newcomers)
+
+**ADR = Architecture Decision Record** (often read as "**Any** Decision Record"). It's a **short doc that captures
+ONE significant decision**: the situation, what we chose, and the consequences. Popularized by Michael Nygard
+(2011) for software teams, now used widely for **product, business, and ops** decisions too.
+
+**Why bother (the business value):**
+- **Memory.** Six months from now nobody remembers *why* we picked X. An ADR is the **flight recorder** — it
+  ends the "wait, why did we do this?" arguments.
+- **Onboarding.** A new cofounder/teammate/investor reads the ADR folder and instantly understands *how we think*.
+- **An asset, not overhead.** A decision log turns a founder's tacit judgment into something durable — part of
+  the "company you'd have to buy whole." Cheap to write, compounding to keep.
+
+**How to use them:**
+- **One file per decision**, numbered: `0001-…`, `0002-…`. This is 0001 — the first.
+- **Small and immutable-ish.** You don't edit a decision away later. If you *reverse* it, you write a **new**
+  ADR that "supersedes" this one, and change this one's **Status** to `superseded by 0007`.
+- **Status** values: `proposed` → `accepted` → (later) `superseded` / `deprecated`.
+- **Shape:** *Context* (the situation/forces) → *Decision* (what we chose) → *Consequences* (what follows) →
+  plus Status + Date. Keep it to a page.
+- **Write one only when it matters:** hard-to-reverse choices, or ones people will later ask "why?". Skip the trivial.
+
+> Rule of thumb: if a decision would make a future teammate go *"huh, why is it like this?"* — it deserves an ADR.
