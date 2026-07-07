@@ -33,3 +33,12 @@
 
 ### 우리에게
 - 우리는 특정 섹터(휴머노이드 등)에 베팅하는 게 아니라, **어느 섹터든 필요한 "physical AI를 다루는 사람"을 길러내는** 메타 포지션. 산업 파도가 어디로 가든 얹힌다.
+
+---
+
+## 관련 (Related)
+- [[00-foundations|기초 지도]]
+- [[03-physical-ai-players-and-money|플레이어와 돈]]
+- [[01-job-market-ros-vs-physical-ai|잡마켓]]
+- [[market-landscape|경쟁사 스캔]]
+- [[hate-map|Hate Map]]

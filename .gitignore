@@ -11,3 +11,6 @@ node_modules/
 
 # gitleaks config holds the sensitive terms it guards against — keep it local
 /.gitleaks.toml
+
+# Re-Volt reference screenshots — copyright, local design study only
+/design/_refs/

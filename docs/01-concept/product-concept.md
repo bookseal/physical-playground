@@ -88,3 +88,10 @@ gallery"** — the structure you actually learn by doing.
   platform" vision.
 - **Every week:** publish the learning log as content (blog / YouTube) — client #1's journey is the
   first marketing.
+
+---
+
+## 관련 (Related)
+- [[market-landscape|시장 스캔]]
+- [[positioning-and-pitch|포지셔닝 & 피치]]
+- [[hate-map|Hate Map]]

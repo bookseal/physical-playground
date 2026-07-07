@@ -73,3 +73,10 @@
 | A3 LeIsaac+Seeed | ✅ | Ubuntu 22.04 | RTX 3080↑ | SO-101 sim 최단 경로(Linux 있으면) |
 | B1/B2 LeRobot gym | ❌(Panda/pusht) | **macOS OK** | 불필요 | **오늘 Mac에서 툴체인 익히기** |
 | B3 HF Course | 개념 | 무관 | 무관 | 커리큘럼 원본 |
+
+---
+
+## 관련 (Related)
+- [[00_sim-setup-before-pat-me|시뮬 세팅 튜토리얼]]
+- [[hardware-and-simulation|하드웨어/시뮬 가이드]]
+- [[00-foundations|기초 지도]]

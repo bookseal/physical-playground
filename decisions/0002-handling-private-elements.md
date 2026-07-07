@@ -51,3 +51,8 @@ Because the private material is mostly **documents**, not code:
 ## Revisit when
 - A cofounder/teammate joins (→ they need a clear, low-friction boundary — favors 1 or 2).
 - The private set grows to include real secrets/keys (→ add a secrets manager regardless).
+
+---
+
+## 관련 (Related)
+- [[0001-referencing-courses-and-contribution-model|ADR 0001: 코스 참고 · 기여 모델]]

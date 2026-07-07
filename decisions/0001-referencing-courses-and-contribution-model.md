@@ -70,3 +70,8 @@ ONE significant decision**: the situation, what we chose, and the consequences. 
 - **Write one only when it matters:** hard-to-reverse choices, or ones people will later ask "why?". Skip the trivial.
 
 > Rule of thumb: if a decision would make a future teammate go *"huh, why is it like this?"* — it deserves an ADR.
+
+---
+
+## 관련 (Related)
+- [[0002-handling-private-elements|ADR 0002: private 요소 처리]]
