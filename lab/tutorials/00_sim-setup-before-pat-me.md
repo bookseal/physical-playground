@@ -111,3 +111,10 @@ python scripts/environments/teleoperation/teleop_se3_agent.py \
 - NVIDIA 공식 SO-101 학습경로: https://docs.nvidia.com/learning/physical-ai/sim-to-real-so-101/
 - NVIDIA Workshop 코드(Docker, Linux): https://github.com/isaac-sim/Sim-to-Real-SO-101-Workshop
 - LeRobot 설치/시뮬레이션: https://huggingface.co/docs/lerobot/en/installation
+
+---
+
+## 관련 (Related)
+- [[00-foundations|기초 지도]]
+- [[hardware-and-simulation|하드웨어/시뮬 가이드]]
+- [[index|튜토리얼 레퍼런스 모음]]

@@ -41,3 +41,10 @@
 ### 우리 프로젝트에의 함의
 - 우리가 **Physical AI(LeRobot·VLA) 우선**으로 잡은 게 잡마켓 성장 방향과 정확히 일치 — 커리큘럼이 "취업되는 스킬"과 붙는다.
 - 제품 서사에 쓸 한 줄: *"로봇계에서 가장 부족한 인재는 하드웨어와 AI를 잇는 사람. 우리는 그 다리를 놀이로 건너게 한다."*
+
+---
+
+## 관련 (Related)
+- [[00-foundations|기초 지식 지도]]
+- [[02-robot-industry-landscape|산업 지형]]
+- [[03-physical-ai-players-and-money|플레이어와 돈]]

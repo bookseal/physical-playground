@@ -83,3 +83,10 @@ room around it.
 - Quotes here are paraphrased from the linked public sources; verify wording before using any externally.
 - Next: mine Amazon/Reddit at volume for one competitor, tag each complaint, and count theme frequency — the
   biggest cluster is the sharpest positioning line.
+
+---
+
+## 관련 (Related)
+- [[market-landscape|시장 스캔]]
+- [[product-concept|제품 컨셉]]
+- [[positioning-and-pitch|포지셔닝 & 피치]]

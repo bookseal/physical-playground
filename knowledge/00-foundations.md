@@ -102,3 +102,12 @@
 - [HF Robotics Course](https://huggingface.co/learn/robotics-course/) · [LeRobot](https://github.com/huggingface/lerobot)
 - [ROS2 공식 튜토리얼](https://docs.ros.org/en/rolling/Tutorials.html) (🅰 세계 궁금할 때)
 - 우리 문서: `lab/references/index.md` (튜토리얼 모음) · `lab/hardware-and-simulation.md` (장비/시뮬)
+
+---
+
+## 관련 (Related)
+- [[01-job-market-ros-vs-physical-ai|잡마켓: ROS vs Physical AI]]
+- [[02-robot-industry-landscape|로봇 산업 지형]]
+- [[03-physical-ai-players-and-money|플레이어와 돈]]
+- [[00_sim-setup-before-pat-me|시뮬 세팅 튜토리얼]]
+- [[hardware-and-simulation|하드웨어/시뮬 가이드]]

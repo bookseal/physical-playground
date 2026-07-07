@@ -97,3 +97,11 @@ to entry, not our target.
 - [ ] Confirm real SO-101 kit price & shipping (Amazon / AliExpress) — a toy project *and* the first content.
 - [ ] Complete the HF Robotics Course firsthand while writing a public learning log → test the response.
 - [ ] Survey existing players in the adult-developer robotics-learning space → gauge competitive density.
+
+---
+
+## 관련 (Related)
+- [[product-concept|제품 컨셉]]
+- [[hate-map|Hate Map]]
+- [[02-robot-industry-landscape|산업 지형]]
+- [[03-physical-ai-players-and-money|플레이어와 돈]]
