@@ -332,6 +332,19 @@ function esc(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+// [[target|alias]] / [[target]] → 클릭 가능한 내부 링크로 (Obsidian 위키링크 지원)
+function wikify(text) {
+  return text.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (m, tgt, alias) => {
+    const t = tgt.trim(), label = (alias || t).trim();
+    const f = allFiles.find(x => {
+      const base = x.name.replace(/\.(md|txt|html)$/i, '');
+      const pn = x.path.replace(/\.(md|txt|html)$/i, '');
+      return base === t || x.path === t || pn === t || pn.endsWith('/' + t);
+    });
+    return f ? `[${label}](#wiki:${encodeURIComponent(f.path)})` : label;
+  });
+}
+
 // 현재 파일을 diffMode 값에 따라 렌더. diffMode면 raw + 바뀐 줄 하이라이트, 아니면 마크다운.
 function renderCurrent(keepScroll) {
   const doc = document.getElementById('doc');
@@ -344,7 +357,7 @@ function renderCurrent(keepScroll) {
       .join('\n');
     doc.innerHTML = `<div class="txt-plain">${html}</div>`;
   } else if (current && current.toLowerCase().endsWith('.md') && window.marked) {
-    doc.innerHTML = marked.parse(currentContent, { gfm: true, breaks: true });
+    doc.innerHTML = marked.parse(wikify(currentContent), { gfm: true, breaks: true });
   } else {
     doc.innerHTML = '';
     const pre = document.createElement('div');
@@ -482,6 +495,12 @@ setInterval(async () => {
 setInterval(loadTree, 10000);
 
 document.getElementById('search').addEventListener('input', e => renderTree(e.target.value.trim()));
+
+// 위키링크 클릭 → 해당 문서 열기
+document.getElementById('content').addEventListener('click', (e) => {
+  const a = e.target.closest('a[href^="#wiki:"]');
+  if (a) { e.preventDefault(); openFile(decodeURIComponent(a.getAttribute('href').slice(6))); }
+});
 
 function toggleSide(force) {
   const side = document.getElementById('side');

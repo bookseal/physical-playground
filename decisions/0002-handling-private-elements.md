@@ -1,7 +1,7 @@
 # ADR 0002 — Handling private elements (public/private boundary)
 
 > **Status:** proposed (2026-07-07) — *decision pending; pick an option below.* · **Type:** decision record
-> Supersedes the ad-hoc split done in-session (two sibling repos). Related: [ADR 0001](0001-referencing-courses-and-contribution-model.md).
+> Supersedes the ad-hoc split done in-session (two sibling repos). Related: [[0001-referencing-courses-and-contribution-model|ADR 0001]].
 
 ---
 

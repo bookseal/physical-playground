@@ -28,12 +28,12 @@
 휴머노이드/physical AI가 **실제 공장에** 들어가기 시작: **Schaeffler, BMW, JAL, Toyota, Amazon, Tesla** 등에서 라이브 배치·구속력 있는 계약. ([Memeburn](https://memeburn.com/physical-ai-is-sending-humanoid-robots-to-real-factory-floors-in-2026/))
 
 ## 왜 지금 (수렴한 3가지)
-1. **로봇 학습의 성숙** — VLA/foundation model이 "규칙 프로그래밍"을 대체 (→ [기초 지도](00-foundations.md) 🅱 세계).
+1. **로봇 학습의 성숙** — VLA/foundation model이 "규칙 프로그래밍"을 대체 (→ [[00-foundations|기초 지도]] 🅱 세계).
 2. **투자 폭발** — $55.8B, 큰손들 다 참전.
 3. **데이터 인프라 구축** — teleop·시뮬로 로봇 데이터가 대량 축적되기 시작.
 
 ## 초심자 주의 (거품 판별)
-- 밸류에이션은 **기대**지 매출이 아니다. 휴머노이드는 아직 **증명 단계** — [산업 지형](02-robot-industry-landscape.md)에서 봤듯 규모는 작고 성장률만 높음.
+- 밸류에이션은 **기대**지 매출이 아니다. 휴머노이드는 아직 **증명 단계** — [[02-robot-industry-landscape|산업 지형]]에서 봤듯 규모는 작고 성장률만 높음.
 - **뇌(파운데이션 모델) 쪽이 소프트웨어 레버리지가 커서** 장기 승자가 나올 확률 높다는 게 다수설 — 근데 아직 열려있음.
 
 ### 우리에게
