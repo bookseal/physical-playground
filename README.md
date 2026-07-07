@@ -2,7 +2,7 @@
 
 *(working name — this may change)*
 
-A peer-review school for **Physical AI**, made for kids.
+A peer-review school for **Physical AI** — for developers who want to break into robotics.
 
 We give a student a robot-arm mission. They build it, they solve it, and
 they upload a short video of the result. Then students review each other's
@@ -16,7 +16,7 @@ The idea mixes two things:
 
 ## The missions
 
-We start very easy, so even an elementary-school kid can finish mission 1.
+We start very easy — your first win comes fast, even if you've never touched a robot.
 
 1. **"Pat me on the back"** — Build the robot arm and make it gently pat your
    back, left and right. (Goal: a warm first win, with a low bar for success.)

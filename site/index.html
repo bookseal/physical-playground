@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Physical Playground — a peer-review school for Physical AI</title>
+<meta name="description" content="Give a robot arm a mission. Solve it. Peer-review each other's runs. The best solutions rise to the top.">
+<style>
+  :root{
+    --bg:#0c0e14; --bg2:#12151f; --fg:#eef1f7; --muted:#9aa3b5; --line:#242a38;
+    --neon:#39e0c8; --neon2:#ff5d8f; --gold:#ffcf4d; --card:#141826;
+    --grid:rgba(57,224,200,.16);
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f6f7fb; --bg2:#eef0f7; --fg:#161a24; --muted:#5a6478; --line:#dde1ec;
+           --neon:#0bb3a0; --neon2:#e23a70; --gold:#c98a00; --card:#ffffff; --grid:rgba(11,179,160,.14); }
+  }
+  :root[data-theme="dark"]{ --bg:#0c0e14; --bg2:#12151f; --fg:#eef1f7; --muted:#9aa3b5; --line:#242a38;
+    --neon:#39e0c8; --neon2:#ff5d8f; --gold:#ffcf4d; --card:#141826; --grid:rgba(57,224,200,.16); }
+  :root[data-theme="light"]{ --bg:#f6f7fb; --bg2:#eef0f7; --fg:#161a24; --muted:#5a6478; --line:#dde1ec;
+    --neon:#0bb3a0; --neon2:#e23a70; --gold:#c98a00; --card:#ffffff; --grid:rgba(11,179,160,.14); }
+
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif; line-height:1.6; overflow-x:hidden;}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;}
+  a{color:var(--neon); text-decoration:none;}
+  .wrap{max-width:1040px; margin:0 auto; padding:0 22px;}
+
+  /* ===== HERO with retro grid floor ===== */
+  header.hero{position:relative; text-align:center; padding:70px 0 90px; overflow:hidden;}
+  .grid-floor{position:absolute; left:-20%; right:-20%; bottom:0; height:46%;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:44px 44px; transform:perspective(340px) rotateX(62deg); transform-origin:bottom center;
+    -webkit-mask-image:linear-gradient(to top,#000 10%,transparent 85%); mask-image:linear-gradient(to top,#000 10%,transparent 85%);
+    pointer-events:none;}
+  .badge{display:inline-block; font-size:12px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--neon); border:1px solid var(--line); border-radius:999px; padding:5px 14px; margin-bottom:22px;}
+  h1.title{position:relative; margin:0; font-size:clamp(38px,8vw,78px); line-height:.98; font-weight:900;
+    letter-spacing:-.02em; text-transform:uppercase;}
+  h1.title .l1{color:var(--fg);} h1.title .l2{color:var(--neon); text-shadow:0 0 22px color-mix(in srgb,var(--neon) 55%,transparent);}
+  .tag{margin:20px auto 0; max-width:620px; color:var(--muted); font-size:clamp(15px,2.3vw,19px);}
+  .cta{margin-top:34px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+  .btn{font-weight:800; font-size:15px; padding:14px 26px; border-radius:12px; cursor:pointer; border:2px solid transparent;
+    letter-spacing:.02em; transition:transform .08s ease, box-shadow .2s ease;}
+  .btn:active{transform:translateY(2px);}
+  .btn-start{background:var(--neon); color:#04120f; box-shadow:0 6px 0 color-mix(in srgb,var(--neon) 45%,#000);}
+  .btn-start:hover{box-shadow:0 8px 26px color-mix(in srgb,var(--neon) 40%,transparent);}
+  .btn-ghost{background:transparent; color:var(--fg); border-color:var(--line);}
+  .btn-ghost:hover{border-color:var(--neon); color:var(--neon);}
+  .blink{animation:blink 1.2s steps(1) infinite;} @keyframes blink{50%{opacity:.25;}}
+  @media (prefers-reduced-motion:reduce){.blink{animation:none;}}
+
+  section{padding:56px 0; border-top:1px solid var(--line);}
+  h2.sec{font-size:13px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin:0 0 8px;}
+  h3.lead{font-size:clamp(22px,4vw,32px); margin:0 0 26px; font-weight:800; letter-spacing:-.01em;}
+
+  /* ===== level-select missions ===== */
+  .levels{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px;}
+  .lvl{position:relative; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; overflow:hidden;}
+  .lvl:hover{border-color:var(--neon);}
+  .lvl .num{font-family:ui-monospace,monospace; font-size:52px; font-weight:900; line-height:1; color:var(--line);
+    position:absolute; top:10px; right:14px;}
+  .lvl h4{margin:0 0 6px; font-size:19px;} .lvl p{margin:0; color:var(--muted); font-size:14px;}
+  .stars{margin-top:12px; color:var(--gold); letter-spacing:2px; font-size:13px;}
+  .pill{display:inline-block; font-size:11px; font-weight:700; color:var(--neon2); border:1px solid var(--line);
+    border-radius:6px; padding:1px 7px; margin-top:12px;}
+
+  /* ===== how it works loop ===== */
+  .loop{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px;}
+  .step{background:var(--bg2); border:1px solid var(--line); border-radius:14px; padding:18px;}
+  .step .k{font-family:ui-monospace,monospace; color:var(--neon); font-weight:800; font-size:13px;}
+  .step h4{margin:8px 0 4px; font-size:16px;} .step p{margin:0; color:var(--muted); font-size:13.5px;}
+
+  /* ===== roadmap / coming soon ===== */
+  .soon{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px;}
+  .soon .t{background:var(--card); border:1px dashed var(--line); border-radius:12px; padding:16px; text-align:center;}
+  .soon .t b{display:block; font-size:15px;} .soon .t span{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.1em;}
+
+  footer{border-top:1px solid var(--line); padding:30px 0; color:var(--muted); font-size:13px; text-align:center;}
+  .themebtn{position:fixed; top:14px; right:14px; background:var(--card); color:var(--fg); border:1px solid var(--line);
+    border-radius:10px; padding:6px 10px; cursor:pointer; font-size:13px; z-index:5;}
+</style>
+</head>
+<body>
+<button class="themebtn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+
+<header class="hero">
+  <div class="grid-floor"></div>
+  <div class="wrap">
+    <span class="badge mono">Physical AI · learn by doing</span>
+    <h1 class="title"><span class="l1">Physical</span><br><span class="l2">Playground</span></h1>
+    <p class="tag">Give a robot arm a mission. Solve it. Then <b>peer-review</b> each other's runs —
+      the best solutions rise to the top. Start in simulation; no robot required.</p>
+    <div class="cta">
+      <button class="btn btn-start mono" onclick="location.href='#missions'">▶ PRESS START</button>
+      <button class="btn btn-ghost" onclick="location.href='#how'">How it works</button>
+    </div>
+    <p class="mono blink" style="margin-top:26px; color:var(--muted); font-size:12px; letter-spacing:.2em;">◦ INSERT CURIOSITY TO CONTINUE ◦</p>
+  </div>
+</header>
+
+<section id="how" class="wrap-sec"><div class="wrap">
+  <h2 class="sec">The loop</h2>
+  <h3 class="lead">Not a course. A playground with a scoreboard.</h3>
+  <div class="loop">
+    <div class="step"><div class="k">01 · PLAY</div><h4>Take a mission</h4><p>Run a robot-arm challenge — in sim today, on real hardware later.</p></div>
+    <div class="step"><div class="k">02 · POST</div><h4>Upload your run</h4><p>Drop a short clip of your solution. Rough is fine — it's a playground.</p></div>
+    <div class="step"><div class="k">03 · REVIEW</div><h4>Peer-review</h4><p>You review others; they review you. École-42 style — no lecturer.</p></div>
+    <div class="step"><div class="k">04 · RISE</div><h4>Climb the gallery</h4><p>The most-liked runs float to the top. Records that can't be copied.</p></div>
+  </div>
+</div></section>
+
+<section id="missions" class="wrap-sec"><div class="wrap">
+  <h2 class="sec">Level select</h2>
+  <h3 class="lead">Three missions to start.</h3>
+  <div class="levels">
+    <div class="lvl">
+      <div class="num">1</div>
+      <h4>Pat me on the back</h4>
+      <p>Build the arm, make it gently pat your back. A warm first win.</p>
+      <div class="stars">★☆☆☆☆</div><br><span class="pill">Mac-friendly</span>
+    </div>
+    <div class="lvl">
+      <div class="num">2</div>
+      <h4>Pick &amp; place</h4>
+      <p>Grab an object, move it. The "Hello World" of manipulation.</p>
+      <div class="stars">★★☆☆☆</div><br><span class="pill">sim or real</span>
+    </div>
+    <div class="lvl">
+      <div class="num">3</div>
+      <h4>Red Light, Green Light</h4>
+      <p>The robot moves while you speak, freezes the instant you stop. Open problem — the one Squid Game made famous.</p>
+      <div class="stars">★★★★☆</div><br><span class="pill">peer-review shines</span>
+    </div>
+  </div>
+</div></section>
+
+<section class="wrap-sec"><div class="wrap">
+  <h2 class="sec">Roadmap</h2>
+  <h3 class="lead">This landing is the arcade cabinet. More coins go in soon.</h3>
+  <div class="soon">
+    <div class="t"><b>Log in</b><span>coming soon</span></div>
+    <div class="t"><b>Cohorts &amp; pricing</b><span>coming soon</span></div>
+    <div class="t"><b>Tutorials</b><span>coming soon</span></div>
+    <div class="t"><b>Solution gallery</b><span>coming soon</span></div>
+  </div>
+</div></section>
+
+<footer>
+  <div class="wrap mono">PHYSICAL PLAYGROUND · building in public · <a href="https://github.com/bookseal">github.com/bookseal</a></div>
+</footer>
+
+<script>
+  function applyTheme(t){ document.documentElement.setAttribute('data-theme',t); try{localStorage.setItem('pp-theme',t);}catch(e){} }
+  function toggleTheme(){
+    const cur = document.documentElement.getAttribute('data-theme')
+      || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(cur === 'dark' ? 'light' : 'dark');
+  }
+  try{ const s=localStorage.getItem('pp-theme'); if(s) applyTheme(s); }catch(e){}
+</script>
+</body>
+</html>

@@ -113,6 +113,17 @@
   .node .ndesc { font-size: 11.5px; color: var(--muted); margin: 3px 0 8px; }
   .node .count { font-size: 10.5px; color: var(--muted); font-weight: 500; white-space: nowrap; }
   .node .count .u { color: #16a34a; font-weight: 800; }
+
+  /* 홈 칸반 보드 — 폴더 구조/흐름 시각화 */
+  .kanban { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 10px; align-items: flex-start; }
+  .kcol { flex: 0 0 300px; background: var(--side-bg); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+  .kcol .khead { font-size: 14px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; }
+  .kcol .kdesc { font-size: 11px; color: var(--muted); margin: 3px 0 6px; }
+  .kstitle { font-size: 11px; font-weight: 800; color: var(--accent); margin: 10px 0 2px; letter-spacing: .02em; }
+  .kcard { display: block; background: var(--card-bg); border: 1px solid var(--line); border-radius: 8px;
+           padding: 7px 10px; margin: 5px 0; cursor: pointer; font-size: 13px; color: var(--fg); text-decoration: none; }
+  .kcard:hover { border-color: var(--accent); background: var(--accent-bg); }
+  .kcard .kmt { display: block; font-size: 10px; color: var(--muted); font-weight: 400; margin-top: 1px; }
 </style>
 </head>
 <body>
@@ -252,26 +263,54 @@ function goHome() {
   home.id = 'home';
   home.innerHTML = `<h2 class="htitle">🤖 Physical AI 교육 플랫폼</h2>` +
     `<div class="hsub">"Pat me on the back" → "Red Light, Green Light" — a peer-review Physical AI school. 카드의 파일을 바로 클릭해 열 수 있다.</div>`;
-  const cards = document.createElement('div');
-  cards.className = 'cards';
+  const board = document.createElement('div');
+  board.className = 'kanban';
   const groups = {};
   for (const f of allFiles) (groups[groupKey(f.path)] ||= []).push(f);
   const keys = Object.keys(groups).sort((a, b) => groupRank(a) - groupRank(b) || a.localeCompare(b));
   for (const g of keys) {
-    const files = groups[g].sort((a, b) => b.mtime - a.mtime);
+    const files = groups[g];
     const un = files.filter(f => unreadState(f)).length;
-    const div = document.createElement('div');
-    div.className = 'node';
-    div.innerHTML =
-      `<div class="ntitle"><span>${g}</span>` +
+    const col = document.createElement('div');
+    col.className = 'kcol';
+    col.innerHTML =
+      `<div class="khead"><span>${g}</span>` +
       `<span class="count">${files.length}개${un ? ` · <span class="u">NEW ${un}</span>` : ''}</span></div>` +
-      `<div class="ndesc">${DESCS[g] || ''}</div>`;
-    for (const f of files.slice(0, 5)) div.appendChild(fileLink(f, false));
-    cards.appendChild(div);
+      `<div class="kdesc">${DESCS[g] || ''}</div>`;
+    // 하위폴더(=column 아래 depth)별 섹션으로 나눠 구조를 펼친다
+    const subs = {};
+    for (const f of files) {
+      const parts = f.path.split('/');
+      const sub = parts.length > 2 ? parts.slice(1, -1).join('/') : '';
+      (subs[sub] ||= []).push(f);
+    }
+    for (const sub of Object.keys(subs).sort()) {
+      if (sub) {
+        const st = document.createElement('div');
+        st.className = 'kstitle';
+        st.textContent = '📁 ' + sub;
+        col.appendChild(st);
+      }
+      subs[sub].sort((a, b) => a.path.localeCompare(b.path));
+      for (const f of subs[sub]) col.appendChild(kanbanCard(f));
+    }
+    board.appendChild(col);
   }
-  home.appendChild(cards);
+  home.appendChild(board);
   doc.appendChild(home);
   renderTree(document.getElementById('search').value.trim());
+}
+
+function kanbanCard(f) {
+  const st = unreadState(f);
+  const badge = st === 'new' ? '<span class="badge badge-new">NEW</span>'
+              : st === 'upd' ? '<span class="badge badge-upd">수정됨</span>' : '';
+  const a = document.createElement('a');
+  a.className = 'kcard';
+  a.title = f.path;
+  a.innerHTML = `${badge}${f.name.replace(/\.(md|txt)$/i, '')}<span class="kmt">${fmtTime(f.mtime)}</span>`;
+  a.onclick = () => openFile(f.path);
+  return a;
 }
 
 function esc(s) {
