@@ -8,3 +8,6 @@ node_modules/
 # Local only — never publish (third-party course material, conversation dumps)
 /MBA_course/
 *-local-command-caveat*.txt
+
+# gitleaks config holds the sensitive terms it guards against — keep it local
+/.gitleaks.toml
