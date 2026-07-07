@@ -67,6 +67,18 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Content-Length", str(len(body)))
             self.end_headers()
             self.wfile.write(body)
+        elif url.path == "/landing":
+            landing = os.path.join(ROOT, "site", "index.html")
+            if not os.path.isfile(landing):
+                self.send_json({"error": "landing not found"}, 404)
+                return
+            with open(landing, "rb") as f:
+                body = f.read()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
         elif url.path == "/api/tree":
             self.send_json(scan_files())
         elif url.path == "/api/file":

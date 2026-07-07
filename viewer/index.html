@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,7 +22,7 @@
   body { margin: 0; font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
          background: var(--bg); color: var(--fg); display: flex; height: 100vh; overflow: hidden; }
 
-  #side { width: 300px; min-width: 230px; background: var(--side-bg); border-right: 1px solid var(--line);
+  #side { width: 256px; min-width: 200px; background: var(--side-bg); border-right: 1px solid var(--line);
           display: flex; flex-direction: column; }
   #side.hidden { display: none; }
   #btn-side { font-size: 15px; line-height: 1; padding: 4px 10px; }
@@ -106,7 +106,12 @@
   /* 홈 */
   #home { max-width: 1000px; margin: 0 auto; }
   #home h2.htitle { font-size: 20px; margin: 4px 0 2px; border: none; }
-  #home .hsub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  #home .hsub { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
+  .qlinks { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 22px; }
+  .qlinks .ql { font-size: 12.5px; font-weight: 700; text-decoration: none; color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 8px; padding: 5px 12px; }
+  .qlinks .ql:hover { background: var(--accent); color: #fff; }
+  .qlinks .qstat { font-size: 12px; color: var(--muted); margin-left: auto; }
   .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
   .node { border: 1.5px solid var(--accent); border-radius: 14px; background: var(--card-bg); padding: 12px 14px; }
   .node .ntitle { font-size: 13.5px; font-weight: 700; display: flex; justify-content: space-between; gap: 6px; }
@@ -130,35 +135,35 @@
 <nav id="side">
   <header>
     <h1 onclick="goHome()">🕹️ Playbook</h1>
-    <input id="search" type="search" placeholder="파일명 검색…">
+    <input id="search" type="search" placeholder="Search files…">
   </header>
   <div id="tree"></div>
 </nav>
 <div id="main">
   <div id="topbar">
-    <button id="btn-side" onclick="toggleSide()" title="사이드바 접기/펴기 (⌘/Ctrl+B)">☰</button>
-    <button onclick="goHome()">🏠 홈</button>
+    <button id="btn-side" onclick="toggleSide()" title="Toggle sidebar (⌘/Ctrl+B)">☰</button>
+    <button onclick="goHome()">🏠 Home</button>
     <span class="path" id="curpath"></span>
     <span id="curtime"></span>
-    <button id="btn-diff" onclick="toggleDiff()" disabled title="이 문서에서 마지막으로 본 뒤 바뀐 줄을 표시">🔆 변경</button>
-    <button id="btn-edit" onclick="startEdit()" disabled>✏️ 편집</button>
-    <button onclick="loadTree()">새로고침</button>
+    <button id="btn-diff" onclick="toggleDiff()" disabled title="Show lines changed since your last view">🔆 Changes</button>
+    <button id="btn-edit" onclick="startEdit()" disabled>✏️ Edit</button>
+    <button onclick="loadTree()">Refresh</button>
   </div>
   <div id="content"><div id="doc"></div><div id="editor"></div></div>
 </div>
 
 <script>
 /* 그룹: 최상위 폴더 자동 (reference는 2단계). 새 폴더가 생기면 자동으로 나타난다. */
-const GROUP_ORDER = ['루트', 'docs', 'lab', 'private'];
+const GROUP_ORDER = ['Root', 'docs', 'lab', 'private'];
 const DESCS = {
-  '루트': 'README · 프로젝트 개요',
-  'docs': '공개 문서 — 제품 컨셉 · 시장 스캔 · 포지셔닝',
-  'lab': 'Physical AI 실습 — 시뮬레이션 튜토리얼 · 레퍼런스',
-  'private': '비공개 작업 폴더 (GitHub 미공개)',
+  'Root': 'README · project overview',
+  'docs': 'Public docs — product concept · market scan · positioning',
+  'lab': 'Hands-on Physical AI — sim tutorials · references',
+  'private': 'Private working folder (not on GitHub)',
 };
 function groupKey(p) {
   const parts = p.split('/');
-  if (parts.length === 1) return '루트';
+  if (parts.length === 1) return 'Root';
   return parts[0];
 }
 function groupRank(g) {
@@ -198,14 +203,14 @@ function pad(n) { return String(n).padStart(2, '0'); }
 function fmtTime(t) {
   const d = new Date(t * 1000), now = new Date();
   const hm = pad(d.getHours()) + ':' + pad(d.getMinutes());
-  if (d.toDateString() === now.toDateString()) return '오늘 ' + hm;
+  if (d.toDateString() === now.toDateString()) return 'Today ' + hm;
   return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + hm;
 }
 
 function fileLink(f, showPath) {
   const st = unreadState(f);
   const badge = st === 'new' ? '<span class="badge badge-new">NEW</span>'
-              : st === 'upd' ? '<span class="badge badge-upd">수정됨</span>' : '';
+              : st === 'upd' ? '<span class="badge badge-upd">Updated</span>' : '';
   const a = document.createElement('a');
   a.className = 'file' + (current === f.path ? ' active' : '') + (st ? ' unread' : '');
   a.title = f.path;
@@ -226,8 +231,8 @@ function renderTree(filter) {
   if (unread.length) {
     const div = document.createElement('div');
     div.className = 'group unread-box';
-    div.innerHTML = `<div class="gtitle">🆕 안 본 문서 (${unread.length})` +
-      `<button class="mark-all">모두 읽음</button></div>`;
+    div.innerHTML = `<div class="gtitle">🆕 Unread (${unread.length})` +
+      `<button class="mark-all">Mark all read</button></div>`;
     div.querySelector('.mark-all').onclick = (e) => {
       e.stopPropagation();
       for (const f of allFiles) seen[f.path] = f.mtime;
@@ -261,8 +266,15 @@ function goHome() {
   doc.style.display = ''; doc.innerHTML = '';
   const home = document.createElement('div');
   home.id = 'home';
+  const totalN = allFiles.length;
+  const unreadN = allFiles.filter(f => unreadState(f)).length;
   home.innerHTML = `<h2 class="htitle">🕹️ Physical Playground — Playbook</h2>` +
-    `<div class="hsub">사업을 짓기 위한 거의 모든 reference — 제품 컨셉 · 시장 · 포지셔닝 · 실습(lab) · 전략. 카드를 클릭해 바로 열 수 있다.</div>`;
+    `<div class="hsub">The founder's playbook — almost every reference needed to build this business: product concept, market, positioning, hands-on labs, and strategy.</div>` +
+    `<div class="qlinks">` +
+      `<a class="ql" href="/landing" target="_blank">🚀 Landing page</a>` +
+      `<a class="ql" href="https://github.com/bookseal/physical-playground" target="_blank">🐙 GitHub repo</a>` +
+      `<span class="qstat">${totalN} docs${unreadN ? ` · <b>${unreadN} unread</b>` : ''}</span>` +
+    `</div>`;
   const board = document.createElement('div');
   board.className = 'kanban';
   const groups = {};
@@ -275,7 +287,7 @@ function goHome() {
     col.className = 'kcol';
     col.innerHTML =
       `<div class="khead"><span>${g}</span>` +
-      `<span class="count">${files.length}개${un ? ` · <span class="u">NEW ${un}</span>` : ''}</span></div>` +
+      `<span class="count">${files.length}${un ? ` · <span class="u">NEW ${un}</span>` : ''}</span></div>` +
       `<div class="kdesc">${DESCS[g] || ''}</div>`;
     // 하위폴더(=column 아래 depth)별 섹션으로 나눠 구조를 펼친다
     const subs = {};
@@ -304,7 +316,7 @@ function goHome() {
 function kanbanCard(f) {
   const st = unreadState(f);
   const badge = st === 'new' ? '<span class="badge badge-new">NEW</span>'
-              : st === 'upd' ? '<span class="badge badge-upd">수정됨</span>' : '';
+              : st === 'upd' ? '<span class="badge badge-upd">Updated</span>' : '';
   const a = document.createElement('a');
   a.className = 'kcard';
   a.title = f.path;
@@ -360,7 +372,7 @@ async function openFile(path, keepScroll) {
   seen[path] = data.mtime; saveSeen();
   location.hash = encodeURIComponent(path);
   document.getElementById('curpath').textContent = path;
-  document.getElementById('curtime').textContent = '수정: ' + fmtTime(data.mtime);
+  document.getElementById('curtime').textContent = 'Updated: ' + fmtTime(data.mtime);
   applyContent(path, data);
   // 보던 중 파일이 바뀌어(keepScroll) 실제 변경 줄이 있으면 자동으로 하이라이트를 켠다.
   diffMode = !!(keepScroll && changedLines.size);
@@ -392,9 +404,9 @@ function startEdit() {
   ta.spellcheck = false;
   const bar = document.createElement('div');
   bar.className = 'ebar';
-  bar.innerHTML = '<button class="save">💾 저장</button>' +
-    '<button class="cancel">취소</button>' +
-    '<span class="hint">⌘/Ctrl+S 저장 · Esc 취소</span>';
+  bar.innerHTML = '<button class="save">💾 Save</button>' +
+    '<button class="cancel">Cancel</button>' +
+    '<span class="hint">⌘/Ctrl+S save · Esc cancel</span>';
   ed.appendChild(bar); ed.appendChild(ta);
   bar.querySelector('.save').onclick = () => saveEdit(ta.value);
   bar.querySelector('.cancel').onclick = cancelEdit;
@@ -411,7 +423,7 @@ async function saveEdit(text) {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ path, content: text })
   });
-  if (!res.ok) { alert('저장 실패'); return; }
+  if (!res.ok) { alert('Save failed'); return; }
   const data = await res.json();
   currentMtime = data.mtime;
   // 저장 직전 내용을 snap 기준으로 삼아, 내가 방금 바꾼 줄을 하이라이트로 보여준다.
@@ -427,7 +439,7 @@ async function saveEdit(text) {
   diffBtn.disabled = changedLines.size === 0;
   diffMode = changedLines.size > 0;
   diffBtn.classList.toggle('on', diffMode);
-  document.getElementById('curtime').textContent = '수정: ' + fmtTime(data.mtime);
+  document.getElementById('curtime').textContent = 'Updated: ' + fmtTime(data.mtime);
   renderCurrent(false);
 }
 
