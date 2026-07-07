@@ -27,8 +27,10 @@
   #side.hidden { display: none; }
   #btn-side { font-size: 15px; line-height: 1; padding: 4px 10px; }
   #side header { padding: 12px 14px 8px; }
-  #side h1 { font-size: 15px; margin: 0 0 8px; cursor: pointer; }
+  #side h1 { font-size: 14px; margin: 0 0 8px; cursor: pointer; line-height: 1.2; }
   #side h1:hover { color: var(--accent); }
+  #side h1 .pbsub { display: block; font-size: 10px; font-weight: 500; color: var(--muted); letter-spacing: .04em; margin-top: 1px; }
+  .htmlview { width: 100%; height: calc(100vh - 120px); border: 1px solid var(--line); border-radius: 10px; background: #fff; }
   #search { width: 100%; padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px;
             background: var(--bg); color: var(--fg); font-size: 13px; outline: none; }
   #search:focus { border-color: var(--accent); }
@@ -134,7 +136,7 @@
 <body>
 <nav id="side">
   <header>
-    <h1 onclick="goHome()">🕹️ Playbook</h1>
+    <h1 onclick="goHome()">🕹️ Physical Playground<span class="pbsub">Playbook · project OS</span></h1>
     <input id="search" type="search" placeholder="Search files…">
   </header>
   <div id="tree"></div>
@@ -272,6 +274,7 @@ function goHome() {
     `<div class="hsub">The founder's playbook — almost every reference needed to build this business: product concept, market, positioning, hands-on labs, and strategy.</div>` +
     `<div class="qlinks">` +
       `<a class="ql" href="/landing" target="_blank">🚀 Landing page</a>` +
+      `<a class="ql" href="/raw?path=design%2Fmoodboard.html" target="_blank">🎨 Moodboard</a>` +
       `<a class="ql" href="https://github.com/bookseal/physical-playground" target="_blank">🐙 GitHub repo</a>` +
       `<span class="qstat">${totalN} docs${unreadN ? ` · <b>${unreadN} unread</b>` : ''}</span>` +
     `</div>`;
@@ -373,6 +376,17 @@ async function openFile(path, keepScroll) {
   location.hash = encodeURIComponent(path);
   document.getElementById('curpath').textContent = path;
   document.getElementById('curtime').textContent = 'Updated: ' + fmtTime(data.mtime);
+  // .html = design/visual content → render live in an iframe, not as source
+  if (path.toLowerCase().endsWith('.html')) {
+    editing = false; diffMode = false; currentContent = '';
+    document.getElementById('editor').style.display = 'none';
+    document.getElementById('doc').style.display = '';
+    document.getElementById('btn-edit').disabled = true;
+    const db = document.getElementById('btn-diff'); db.disabled = true; db.classList.remove('on');
+    document.getElementById('doc').innerHTML = `<iframe class="htmlview" src="/raw?path=${encodeURIComponent(path)}"></iframe>`;
+    renderTree(document.getElementById('search').value.trim());
+    return;
+  }
   applyContent(path, data);
   // 보던 중 파일이 바뀌어(keepScroll) 실제 변경 줄이 있으면 자동으로 하이라이트를 켠다.
   diffMode = !!(keepScroll && changedLines.size);

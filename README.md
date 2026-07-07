@@ -8,6 +8,8 @@ We give a student a robot-arm mission. They build it, they solve it, and
 they upload a short video of the result. Then students review each other's
 work. The solutions that get the most likes rise to the top of the gallery.
 
+![Physical Playground — landing page](assets/screenshot-landing.png)
+
 The idea mixes two things:
 
 - The **peer-review** learning model of École 42 — students learn by
@@ -53,6 +55,16 @@ builds up over time.
 - [Simulation setup — up to just before "pat me"](lab/tutorials/00_sim-setup-before-pat-me.md) — get a Physical AI dev environment running in sim (Mac path + NVIDIA Isaac path).
 - [Tutorial reference collection](lab/references/index.md) — curated NVIDIA / Hugging Face LeRobot tutorials, with hardware/OS requirements.
 
+## The project, run as a system
+
+This isn't just a repo of docs — it's run like an operating system for the venture. A local
+**Playbook** dashboard turns every product/market/strategy note, hands-on lab, and design decision
+into a browsable, searchable board (built with zero dependencies — a tiny Python server + one HTML file).
+Decisions are logged as [ADRs](decisions/), the public/private boundary is enforced by structure, and the
+whole thing doubles as a build-in-public trail.
+
+![Physical Playground — Playbook dashboard](assets/screenshot-playbook.png)
+
 ## Status
 
 Early work in progress. We are building in public. Week 1: choosing and
@@ -60,4 +72,4 @@ ordering the first robot arm.
 
 ---
 
-Built by [bookseal](https://github.com/bookseal).
+Built by [bookseal](https://github.com/bookseal) · portfolio: [bit-habit.com](https://bit-habit.com)
