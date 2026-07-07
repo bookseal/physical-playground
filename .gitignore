@@ -1,13 +1,9 @@
 .DS_Store
 node_modules/
 
-# Private working docs — kept local, not published
+# Private — kept local, never published (personal context, mentor, raw drafts, strategy)
 /CLAUDE.md
-/docs/
-/reference/
-/viewer/
-/explorations/
-/.claude/
+/private/
 
 # Local only — never publish (third-party course material, conversation dumps)
 /MBA_course/

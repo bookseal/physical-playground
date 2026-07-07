@@ -44,9 +44,14 @@ builds up over time.
 
 ## Notes (building in public)
 
-- [Product concept](notes/product-concept.md) — the missions, and why "textbook vs. platform" is the fork in the road.
-- [Market landscape](notes/market-landscape.md) — US & China scan: HF/LeRobot, NVIDIA, Makeblock, DJI, and the gaps.
-- [Positioning & pitch](notes/positioning-and-pitch.md) — value proposition, a Korean glossary for developers, and the pitch.
+- [Product concept](docs/01-concept/product-concept.md) — the missions, and why "textbook vs. platform" is the fork in the road.
+- [Market landscape](docs/02-market/market-landscape.md) — US & China scan: HF/LeRobot, NVIDIA, Makeblock, DJI, and the gaps.
+- [Positioning & pitch](docs/03-positioning/positioning-and-pitch.md) — value proposition, a Korean glossary for developers, and the pitch.
+
+## Hands-on lab (learning in public)
+
+- [Simulation setup — up to just before "pat me"](lab/tutorials/00_sim-setup-before-pat-me.md) — get a Physical AI dev environment running in sim (Mac path + NVIDIA Isaac path).
+- [Tutorial reference collection](lab/references/index.md) — curated NVIDIA / Hugging Face LeRobot tutorials, with hardware/OS requirements.
 
 ## Status
 
