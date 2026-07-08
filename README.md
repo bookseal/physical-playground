@@ -65,6 +65,22 @@ whole thing doubles as a build-in-public trail.
 
 ![Physical Playground — Playbook dashboard](assets/screenshot-playbook.png)
 
+## The thinking (building in public)
+
+I'm *new* to Physical AI. But being new doesn't mean being shallow — I go deep on the "why," and I try
+really hard to make the learning **fun**. This repo keeps the trail of that thinking, on purpose:
+
+- **[Design theme](design/design-theme.md)** — why the whole thing borrows the *feeling* of the 1999 RC-racing
+  game **Re-Volt** (toy-scale wonder), and how that becomes a color/type/motif system.
+- **[Decision records (ADRs)](decisions/)** — the calls I didn't want to re-litigate later: how to reference
+  open courses, how to handle public vs. private, etc. Each one logs the *context* and the *why*.
+- **[Foundations map](knowledge/00-foundations.md)** — the "two worlds" (classical ROS vs. learning-based
+  Physical AI) I had to draw for myself before any course made sense.
+- **[Industry & job-market notes](knowledge/)** — where the money and the jobs actually are.
+
+The bet: *how* someone learns to build should itself be built with care and joy. This whole workspace is that,
+run as a system.
+
 ## Status
 
 Early work in progress. We are building in public. Week 1: choosing and

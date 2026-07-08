@@ -21,6 +21,9 @@
   .prompts{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:14px;}
   .pc{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px;}
   .pc .name{font-weight:800; font-size:14px; color:var(--gold); margin-bottom:6px;}
+  .pc-new{border-color:var(--teal); box-shadow:0 0 0 2px color-mix(in srgb,var(--teal) 30%,transparent);}
+  .tag-new{font-size:10px; font-weight:800; background:var(--teal); color:#04120f; border-radius:5px; padding:1px 6px; margin-right:4px;}
+  .tag-used{font-size:10px; font-weight:800; background:var(--line); color:var(--muted); border-radius:5px; padding:1px 6px; margin-right:4px;}
   .pc textarea{width:100%; min-height:130px; background:var(--bg2); color:var(--fg); border:1px solid var(--line);
     border-radius:9px; padding:10px; font-family:ui-monospace,monospace; font-size:12px; line-height:1.5; resize:vertical;}
   .pc .copy{margin-top:8px; background:var(--teal); color:#04120f; border:none; border-radius:8px; padding:6px 12px; font-weight:800; font-size:12px; cursor:pointer;}
@@ -99,15 +102,23 @@
   // ── Prompt Studio cards ──
   // Grounded in the actual Re-Volt refs: RV-01 Toy World (honey-parquet + red/yellow stripes + blue/red
   // bunting + toy-brand boxes), RV-03 Museum (amber floor-spotlights, Egyptian, premium/moody).
+  // status: 'used' = 이미 이걸로 생성함(gen-1..5) · 'new' = SO-101 실물 관련 신규 프롬프트
   const PROMPTS = [
-    ["Hero A — Toy World (bright, playful) · ref RV-01",
+    ["Hero A — Toy World (bright, playful) · ref RV-01", "used",
       "A tiny plastic RC toy car with a small robotic arm on top, low to the ground, slowly rolling down a glossy honey-coloured wooden parquet floor patterned with faint gold stars, between red-and-yellow vertical-striped walls and rows of blue-and-red triangular bunting. Oversized cardboard toy boxes with a playful toy brand, a hovering toy helicopter and a red balloon blurred in the background. Bright primary colours, warm nostalgic late-90s low-poly video-game look, soft PS1-era textures, warm light from ceiling skylights. Tilt-shift macro so it reads as a toy set. Very slow dolly forward. Seamless 4-second loop, 16:9, no on-screen text, keep the upper-left area clear for a headline."],
-    ["Hero B — Museum (premium, moody) · ref RV-03",
+    ["Hero B — Museum (premium, moody) · ref RV-03", "used",
       "A small plastic toy robot arm on a sandy museum floor lit by warm amber circular floor-spotlights, Egyptian hieroglyph walls and a stylised black-and-gold Anubis statue softly out of focus behind. Moody golden lighting with dramatic pools of light and long shadows, mysterious and premium, nostalgic low-poly PS1-era 3D charm. Static camera, gentle flicker of the lights and slow floating dust motes — extremely subtle motion. Seamless loop, 16:9, no text, clear negative space on the right."],
-    ["Hero C — toy-scale wonder (generic) · ref RV-01 lighting",
+    ["Hero C — toy-scale wonder (playroom) · ref RV-01 lighting", "used",
       "Macro tilt-shift shot of a small plastic toy robot arm gently waving on a warm honey-wood floor scattered with oversized toy blocks and a little green toy dinosaur, bright primary-colour walls blurred behind, warm nostalgic interior light. The scale makes the room feel giant, like a toy world. Static camera with gentle parallax, very subtle motion, dust motes. Seamless loop, 16:9, no text, headline space upper-left."],
-    ["Icon set — later (still image) · palette from RV-01",
-      "A set of 6 minimal glossy 3D toy-plastic icons on transparent background: RC car, robot arm, checkered flag, trophy, joystick, wrench. Molded-plastic look with soft studio lighting, bright primary colours pulled from a 90s toy aisle (red, yellow, blue) plus a teal accent, consistent isometric style, no text."]
+    ["Icon set (still image) · palette from RV-01", "used",
+      "A set of 6 minimal glossy 3D toy-plastic icons on transparent background: RC car, robot arm, checkered flag, trophy, joystick, wrench. Molded-plastic look with soft studio lighting, bright primary colours pulled from a 90s toy aisle (red, yellow, blue) plus a teal accent, consistent isometric style, no text."],
+
+    ["SO-101 #1 — How-it-works (real setup)", "new",
+      "A small white-and-black 3D-printed 6-DOF desktop robot arm (SO-101 / LeRobot style) with a simple two-finger gripper and Feetech servos, clamped to the edge of a warm honey-wood desk, next to an open laptop screen showing a robot simulator. Playful but credible product photography, warm nostalgic toy-world lighting, soft red/yellow/blue toy accents blurred in the background, shallow depth of field. 16:9, no on-screen text, negative space on the right for a headline."],
+    ["SO-101 #2 — Mission card (macro grip)", "new",
+      "Extreme close-up of a white-and-black 3D-printed 6-DOF robot arm (SO-101) two-finger gripper gently picking up a small colourful wooden toy block on a glossy honey-wood desk. Warm amber toy-world lighting, primary-colour bokeh (red/yellow/blue) behind, macro, very shallow focus, tactile and friendly. 1:1 square, no text."],
+    ["SO-101 #3 — Diptych (dream ↔ reality)", "new",
+      "A side-by-side diptych with a consistent warm Re-Volt-inspired colour grade across both halves. LEFT: a whimsical toy RC car topped with a robot arm in a bright festive toy-world (the dream). RIGHT: the real setup — a small white-and-black 3D-printed SO-101 desktop robot arm beside a laptop running a robot simulator on a wooden desk (the reality). Playful yet credible, warm honey and primary-colour palette. 16:9, no text."]
   ];
   const SERVED = location.protocol !== 'file:';
   const imgSrc = (name) => SERVED ? ('/raw?path=' + encodeURIComponent('design/_refs/' + name)) : ('_refs/' + name);
@@ -123,9 +134,10 @@
     ["rv-yt-3.jpg","RV-09 · Video thumbnail"],
   ];
   const pw = document.getElementById('promptWrap');
-  PROMPTS.forEach(([n,t]) => {
-    const d = document.createElement('div'); d.className='pc';
-    d.innerHTML = `<div class="name">${n}</div><textarea readonly>${t}</textarea><button class="copy">📋 Copy</button>`;
+  PROMPTS.forEach(([n,status,t]) => {
+    const d = document.createElement('div'); d.className='pc' + (status==='new' ? ' pc-new' : '');
+    const badge = status==='new' ? '<span class="tag-new">🆕 NEW</span>' : '<span class="tag-used">✓ USED</span>';
+    d.innerHTML = `<div class="name">${badge} ${n}</div><textarea readonly>${t}</textarea><button class="copy">📋 Copy</button>`;
     d.querySelector('.copy').onclick = () => { navigator.clipboard.writeText(t); d.querySelector('.copy').textContent='✓ Copied'; setTimeout(()=>d.querySelector('.copy').textContent='📋 Copy',1200); };
     pw.appendChild(d);
   });
