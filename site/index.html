@@ -3,105 +3,106 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Physical Playground — a peer-review school for Physical AI</title>
-<meta name="description" content="Give a robot arm a mission. Solve it. Peer-review each other's runs. Start in simulation — no robot required.">
+<title>Physical Revolt — a peer-review school for Physical AI</title>
+<meta name="description" content="A revolt against boring tutorials. Give a robot arm a mission, solve it, peer-review each other's runs. Start in simulation — no robot required.">
 <style>
+  /* warm-light "Re-Volt" palette (default); dark = warm-dark via toggle */
   :root{
-    --bg:#0c0e14; --bg2:#12151f; --fg:#eef1f7; --muted:#9aa3b5; --line:#242a38; --card:#141826;
-    --teal:#39e0c8; --pink:#ff5d8f; --gold:#ffcf4d; --blue:#2ec4ff; --green:#35e08a;
-    --grid:rgba(57,224,200,.16);
+    --bg:#fbf5e9; --bg2:#f5ecd8; --fg:#2b211a; --muted:#948468; --line:#e8dcc4; --card:#fffdf9;
+    --red:#e0442e; --gold:#e6a413; --blue:#2f6fd0; --teal:#0e9a89; --amber:#f4b21a;
+    --accent:#e0442e; --shadow:rgba(120,80,20,.18);
   }
-  @media (prefers-color-scheme: light){
-    :root{ --bg:#f6f7fb; --bg2:#eef0f7; --fg:#161a24; --muted:#5a6478; --line:#dde1ec; --card:#fff;
-           --teal:#0bb3a0; --pink:#e23a70; --gold:#c98a00; --blue:#1289c9; --green:#0f9e63; --grid:rgba(11,179,160,.14); }
+  :root[data-theme="dark"]{
+    --bg:#181310; --bg2:#221a13; --fg:#f5ecd8; --muted:#b09a7c; --line:#33291d; --card:#221a13;
+    --red:#ff6a4d; --gold:#f4b21a; --blue:#5b9bff; --teal:#2fd4bf; --amber:#f4b21a;
+    --accent:#ff6a4d; --shadow:rgba(0,0,0,.5);
   }
-  :root[data-theme="dark"]{ --bg:#0c0e14; --bg2:#12151f; --fg:#eef1f7; --muted:#9aa3b5; --line:#242a38; --card:#141826;
-    --teal:#39e0c8; --pink:#ff5d8f; --gold:#ffcf4d; --blue:#2ec4ff; --green:#35e08a; --grid:rgba(57,224,200,.16); }
-  :root[data-theme="light"]{ --bg:#f6f7fb; --bg2:#eef0f7; --fg:#161a24; --muted:#5a6478; --line:#dde1ec; --card:#fff;
-    --teal:#0bb3a0; --pink:#e23a70; --gold:#c98a00; --blue:#1289c9; --green:#0f9e63; --grid:rgba(11,179,160,.14); }
-
   *{box-sizing:border-box;}
   body{margin:0; background:var(--bg); color:var(--fg); line-height:1.6; overflow-x:hidden;
     font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;}
   .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;}
-  a{color:var(--teal); text-decoration:none;}
+  a{color:var(--accent); text-decoration:none;}
   .wrap{max-width:1060px; margin:0 auto; padding:0 22px;}
   h2.sec{font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); margin:0 0 8px;}
   h3.lead{font-size:clamp(22px,4vw,32px); margin:0 0 24px; font-weight:800; letter-spacing:-.01em;}
   section{padding:56px 0; border-top:1px solid var(--line);}
 
-  /* nav */
   nav{position:sticky; top:0; z-index:20; backdrop-filter:blur(8px);
-    background:color-mix(in srgb,var(--bg) 82%,transparent); border-bottom:1px solid var(--line);}
+    background:color-mix(in srgb,var(--bg) 84%,transparent); border-bottom:1px solid var(--line);}
   nav .wrap{display:flex; align-items:center; gap:18px; height:54px;}
   nav .brand{font-weight:900; letter-spacing:-.01em; text-transform:uppercase; font-size:15px; color:var(--fg);}
-  nav .brand b{color:var(--teal);}
+  nav .brand b{color:var(--red);}
   nav .links{margin-left:auto; display:flex; gap:16px; align-items:center;}
   nav .links a{color:var(--muted); font-size:13px; font-weight:600;}
-  nav .links a:hover{color:var(--teal);}
+  nav .links a:hover{color:var(--red);}
   .themebtn{background:var(--card); color:var(--fg); border:1px solid var(--line); border-radius:9px; padding:5px 9px; cursor:pointer; font-size:13px;}
 
-  /* hero */
-  header.hero{position:relative; text-align:center; padding:74px 0 96px; overflow:hidden;}
-  .grid-floor{position:absolute; left:-20%; right:-20%; bottom:0; height:48%;
-    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-    background-size:44px 44px; transform:perspective(340px) rotateX(62deg); transform-origin:bottom center;
-    -webkit-mask-image:linear-gradient(to top,#000 8%,transparent 82%); mask-image:linear-gradient(to top,#000 8%,transparent 82%);}
-  .car{position:absolute; bottom:15%; left:50%; width:60px; margin-left:-30px; z-index:1; animation:zip 6s ease-in-out infinite;}
-  @keyframes zip{0%{transform:translateX(-150px) rotate(-3deg);}50%{transform:translateX(150px) rotate(3deg);}100%{transform:translateX(-150px) rotate(-3deg);}}
-  .badge{display:inline-block; font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--teal);
-    border:1px solid var(--line); border-radius:999px; padding:5px 14px; margin-bottom:22px; position:relative;}
-  h1.title{position:relative; margin:0; font-size:clamp(40px,8.5vw,84px); line-height:.96; font-weight:900; letter-spacing:-.02em; text-transform:uppercase;}
-  h1.title .l2{color:var(--teal); text-shadow:0 0 24px color-mix(in srgb,var(--teal) 55%,transparent);}
-  .tag{position:relative; margin:20px auto 0; max-width:640px; color:var(--muted); font-size:clamp(15px,2.3vw,19px);}
-  .cta{position:relative; margin-top:32px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+  header.hero{text-align:center; padding:70px 0 84px;}
+  .badge{display:inline-block; font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--red);
+    border:1px solid var(--line); background:var(--card); border-radius:999px; padding:5px 14px; margin-bottom:22px;}
+  h1.title{margin:0; font-size:clamp(40px,8.5vw,84px); line-height:.96; font-weight:900; letter-spacing:-.02em; text-transform:uppercase;}
+  h1.title .l2{color:var(--red); text-shadow:0 3px 0 color-mix(in srgb,var(--red) 30%,transparent);}
+  .tag{margin:20px auto 0; max-width:640px; color:var(--muted); font-size:clamp(15px,2.3vw,19px);}
+  .tag b{color:var(--fg);}
+  .cta{margin-top:30px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
   .btn{font-weight:800; font-size:15px; padding:14px 26px; border-radius:12px; cursor:pointer; border:2px solid transparent; letter-spacing:.02em; transition:transform .08s ease, box-shadow .2s ease;}
   .btn:active{transform:translateY(2px);}
-  .btn-start{background:var(--teal); color:#04120f; box-shadow:0 6px 0 color-mix(in srgb,var(--teal) 45%,#000);}
-  .btn-start:hover{box-shadow:0 9px 28px color-mix(in srgb,var(--teal) 40%,transparent);}
-  .btn-ghost{background:transparent; color:var(--fg); border-color:var(--line);}
-  .btn-ghost:hover{border-color:var(--teal); color:var(--teal);}
-  .blink{animation:blink 1.2s steps(1) infinite;} @keyframes blink{50%{opacity:.25;}}
+  .btn-start{background:var(--accent); color:#fff; box-shadow:0 6px 0 color-mix(in srgb,var(--accent) 45%,#000);}
+  .btn-start:hover{box-shadow:0 9px 26px var(--shadow);}
+  .btn-ghost{background:var(--card); color:var(--fg); border-color:var(--line);}
+  .btn-ghost:hover{border-color:var(--red); color:var(--red);}
   .hero-figure{margin-top:36px;}
-  .hero-shot{width:100%; max-width:980px; border-radius:16px; border:1px solid var(--line); box-shadow:0 26px 64px rgba(0,0,0,.45);}
+  .hero-shot{width:100%; max-width:980px; border-radius:16px; border:1px solid var(--line); box-shadow:0 24px 60px var(--shadow);}
   .shot-cap{margin-top:10px; font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:var(--muted);}
+
+  /* mini-game */
+  .game-card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; box-shadow:0 12px 34px var(--shadow);}
+  #game{width:100%; height:auto; aspect-ratio:16/9; display:block; border-radius:11px; background:#f4b21a; cursor:pointer; touch-action:none;}
+  .game-bar{display:flex; align-items:center; gap:12px; margin-top:10px; flex-wrap:wrap;}
+  .game-bar .hint{color:var(--muted); font-size:12px;}
+  .gbtn{width:52px; height:44px; font-size:20px; border:1px solid var(--line); background:var(--bg2); color:var(--fg); border-radius:10px; cursor:pointer;}
+  .gbtn:active{background:var(--accent); color:#fff;}
+  .score{font-family:ui-monospace,monospace; font-weight:800; margin-left:auto;}
+
+  /* level select */
+  .circuit{width:100%; height:56px; margin-bottom:6px;}
+  .levels{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px;}
+  .lvl{position:relative; background:var(--card); border:1px solid var(--line); border-top:3px solid var(--c); border-radius:16px; padding:20px; overflow:hidden; box-shadow:0 6px 20px var(--shadow);}
+  .lvl:hover{border-color:var(--c);}
+  .lvl .num{font-family:ui-monospace,monospace; font-size:52px; font-weight:900; line-height:1; color:var(--line); position:absolute; top:8px; right:14px;}
+  .lvl .meta{font-family:ui-monospace,monospace; font-size:11px; color:var(--muted); margin-bottom:6px;}
+  .lvl h4{margin:0 0 6px; font-size:19px;} .lvl p{margin:0; color:var(--muted); font-size:14px;}
+  .stars{margin-top:12px; color:var(--gold); letter-spacing:2px; font-size:13px;}
+  .pill{display:inline-block; font-size:11px; font-weight:700; color:var(--c); border:1px solid var(--line); border-radius:6px; padding:1px 7px; margin-top:12px;}
+
+  .loop{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px;}
+  .step{background:var(--bg2); border:1px solid var(--line); border-radius:14px; padding:18px;}
+  .step .k{font-family:ui-monospace,monospace; color:var(--red); font-weight:800; font-size:13px;}
+  .step h4{margin:8px 0 4px; font-size:16px;} .step p{margin:0; color:var(--muted); font-size:13.5px;}
+
+  /* real setup */
+  .setup{display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:center;}
+  .setup img{width:100%; border-radius:14px; border:1px solid var(--line); box-shadow:0 12px 34px var(--shadow);}
+  .setup .attr{font-size:11px; color:var(--muted); margin-top:8px;}
+  @media (max-width:720px){ .setup{grid-template-columns:1fr;} }
+
   .scenes{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
   .scene{position:relative; border-radius:14px; overflow:hidden; border:1px solid var(--line); aspect-ratio:16/9;}
   .scene img{width:100%; height:100%; object-fit:cover; display:block;}
   .scene .lbl{position:absolute; left:0; right:0; bottom:0; padding:14px 16px; font-weight:700; font-size:14px; color:#fff;
     background:linear-gradient(to top, rgba(0,0,0,.78), transparent);}
-  .toolkit{text-align:center;}
-  .toolkit img{width:100%; max-width:760px; border-radius:14px; border:1px solid var(--line);}
   @media (max-width:640px){ .scenes{grid-template-columns:1fr;} }
 
-  /* level select */
-  .circuit{width:100%; height:56px; margin-bottom:6px;}
-  .levels{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px;}
-  .lvl{position:relative; background:var(--card); border:1px solid var(--line); border-top:3px solid var(--c); border-radius:16px; padding:20px; overflow:hidden;}
-  .lvl:hover{border-color:var(--c);}
-  .lvl .num{font-family:ui-monospace,monospace; font-size:52px; font-weight:900; line-height:1; color:var(--line); position:absolute; top:8px; right:14px;}
-  .lvl h4{margin:0 0 6px; font-size:19px;} .lvl p{margin:0; color:var(--muted); font-size:14px;}
-  .stars{margin-top:12px; color:var(--gold); letter-spacing:2px; font-size:13px;}
-  .pill{display:inline-block; font-size:11px; font-weight:700; color:var(--c); border:1px solid var(--line); border-radius:6px; padding:1px 7px; margin-top:12px;}
-
-  /* loop */
-  .loop{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px;}
-  .step{background:var(--bg2); border:1px solid var(--line); border-radius:14px; padding:18px;}
-  .step .k{font-family:ui-monospace,monospace; color:var(--teal); font-weight:800; font-size:13px;}
-  .step h4{margin:8px 0 4px; font-size:16px;} .step p{margin:0; color:var(--muted); font-size:13.5px;}
-
-  /* leaderboard */
   .board{background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden;}
   .row{display:flex; align-items:center; gap:14px; padding:13px 18px; border-top:1px solid var(--line);}
   .row:first-child{border-top:none;}
   .row .rank{font-family:ui-monospace,monospace; font-weight:900; font-size:18px; width:34px; color:var(--muted);}
-  .row.p1{background:linear-gradient(90deg,color-mix(in srgb,var(--gold) 14%,transparent),transparent);}
+  .row.p1{background:linear-gradient(90deg,color-mix(in srgb,var(--gold) 22%,transparent),transparent);}
   .row.p1 .rank{color:var(--gold);}
   .row .who{font-weight:700; flex:1;} .row .who small{display:block; color:var(--muted); font-weight:400; font-size:12px;}
-  .row .likes{color:var(--pink); font-weight:800; font-size:14px;}
-  .ribbon{font-size:10px; font-weight:800; letter-spacing:.1em; color:#04120f; background:var(--gold); padding:2px 7px; border-radius:5px;}
+  .row .likes{color:var(--red); font-weight:800; font-size:14px;}
+  .ribbon{font-size:10px; font-weight:800; letter-spacing:.1em; color:#3a2500; background:var(--gold); padding:2px 7px; border-radius:5px;}
 
-  /* roadmap */
   .soon{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px;}
   .soon .t{background:var(--card); border:1px dashed var(--line); border-radius:12px; padding:16px;}
   .soon .t .ic{font-size:20px;} .soon .t b{display:block; font-size:15px; margin-top:6px;}
@@ -109,59 +110,70 @@
   .soon .t em{display:block; font-style:normal; color:var(--muted); font-size:12px; margin-top:4px;}
 
   footer{border-top:1px solid var(--line); padding:30px 0; color:var(--muted); font-size:13px; text-align:center;}
-  @media (prefers-reduced-motion:reduce){.blink,.car{animation:none;}}
 </style>
 </head>
 <body>
 
 <nav><div class="wrap">
-  <span class="brand">Physical<b> Playground</b></span>
+  <span class="brand">Physical<b> Revolt</b></span>
   <span class="links">
+    <a href="#play">Play</a>
     <a href="#missions">Missions</a>
-    <a href="#how">How it works</a>
-    <a href="#roadmap">Roadmap</a>
+    <a href="#setup">The arm</a>
     <a href="https://github.com/bookseal/physical-playground" target="_blank">GitHub</a>
     <button class="themebtn" onclick="toggleTheme()" title="Toggle theme">◐</button>
   </span>
 </div></nav>
 
-<header class="hero">
-  <div class="wrap">
-    <span class="badge mono">Physical AI · learn by doing</span>
-    <h1 class="title"><span class="l1">Physical</span><br><span class="l2">Playground</span></h1>
-    <p class="tag">Give a robot arm a mission. Solve it. Then <b>peer-review</b> each other's runs —
-      the best solutions take pole position. Start in simulation; no robot required.</p>
-    <div class="cta">
-      <button class="btn btn-start mono" onclick="location.href='#missions'">▶ PRESS START</button>
-      <button class="btn btn-ghost" onclick="location.href='#how'">How it works</button>
-    </div>
+<header class="hero"><div class="wrap">
+  <span class="badge mono">Physical AI · learn by doing</span>
+  <h1 class="title"><span class="l1">Physical</span><br><span class="l2">Revolt</span></h1>
+  <p class="tag">A <b>revolt against boring tutorials.</b> Give a robot arm a mission, solve it, then
+    <b>peer-review</b> each other's runs. Start in simulation — no robot required.</p>
+  <div class="cta">
+    <button class="btn btn-start mono" onclick="location.href='#play'">▶ PRESS START</button>
+    <button class="btn btn-ghost" onclick="location.href='#missions'">See the missions</button>
   </div>
-  <div class="wrap hero-figure">
+  <div class="hero-figure">
     <img class="hero-shot" src="assets/hero-toyworld.jpg" alt="A toy RC car topped with a robot arm in a bright, festive toy-world arena" loading="eager">
     <p class="shot-cap mono">concept render — the world we're building toward</p>
   </div>
-</header>
+</div></header>
+
+<section id="play"><div class="wrap">
+  <h2 class="sec">Take a lap</h2>
+  <h3 class="lead">Dodge the blocks. It's a revolt, not a lecture.</h3>
+  <div class="game-card">
+    <canvas id="game" width="960" height="540" aria-label="Mini driving game"></canvas>
+    <div class="game-bar">
+      <button class="gbtn" id="gleft" aria-label="left">◀</button>
+      <button class="gbtn" id="gright" aria-label="right">▶</button>
+      <span class="hint">← → / A D / drag · avoid the toy blocks</span>
+      <span class="score" id="score">0 m</span>
+    </div>
+  </div>
+</div></section>
 
 <section id="missions"><div class="wrap">
-  <h2 class="sec">Level select</h2>
+  <h2 class="sec">Level select · syllabus</h2>
   <h3 class="lead">Three tracks to start.</h3>
   <svg class="circuit" viewBox="0 0 900 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M60 40 C 260 6, 360 6, 460 30 S 700 54, 840 16" fill="none" stroke="var(--line)" stroke-width="3" stroke-dasharray="7 7"/>
-    <circle cx="60" cy="40" r="9" fill="var(--teal)"/><circle cx="460" cy="30" r="9" fill="var(--blue)"/><circle cx="840" cy="16" r="9" fill="var(--gold)"/>
+    <circle cx="60" cy="40" r="9" fill="var(--red)"/><circle cx="460" cy="30" r="9" fill="var(--blue)"/><circle cx="840" cy="16" r="9" fill="var(--gold)"/>
   </svg>
   <div class="levels">
-    <div class="lvl" style="--c:var(--teal)">
-      <div class="num">1</div><h4>Pat me on the back</h4>
+    <div class="lvl" style="--c:var(--red)">
+      <div class="num">1</div><div class="meta">BEGINNER · ~1h</div><h4>Pat me on the back</h4>
       <p>Build the arm, make it gently pat your back. A warm first win.</p>
       <div class="stars">★☆☆☆☆</div><br><span class="pill">Mac-friendly</span>
     </div>
     <div class="lvl" style="--c:var(--blue)">
-      <div class="num">2</div><h4>Pick &amp; place</h4>
+      <div class="num">2</div><div class="meta">BEGINNER · ~2h</div><h4>Pick &amp; place</h4>
       <p>Grab an object, move it. The "Hello World" of manipulation.</p>
       <div class="stars">★★☆☆☆</div><br><span class="pill">sim or real</span>
     </div>
     <div class="lvl" style="--c:var(--gold)">
-      <div class="num">3</div><h4>Red Light, Green Light</h4>
+      <div class="num">3</div><div class="meta">INTERMEDIATE · ~4h</div><h4>Red Light, Green Light</h4>
       <p>The robot moves while you speak, freezes the instant you stop. The one Squid Game made famous.</p>
       <div class="stars">★★★★☆</div><br><span class="pill">peer-review shines</span>
     </div>
@@ -179,15 +191,21 @@
   </div>
 </div></section>
 
-<section id="gallery"><div class="wrap">
-  <h2 class="sec">Solution gallery</h2>
-  <h3 class="lead">Best lap wins.</h3>
-  <div class="board">
-    <div class="row p1"><span class="rank">1</span><span class="who">@nova_arm <small>Red Light, Green Light — 40ms stop latency</small></span><span class="ribbon">BEST LAP</span><span class="likes">♥ 214</span></div>
-    <div class="row"><span class="rank">2</span><span class="who">@toybot <small>Pick &amp; place — one-shot, no retries</small></span><span class="likes">♥ 168</span></div>
-    <div class="row"><span class="rank">3</span><span class="who">@sim_first <small>Pat me — done entirely in MuJoCo</small></span><span class="likes">♥ 121</span></div>
+<section id="setup"><div class="wrap">
+  <h2 class="sec">The real setup</h2>
+  <h3 class="lead">The dream is a toy. The tool is real.</h3>
+  <div class="setup">
+    <div>
+      <p>No RC car, really — the missions run on the <b>SO-101</b>, the low-cost, open-source 3D-printed
+      robot arm from the Hugging Face LeRobot ecosystem. Learn it in <b>simulation on your own laptop</b> first;
+      buy the arm only when you're ready.</p>
+      <p class="mono" style="font-size:13px; color:var(--muted);">6-DOF · open-source (Apache-2.0) · a few hundred dollars · Mac-friendly sim path</p>
+    </div>
+    <div>
+      <img src="assets/so101-real.jpg" alt="The real SO-101 open-source 3D-printed 6-DOF robot arm with a gripper on a desk">
+      <p class="attr">SO-101 photo © The Robot Studio / Hugging Face — <a href="https://github.com/TheRobotStudio/SO-ARM100" target="_blank">SO-ARM100</a>, Apache-2.0</p>
+    </div>
   </div>
-  <p style="color:var(--muted); font-size:12px; margin-top:10px;">↑ illustrative — the real gallery fills up as runs come in.</p>
 </div></section>
 
 <section id="scenes"><div class="wrap">
@@ -197,6 +215,17 @@
     <div class="scene"><img src="assets/playroom.jpg" alt="Robot-arm RC car among wooden toy blocks and a toy dinosaur" loading="lazy"><span class="lbl">Mission 2 — pick &amp; place, on the playroom floor</span></div>
     <div class="scene"><img src="assets/museum.jpg" alt="Robot-arm RC car in a moody Egyptian museum hall" loading="lazy"><span class="lbl">Harder tracks — new worlds to master</span></div>
   </div>
+</div></section>
+
+<section id="gallery"><div class="wrap">
+  <h2 class="sec">Solution gallery</h2>
+  <h3 class="lead">Best lap wins.</h3>
+  <div class="board">
+    <div class="row p1"><span class="rank">1</span><span class="who">@nova_arm <small>Red Light, Green Light — 40ms stop latency</small></span><span class="ribbon">BEST LAP</span><span class="likes">♥ 214</span></div>
+    <div class="row"><span class="rank">2</span><span class="who">@toybot <small>Pick &amp; place — one-shot, no retries</small></span><span class="likes">♥ 168</span></div>
+    <div class="row"><span class="rank">3</span><span class="who">@sim_first <small>Pat me — done entirely in MuJoCo</small></span><span class="likes">♥ 121</span></div>
+  </div>
+  <p style="color:var(--muted); font-size:12px; margin-top:10px;">↑ illustrative — the real gallery fills up as runs come in.</p>
 </div></section>
 
 <section id="roadmap"><div class="wrap">
@@ -211,16 +240,86 @@
 </div></section>
 
 <footer>
-  <div class="wrap mono">PHYSICAL PLAYGROUND · building in public · <a href="https://github.com/bookseal">github.com/bookseal</a></div>
+  <div class="wrap mono">PHYSICAL REVOLT · building in public · <a href="https://github.com/bookseal">github.com/bookseal</a></div>
 </footer>
 
 <script>
-  function applyTheme(t){ document.documentElement.setAttribute('data-theme',t); try{localStorage.setItem('pp-theme',t);}catch(e){} }
+  function applyTheme(t){ document.documentElement.setAttribute('data-theme',t); try{localStorage.setItem('pr-theme',t);}catch(e){} }
   function toggleTheme(){
-    const cur = document.documentElement.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const cur = document.documentElement.getAttribute('data-theme') || 'light';
     applyTheme(cur === 'dark' ? 'light' : 'dark');
   }
-  try{ const s=localStorage.getItem('pp-theme'); if(s) applyTheme(s); }catch(e){}
+  try{ const s=localStorage.getItem('pr-theme'); if(s) applyTheme(s); }catch(e){}
+
+  /* ---- mini driving game (self-contained, no libs) ---- */
+  (function(){
+    const cv = document.getElementById('game'), ctx = cv.getContext('2d');
+    const W = cv.width, H = cv.height, HORIZON = H*0.28, BOTTOM = H*0.98;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let px = 0;            // player lane offset -1..1
+    let target = 0;        // input target
+    let speed, dist, obs, running, over, tPrev;
+    const COLORS = ['#e0442e','#2f6fd0','#e6a413','#0e9a89'];
+    function roadHalf(z){ return (0.10 + 0.62*z) * W; }   // half-width at depth z (0 far,1 near)
+    function yAt(z){ return HORIZON + (BOTTOM-HORIZON)*z*z; }
+    function reset(){ px=0; target=0; speed=0.55; dist=0; obs=[]; over=false; running=true; tPrev=0; spawn(); }
+    function spawn(){ obs.push({ z:0, lane:(Math.random()*1.7-0.85), c:COLORS[(Math.random()*COLORS.length)|0] }); }
+    function road(){
+      // sky/cream + road trapezoid
+      ctx.fillStyle = getVar('--bg'); ctx.fillRect(0,0,W,HORIZON);
+      const g = ctx.createLinearGradient(0,HORIZON,0,H); g.addColorStop(0,'#caa15a'); g.addColorStop(1,'#8a5a24');
+      ctx.fillStyle=g;
+      ctx.beginPath(); ctx.moveTo(W/2-roadHalf(0),yAt(0)); ctx.lineTo(W/2+roadHalf(0),yAt(0));
+      ctx.lineTo(W/2+roadHalf(1),yAt(1)); ctx.lineTo(W/2-roadHalf(1),yAt(1)); ctx.closePath(); ctx.fill();
+      // moving dashes
+      ctx.strokeStyle='#fff6df'; ctx.lineWidth=4;
+      for(let i=0;i<12;i++){ let z=((i/12)+ (dist*0.25%1)); z=z%1; const y=yAt(z), y2=yAt(Math.min(z+0.03,1));
+        ctx.globalAlpha=z; ctx.beginPath(); ctx.moveTo(W/2,y); ctx.lineTo(W/2,y2); ctx.stroke(); }
+      ctx.globalAlpha=1;
+    }
+    function block(o){ const y=yAt(o.z), hw=roadHalf(o.z), s=6+64*o.z*o.z;
+      const x=W/2 + o.lane*hw; ctx.fillStyle=o.c; ctx.fillRect(x-s/2, y-s, s, s);
+      ctx.fillStyle='rgba(0,0,0,.18)'; ctx.fillRect(x-s/2, y-6*o.z, s, 6*o.z); }
+    function car(){ const y=yAt(1)-6, hw=roadHalf(1), x=W/2+px*hw*0.82, s=64;
+      ctx.fillStyle='#2b211a'; ctx.fillRect(x-s/2, y-22, s, 20);       // wheels bar
+      ctx.fillStyle='#e0442e'; ctx.fillRect(x-s/2+6, y-40, s-12, 26);  // body
+      ctx.fillStyle='#f4b21a'; ctx.fillRect(x-8, y-56, 16, 16);        // arm base
+      ctx.fillStyle='#0e9a89'; ctx.fillRect(x-4, y-70, 8, 16); }       // arm
+    function getVar(n){ return getComputedStyle(document.documentElement).getPropertyValue(n)||'#fbf5e9'; }
+    function frame(t){
+      if(!running){ return; }
+      const dt = tPrev? Math.min((t-tPrev)/1000,0.05):0.016; tPrev=t;
+      px += (target-px)*Math.min(dt*10,1);
+      if(!over){
+        speed += dt*0.03; dist += speed*dt*60;
+        for(const o of obs){ o.z += speed*dt; }
+        if(obs.length && obs[obs.length-1].z>0.28) spawn();
+        obs = obs.filter(o=>{
+          if(o.z>=0.97 && o.z<1.06 && Math.abs(o.lane-px)<0.42){ over=true; }
+          return o.z<1.2;
+        });
+        document.getElementById('score').textContent = (dist|0)+' m';
+      }
+      road(); obs.sort((a,b)=>a.z-b.z); for(const o of obs) block(o); car();
+      if(over){ ctx.fillStyle='rgba(0,0,0,.55)'; ctx.fillRect(0,0,W,H);
+        ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.font='800 34px ui-monospace,monospace';
+        ctx.fillText('CRASHED · '+(dist|0)+' m', W/2, H/2-6);
+        ctx.font='600 18px -apple-system,sans-serif'; ctx.fillText('click / tap to restart', W/2, H/2+28); return; }
+      requestAnimationFrame(frame);
+    }
+    function start(){ reset(); if(reduce){ road(); car(); } else requestAnimationFrame(frame); }
+    // input
+    const set=(v)=>target=Math.max(-1,Math.min(1,v));
+    addEventListener('keydown',e=>{ if(e.key==='ArrowLeft'||e.key==='a')set(-1); if(e.key==='ArrowRight'||e.key==='d')set(1); });
+    addEventListener('keyup',e=>{ if(['ArrowLeft','ArrowRight','a','d'].includes(e.key))set(0); });
+    document.getElementById('gleft').onpointerdown=()=>set(-1);
+    document.getElementById('gright').onpointerdown=()=>set(1);
+    ['gleft','gright'].forEach(id=>document.getElementById(id).onpointerup=()=>set(0));
+    cv.addEventListener('pointermove',e=>{ if(e.buttons){ const r=cv.getBoundingClientRect(); set(((e.clientX-r.left)/r.width-0.5)*2.2); }});
+    cv.addEventListener('pointerup',()=>set(0));
+    cv.addEventListener('click',()=>{ if(over||!running) start(); });
+    start();
+  })();
 </script>
 </body>
 </html>

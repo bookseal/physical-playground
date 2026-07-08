@@ -1,8 +1,8 @@
-# Physical Playground
+# Physical Revolt
 
-*(working name — this may change)*
+*(product name; the repo keeps its original `physical-playground` name)*
 
-A peer-review school for **Physical AI** — for developers who want to break into robotics.
+A peer-review school for **Physical AI** — **a revolt against boring tutorials**, for developers who want to break into robotics.
 
 We give a student a robot-arm mission. They build it, they solve it, and
 they upload a short video of the result. Then students review each other's
