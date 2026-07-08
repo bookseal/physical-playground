@@ -2,7 +2,7 @@
 
 > 이 저장소가 처음이라면 여기서 시작하세요. **합류를 고민 중인 동료**, 또는 새로 합류한 분을 위한 지도입니다.
 > 문서 내용은 계속 바뀌므로, 이 문서는 **"어디에 뭐가 있고 어떤 순서로 읽으면 좋은지"** 를 링크 중심으로 안내합니다.
-> 프로젝트가 뭔지부터 궁금하면 → **[합류 안내(왜 지금인가)](docs/join-us.md)** · [README](README.md).
+> 프로젝트가 뭔지부터 궁금하면 → **[합류 안내(왜 지금인가)](https://physical-revolt.bit-habit.com/join.html)** · [README](README.md).
 
 ---
 
@@ -26,7 +26,7 @@
 ## 읽는 순서 (추천 경로)
 
 ### 0. 왜 이걸 하나 (5분)
-- **[합류 안내 / 왜 지금인가](docs/join-us.md)** ⭐ — SaaS vs Physical AI, 시장, 우리의 각
+- **[합류 안내 / 왜 지금인가](https://physical-revolt.bit-habit.com/join.html)** ⭐ — SaaS vs Physical AI, 시장, 우리의 각
 - [README](README.md) — 한눈에 보는 프로젝트
 
 ### 1. 분야 이해 (헤매지 않으려면 이걸 먼저)

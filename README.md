@@ -4,7 +4,7 @@
 
 A peer-review school for **Physical AI** — **a revolt against boring tutorials**, for developers who want to break into robotics.
 
-> 👋 **New here?** Start with **[ONBOARDING.md](ONBOARDING.md)** (a guided map of every doc) or **[why join us](docs/join-us.md)**.
+> 👋 **New here?** Start with **[ONBOARDING.md](ONBOARDING.md)** (a guided map of every doc) or **[why join us](https://physical-revolt.bit-habit.com/join.html)**.
 
 We give a student a robot-arm mission. They build it, they solve it, and
 they upload a short video of the result. Then students review each other's
