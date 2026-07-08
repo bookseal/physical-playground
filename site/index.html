@@ -67,7 +67,7 @@
   /* level select */
   .circuit{width:100%; height:56px; margin-bottom:6px;}
   .levels{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px;}
-  .lvl{position:relative; background:var(--card); border:1px solid var(--line); border-top:3px solid var(--c); border-radius:16px; padding:20px; overflow:hidden; box-shadow:0 6px 20px var(--shadow);}
+  .lvl{position:relative; background:var(--card); border:1px solid var(--line); border-top:3px solid var(--c); border-radius:16px; padding:20px; overflow:hidden; box-shadow:0 6px 20px var(--shadow); cursor:pointer;}
   .lvl:hover{border-color:var(--c);}
   .lvl .num{font-family:ui-monospace,monospace; font-size:52px; font-weight:900; line-height:1; color:var(--line); position:absolute; top:8px; right:14px;}
   .lvl .meta{font-family:ui-monospace,monospace; font-size:11px; color:var(--muted); margin-bottom:6px;}
@@ -132,7 +132,7 @@
     <b>peer-review</b> each other's runs. Start in simulation — no robot required.</p>
   <div class="cta">
     <button class="btn btn-start mono" onclick="location.href='#play'">▶ PRESS START</button>
-    <button class="btn btn-ghost" onclick="location.href='#missions'">See the missions</button>
+    <button class="btn btn-ghost" onclick="location.href='courses/'">See the missions</button>
   </div>
   <div class="hero-figure">
     <img class="hero-shot" src="assets/hero-toyworld.jpg" alt="A toy RC car topped with a robot arm in a bright, festive toy-world arena" loading="eager">
@@ -162,21 +162,24 @@
     <circle cx="60" cy="40" r="9" fill="var(--red)"/><circle cx="460" cy="30" r="9" fill="var(--blue)"/><circle cx="840" cy="16" r="9" fill="var(--gold)"/>
   </svg>
   <div class="levels">
-    <div class="lvl" style="--c:var(--red)">
+    <div class="lvl" style="--c:var(--red)" onclick="location.href='courses/#/m1'">
       <div class="num">1</div><div class="meta">BEGINNER · ~1h</div><h4>Pat me on the back</h4>
       <p>Build the arm, make it gently pat your back. A warm first win.</p>
       <div class="stars">★☆☆☆☆</div><br><span class="pill">Mac-friendly</span>
     </div>
-    <div class="lvl" style="--c:var(--blue)">
+    <div class="lvl" style="--c:var(--blue)" onclick="location.href='courses/#/m2'">
       <div class="num">2</div><div class="meta">BEGINNER · ~2h</div><h4>Pick &amp; place</h4>
       <p>Grab an object, move it. The "Hello World" of manipulation.</p>
       <div class="stars">★★☆☆☆</div><br><span class="pill">sim or real</span>
     </div>
-    <div class="lvl" style="--c:var(--gold)">
+    <div class="lvl" style="--c:var(--gold)" onclick="location.href='courses/#/m3'">
       <div class="num">3</div><div class="meta">INTERMEDIATE · ~4h</div><h4>Red Light, Green Light</h4>
       <p>The robot moves while you speak, freezes the instant you stop. The one Squid Game made famous.</p>
       <div class="stars">★★★★☆</div><br><span class="pill">peer-review shines</span>
     </div>
+  </div>
+  <div style="text-align:center; margin-top:26px;">
+    <a class="btn btn-start mono" style="display:inline-block;" href="courses/">▶ Open the full curriculum</a>
   </div>
 </div></section>
 
