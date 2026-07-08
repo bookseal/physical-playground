@@ -11,8 +11,7 @@
     --red:#e0442e; --gold:#e6a413; --blue:#2f6fd0; --teal:#0e9a89; --amber:#f4b21a;
     --accent:#e0442e; --shadow:rgba(120,80,20,.16);
   }
-  :root[data-theme="dark"]{ --bg:#181310; --bg2:#221a13; --fg:#f5ecd8; --muted:#b09a7c; --line:#33291d; --card:#221a13;
-    --red:#ff6a4d; --gold:#f4b21a; --blue:#5b9bff; --teal:#2fd4bf; --accent:#ff6a4d; --shadow:rgba(0,0,0,.5); }
+  /* single warm-light theme — no dark mode */
   *{box-sizing:border-box;}
   body{margin:0; background:var(--bg); color:var(--fg); line-height:1.65;
     font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;}
@@ -94,16 +93,12 @@
   <span class="brand">Physical<b> Revolt</b></span>
   <span class="sp"></span>
   <a class="back" href="../index.html#missions">← landing</a>
-  <button class="themebtn" onclick="toggleTheme()" title="theme">◐</button>
 </div></nav>
 <div id="app"></div>
 <div class="toast" id="toast"></div>
 <footer><div class="wrap mono">PHYSICAL REVOLT · curriculum v0 · building in public</div></footer>
 
 <script>
-function applyTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('pr-theme',t)}catch(e){}}
-function toggleTheme(){applyTheme((document.documentElement.getAttribute('data-theme')||'light')==='dark'?'light':'dark');}
-try{const s=localStorage.getItem('pr-theme');if(s)applyTheme(s)}catch(e){}
 
 /* ---------------- curriculum data (v0 — living draft) ---------------- */
 const COURSES = [

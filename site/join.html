@@ -8,8 +8,7 @@
 <style>
   :root{ --bg:#fbf5e9; --bg2:#f5ecd8; --fg:#2b211a; --muted:#8a7b66; --line:#e8dcc4; --card:#fffdf9;
     --red:#e0442e; --gold:#e6a413; --blue:#2f6fd0; --teal:#0e9a89; --accent:#e0442e; --shadow:rgba(120,80,20,.16); }
-  :root[data-theme="dark"]{ --bg:#181310; --bg2:#221a13; --fg:#f5ecd8; --muted:#b09a7c; --line:#33291d; --card:#221a13;
-    --red:#ff6a4d; --gold:#f4b21a; --blue:#5b9bff; --teal:#2fd4bf; --accent:#ff6a4d; --shadow:rgba(0,0,0,.5); }
+  /* single warm-light theme — no dark mode (the game has none; one consistent mood) */
   *{box-sizing:border-box;}
   body{margin:0; background:var(--bg); color:var(--fg); line-height:1.75;
     font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;}
@@ -61,7 +60,6 @@
   <span class="brand">Physical<b> Revolt</b></span>
   <span class="sp"></span>
   <a class="back" href="index.html">← 랜딩</a>
-  <button class="themebtn" onclick="toggleTheme()" title="테마">◐</button>
 </div></nav>
 
 <header class="hero"><div class="wrap">
@@ -101,6 +99,59 @@
     <b>판이 열렸고, 진입 장벽이 역사상 가장 낮아진 창(窓)</b>입니다.</p>
   <p class="cap">출처 요약: <a href="https://newmarketpitch.com/blogs/news/humanoid-robotics-funding-analysis" target="_blank">로봇 펀딩 분석</a> ·
     자세한 근거는 저장소 <span class="mono">knowledge/</span> 폴더(잡마켓·산업지형·플레이어 분석)에 정리돼 있습니다.</p>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sub">개발자에게 — 왜 이걸 배워야 하나</div>
+  <h2>당신은 <span class="em">SaaS 세상</span>에 삽니다.<br>근데 그 세상이 흔들려요.</h2>
+  <p>대부분의 개발자는 SaaS(웹·앱 소프트웨어) 세계에만 살아왔죠. 그 세계는 여전히 거대하지만, 2026년 지금 <b>지각변동</b> 중입니다:</p>
+  <ul>
+    <li>2026년 1~2월, AI 에이전트 위협에 <b>소프트웨어 시가총액 약 $2조(T)가 증발</b>했습니다 — 이른바 "SaaSpocalypse".</li>
+    <li>SaaS는 "사람을 돕는 도구"에서 <b>"일을 직접 실행하는 AI 에이전트"</b>로 이동 중. 좌석(seat)당 과금은 압박받고, 기업들은 소프트웨어 공급사를 줄입니다.</li>
+    <li>2027년엔 <b>하이브리드 과금(사람=좌석당, AI=작업당)</b>이 표준이 될 전망. 특히 <b>수평적·SMB·좌석 기반 SaaS</b>가 가장 위험합니다.</li>
+  </ul>
+  <p>SaaS 시장 자체는 계속 커요($375B → $1.48T, 약 19% CAGR). 하지만 <b>차별화 없는 SaaS는 AI가 복제</b>합니다.
+    그럼 방어막은 어디에? — <b>물리 세계(하드웨어 + AI)</b>. AI 에이전트가 소프트웨어는 복제해도, <b>로봇팔은 복제하지 못하니까요.</b></p>
+
+  <div class="grid2">
+    <div>
+      <p class="cap">연 성장률(CAGR) — Physical AI가 SaaS의 2~2.5배</p>
+      <svg viewBox="0 0 360 210" style="width:100%; max-width:360px; display:block; margin:auto;">
+        <line x1="30" y1="170" x2="345" y2="170" stroke="var(--line)" stroke-width="2"/>
+        <rect x="72" y="117" width="74" height="53" rx="5" fill="var(--blue)"/>
+        <text x="109" y="108" text-anchor="middle" font-family="ui-monospace,monospace" font-weight="800" font-size="17" fill="var(--blue)">19%</text>
+        <text x="109" y="190" text-anchor="middle" font-size="13" fill="var(--muted)">SaaS</text>
+        <rect x="212" y="52" width="74" height="118" rx="5" fill="var(--red)"/>
+        <text x="249" y="43" text-anchor="middle" font-family="ui-monospace,monospace" font-weight="800" font-size="17" fill="var(--red)">~42%</text>
+        <text x="249" y="190" text-anchor="middle" font-size="13" fill="var(--muted)">Physical AI</text>
+      </svg>
+    </div>
+    <div>
+      <p class="cap">같은 출발선(2026=100)에서 5년 성장 궤적</p>
+      <svg viewBox="0 0 360 210" style="width:100%; max-width:360px; display:block; margin:auto;">
+        <line x1="34" y1="170" x2="345" y2="170" stroke="var(--line)" stroke-width="1.5"/>
+        <line x1="34" y1="18" x2="34" y2="170" stroke="var(--line)" stroke-width="1.5"/>
+        <polyline points="34,170 96,163.5 158,155.7 220,146.8 282,136 344,123" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linejoin="round"/>
+        <polyline points="34,170 96,156.4 158,137.3 220,110.7 282,73.2 344,20.7" fill="none" stroke="var(--red)" stroke-width="3" stroke-linejoin="round"/>
+        <circle cx="344" cy="123" r="4" fill="var(--blue)"/><text x="340" y="116" text-anchor="end" font-size="12" font-weight="800" fill="var(--blue)">SaaS ×2.4</text>
+        <circle cx="344" cy="20.7" r="4" fill="var(--red)"/><text x="340" y="32" text-anchor="end" font-size="12" font-weight="800" fill="var(--red)">Physical AI ×5+</text>
+        <text x="34" y="186" font-size="11" fill="var(--muted)">2026</text>
+        <text x="344" y="186" text-anchor="end" font-size="11" fill="var(--muted)">2031</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat" style="--c:var(--blue)"><b>~$2T</b><span>2026년 AI 에이전트가 지운 SaaS 시가총액 ("SaaSpocalypse")</span></div>
+    <div class="stat" style="--c:var(--red)"><b>37~47%</b><span>Physical AI 연 성장률 — SaaS(~19%)의 2배 이상</span></div>
+    <div class="stat" style="--c:var(--gold)"><b>방어막</b><span>AI는 SaaS를 복제해도, 로봇팔은 복제 못 한다</span></div>
+  </div>
+
+  <div class="callout"><b>당신에게 무슨 의미?</b> 이 프로젝트를 함께 발전시키면, 당신도 <b>physical AI를 실전으로 익히게 됩니다</b> —
+    LeRobot·시뮬레이션·로봇 정책까지. 남들이 SaaS 레드오션에 머무는 동안, 당신은 <b>가장 인재가 부족한 프론티어</b>로 미리 넘어가는 거죠. 손해 볼 게 없습니다.</div>
+  <p class="cap">출처: <a href="https://www.forbes.com/sites/petercohan/2026/02/06/saaspocalypse-now-ai-is-disrupting-saas---but-not-all-software-is-doomed/" target="_blank">Forbes — SaaSpocalypse</a> ·
+    <a href="https://www.deloitte.com/us/en/insights/industry/technology/technology-media-and-telecom-predictions/2026/saas-ai-agents.html" target="_blank">Deloitte SaaS×AI 2026</a> ·
+    <a href="https://www.mordorintelligence.com/industry-reports/physical-ai-market" target="_blank">Physical AI 시장</a> (수치는 리서치 기관별 편차 있음, 상대 크기·성장률로 읽을 것).</p>
 </div></section>
 
 <section><div class="wrap">
@@ -177,10 +228,5 @@
 
 <footer><div class="wrap mono">PHYSICAL REVOLT · building in public · <a href="https://github.com/bookseal">github.com/bookseal</a></div></footer>
 
-<script>
-  function applyTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('pr-theme',t)}catch(e){}}
-  function toggleTheme(){applyTheme((document.documentElement.getAttribute('data-theme')||'light')==='dark'?'light':'dark');}
-  try{const s=localStorage.getItem('pr-theme');if(s)applyTheme(s)}catch(e){}
-</script>
 </body>
 </html>
