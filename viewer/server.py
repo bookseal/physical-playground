@@ -123,7 +123,25 @@ class Handler(BaseHTTPRequestHandler):
                 content = f.read()
             self.send_json({"path": rel, "content": content, "mtime": os.path.getmtime(full)})
         else:
-            self.send_json({"error": "not found"}, 404)
+            # site/ 정적 파일 서빙 (courses 등) — GitHub Pages와 동일 동작
+            rel = url.path.lstrip("/")
+            cands = [os.path.join("site", rel)]
+            if rel.endswith("/") or "." not in rel.split("/")[-1]:
+                cands.append(os.path.join("site", rel, "index.html"))
+            full = next((p for p in (safe_path(c) for c in cands) if p), None)
+            if not full:
+                self.send_json({"error": "not found"}, 404)
+                return
+            ctype = mimetypes.guess_type(full)[0] or "application/octet-stream"
+            if ctype.startswith("text/"):
+                ctype += "; charset=utf-8"
+            with open(full, "rb") as f:
+                body = f.read()
+            self.send_response(200)
+            self.send_header("Content-Type", ctype)
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
 
     def do_POST(self):
         url = urlparse(self.path)
