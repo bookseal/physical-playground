@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: pr-auth
-        image: 127.0.0.1:5000/pr-auth:latest
+        image: localhost:5000/pr-auth:latest
         imagePullPolicy: Always
         ports: [{ containerPort: 8080 }]
         env:

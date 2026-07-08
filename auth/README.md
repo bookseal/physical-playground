@@ -20,8 +20,8 @@ Runs on the k3s cluster next to the static site, same-origin under `/api/auth/*`
 ```bash
 cd ~/workspace/physical-revolt          # the cloned repo
 # 1) build + push to the cluster's local registry
-docker build -t 127.0.0.1:5000/pr-auth:latest auth/
-docker push 127.0.0.1:5000/pr-auth:latest
+docker build -t localhost:5000/pr-auth:latest auth/
+docker push localhost:5000/pr-auth:latest
 # 2) apply manifests (Deployment + Service + updated Ingress)
 sudo k3s kubectl apply -f auth/k8s/
 sudo k3s kubectl rollout status deploy/pr-auth
