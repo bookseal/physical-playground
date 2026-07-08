@@ -7,15 +7,15 @@
 
 ## Context
 The project mixes **public** material (product concept, market, positioning, labs, design, the viewer/landing code)
-and **private** material (personal context, mentor research — anonymized as "Gemini", raw drafts, funding strategy).
+and **private** material (personal context, external research notes, raw drafts, funding strategy).
 
 Current state (set up mid-session): private content was moved out of the working directory into a **separate
 sibling git repo** `../physical-playground-private/` (local-only, never pushed). Plus defense-in-depth:
-`.gitignore` structure, a gitleaks pre-commit hook, and the mentor identity fully anonymized.
+`.gitignore` structure, a gitleaks pre-commit hook, and sensitive identifiers scrubbed from anything public.
 
 This is **maximally secure but operationally confusing**:
 - Two working directories for one project.
-- Claude/tools can *reach* the private repo by absolute path (it did — the anonymization happened there) but it
+- Claude/tools can *reach* the private repo by absolute path (it did — the scrubbing happened there) but it
   is **not auto-loaded** into context and won't show up in working-dir searches. So private knowledge is only
   used when explicitly opened.
 
@@ -38,9 +38,9 @@ and here it's mostly **documents/PII**, not code/secrets.
 Because the private material is mostly **documents**, not code:
 - If the founder prefers working in files/git with Claude → **Option 2** (private is the source of truth; public
   is a filtered export). Fixes the "Claude can't auto-see private" friction *and* keeps security.
-- If the founder wants private notes out of git entirely → **Option 1** (mentor/strategy → Notion/Drive).
+- If the founder wants private notes out of git entirely → **Option 1** (notes/strategy → Notion/Drive).
 - Lowest-effort fallback → **Option 4** kept, plus a working convention: Claude explicitly opens
-  `../physical-playground-private/` whenever mentor/strategy is relevant.
+  `../physical-playground-private/` whenever private notes/strategy are relevant.
 
 ## Consequences (by option)
 - **1:** cleanest repo; context now spans git + Notion. Need a Notion home + a pointer from `CLAUDE.md`.

@@ -1,7 +1,7 @@
 .DS_Store
 node_modules/
 
-# Private — kept local, never published (personal context, mentor, raw drafts, strategy)
+# Private — kept local, never published (personal context, research notes, raw drafts, strategy)
 /CLAUDE.md
 /private/
 
