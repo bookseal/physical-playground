@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pr-auth
+  namespace: default
+  labels: { app: pr-auth }
+spec:
+  replicas: 1
+  strategy: { type: Recreate }        # single SQLite writer on a hostPath
+  selector: { matchLabels: { app: pr-auth } }
+  template:
+    metadata: { labels: { app: pr-auth } }
+    spec:
+      containers:
+      - name: pr-auth
+        image: 127.0.0.1:5000/pr-auth:latest
+        imagePullPolicy: Always
+        ports: [{ containerPort: 8080 }]
+        env:
+        - { name: PR_SITE, value: "https://physical-revolt.bit-habit.com" }
+        - { name: PR_AUTH_DB, value: "/data/auth.db" }
+        - { name: PR_COOKIE_DOMAIN, value: ".bit-habit.com" }
+        envFrom:
+        - secretRef: { name: pr-auth-email, optional: true }   # SMTP_HOST/PORT/USER/PASS/FROM (reuse bithabit email)
+        volumeMounts:
+        - { name: data, mountPath: /data }
+        readinessProbe:
+          httpGet: { path: /api/auth/health, port: 8080 }
+          initialDelaySeconds: 3
+          periodSeconds: 10
+      volumes:
+      - name: data
+        hostPath: { path: /home/ubuntu/workspace/pr-auth-data, type: DirectoryOrCreate }

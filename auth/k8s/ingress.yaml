@@ -1,0 +1,31 @@
+# Replaces the existing `physical-revolt` Ingress: same-origin routing so the
+# session cookie is first-party. /api/auth/* -> auth service; everything else -> static site.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: physical-revolt
+  namespace: default
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: physical-revolt.bit-habit.com
+    http:
+      paths:
+      - path: /api/auth
+        pathType: Prefix
+        backend:
+          service:
+            name: pr-auth-svc
+            port: { number: 8080 }
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: physical-revolt-svc
+            port: { number: 80 }
+  tls:
+  - hosts: [ physical-revolt.bit-habit.com ]
+    secretName: tls-secret        # existing wildcard *.bit-habit.com cert
