@@ -254,74 +254,88 @@
   }
   try{ const s=localStorage.getItem('pr-theme'); if(s) applyTheme(s); }catch(e){}
 
-  /* ---- mini driving game (self-contained, no libs) ---- */
+  /* ---- mini driving game — Re-Volt vibe, self-contained, no libs ---- */
   (function(){
     const cv = document.getElementById('game'), ctx = cv.getContext('2d');
     const W = cv.width, H = cv.height, HORIZON = H*0.28, BOTTOM = H*0.98;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let px = 0;            // player lane offset -1..1
-    let target = 0;        // input target
-    let speed, dist, obs, running, over, tPrev;
-    const COLORS = ['#e0442e','#2f6fd0','#e6a413','#0e9a89'];
-    function roadHalf(z){ return (0.10 + 0.62*z) * W; }   // half-width at depth z (0 far,1 near)
-    function yAt(z){ return HORIZON + (BOTTOM-HORIZON)*z*z; }
-    function reset(){ px=0; target=0; speed=0.55; dist=0; obs=[]; over=false; running=true; tPrev=0; spawn(); }
-    function spawn(){ obs.push({ z:0, lane:(Math.random()*1.7-0.85), c:COLORS[(Math.random()*COLORS.length)|0] }); }
+    let px=0, target=0, lean=0, speed, dist, obs, stars, skids, over, tPrev, shake=0, started=false;
+    let best=0; try{ best=+localStorage.getItem('pr-best')||0; }catch(e){}
+    const COLORS=['#e0442e','#2f6fd0','#e6a413','#0e9a89'];
+    const roadHalf=z=>(0.10+0.62*z)*W, yAt=z=>HORIZON+(BOTTOM-HORIZON)*z*z;
+    function reset(){ px=0;target=0;lean=0;speed=0.55;dist=0;obs=[];stars=[];skids=[];over=false;shake=0;tPrev=0;spawn(); }
+    function spawn(){ obs.push({z:0,lane:Math.random()*1.7-0.85,c:COLORS[(Math.random()*COLORS.length)|0]});
+      if(Math.random()<0.35) stars.push({z:Math.random()*0.1,lane:Math.random()*1.7-0.85,got:false}); }
     function road(){
-      // sky/cream + road trapezoid
-      ctx.fillStyle = getVar('--bg'); ctx.fillRect(0,0,W,HORIZON);
-      const g = ctx.createLinearGradient(0,HORIZON,0,H); g.addColorStop(0,'#caa15a'); g.addColorStop(1,'#8a5a24');
-      ctx.fillStyle=g;
-      ctx.beginPath(); ctx.moveTo(W/2-roadHalf(0),yAt(0)); ctx.lineTo(W/2+roadHalf(0),yAt(0));
+      const sky=ctx.createLinearGradient(0,0,0,HORIZON); sky.addColorStop(0,'#fce7c0'); sky.addColorStop(1,'#f4b98a');
+      ctx.fillStyle=sky; ctx.fillRect(0,0,W,HORIZON);
+      ctx.fillStyle='#b3823f'; ctx.fillRect(0,HORIZON,W,H-HORIZON);   // ground beside the track
+      const g=ctx.createLinearGradient(0,HORIZON,0,H); g.addColorStop(0,'#caa15a'); g.addColorStop(1,'#7f5220');
+      ctx.fillStyle=g; ctx.beginPath();
+      ctx.moveTo(W/2-roadHalf(0),yAt(0)); ctx.lineTo(W/2+roadHalf(0),yAt(0));
       ctx.lineTo(W/2+roadHalf(1),yAt(1)); ctx.lineTo(W/2-roadHalf(1),yAt(1)); ctx.closePath(); ctx.fill();
-      // moving dashes
-      ctx.strokeStyle='#fff6df'; ctx.lineWidth=4;
-      for(let i=0;i<12;i++){ let z=((i/12)+ (dist*0.25%1)); z=z%1; const y=yAt(z), y2=yAt(Math.min(z+0.03,1));
-        ctx.globalAlpha=z; ctx.beginPath(); ctx.moveTo(W/2,y); ctx.lineTo(W/2,y2); ctx.stroke(); }
+      // side rails
+      ctx.lineWidth=6; ctx.strokeStyle='#e0442e';
+      [[-1],[1]].forEach(s=>{ ctx.beginPath(); ctx.moveTo(W/2+s*roadHalf(0),yAt(0)); ctx.lineTo(W/2+s*roadHalf(1),yAt(1)); ctx.stroke(); });
+      // scrolling dashes
+      ctx.strokeStyle='#fff6df'; ctx.lineWidth=5;
+      for(let i=0;i<12;i++){ let z=((i/12)+(dist*0.25%1))%1; const y=yAt(z);
+        ctx.globalAlpha=z; ctx.beginPath(); ctx.moveTo(W/2,y); ctx.lineTo(W/2,yAt(Math.min(z+0.03,1))); ctx.stroke(); }
       ctx.globalAlpha=1;
     }
-    function block(o){ const y=yAt(o.z), hw=roadHalf(o.z), s=6+64*o.z*o.z;
-      const x=W/2 + o.lane*hw; ctx.fillStyle=o.c; ctx.fillRect(x-s/2, y-s, s, s);
-      ctx.fillStyle='rgba(0,0,0,.18)'; ctx.fillRect(x-s/2, y-6*o.z, s, 6*o.z); }
-    function car(){ const y=yAt(1)-6, hw=roadHalf(1), x=W/2+px*hw*0.82, s=64;
-      ctx.fillStyle='#2b211a'; ctx.fillRect(x-s/2, y-22, s, 20);       // wheels bar
-      ctx.fillStyle='#e0442e'; ctx.fillRect(x-s/2+6, y-40, s-12, 26);  // body
-      ctx.fillStyle='#f4b21a'; ctx.fillRect(x-8, y-56, 16, 16);        // arm base
-      ctx.fillStyle='#0e9a89'; ctx.fillRect(x-4, y-70, 8, 16); }       // arm
-    function getVar(n){ return getComputedStyle(document.documentElement).getPropertyValue(n)||'#fbf5e9'; }
+    function drawSkids(){ for(const s of skids){ ctx.globalAlpha=s.a*0.5; ctx.fillStyle='#2b1c10';
+      ctx.beginPath(); ctx.arc(s.x,s.y,4,0,7); ctx.fill(); } ctx.globalAlpha=1; }
+    function block(o){ const y=yAt(o.z), s=6+70*o.z*o.z, x=W/2+o.lane*roadHalf(o.z);
+      ctx.fillStyle='rgba(0,0,0,.16)'; ctx.fillRect(x-s/2+3, y-4, s, 5);
+      ctx.fillStyle=o.c; ctx.fillRect(x-s/2, y-s, s, s);
+      ctx.fillStyle='rgba(255,255,255,.25)'; ctx.fillRect(x-s/2, y-s, s, s*0.28); }
+    function star(o){ const y=yAt(o.z), r=4+22*o.z*o.z, x=W/2+o.lane*roadHalf(o.z);
+      ctx.fillStyle='#f4b21a'; ctx.beginPath();
+      for(let i=0;i<10;i++){ const a=Math.PI/5*i-Math.PI/2, rr=i%2?r*0.45:r; ctx[i?'lineTo':'moveTo'](x+Math.cos(a)*rr,y-r+Math.sin(a)*rr); }
+      ctx.closePath(); ctx.fill(); }
+    function car(){ const y=yAt(1)-6, x=W/2+px*roadHalf(1)*0.82, s=64;
+      ctx.save(); ctx.translate(x,y-30); ctx.rotate(lean*0.5); ctx.translate(-x,-(y-30));
+      ctx.fillStyle='#2b211a'; ctx.fillRect(x-s/2,y-22,s,20);
+      ctx.fillStyle='#e0442e'; ctx.fillRect(x-s/2+6,y-40,s-12,26);
+      ctx.fillStyle='#2f6fd0'; ctx.fillRect(x-s/2+6,y-40,s-12,8);
+      ctx.fillStyle='#f4b21a'; ctx.fillRect(x-8,y-56,16,16);
+      ctx.fillStyle='#0e9a89'; ctx.fillRect(x-4,y-70,8,16); ctx.restore(); }
+    function overlay(txt,sub){ ctx.fillStyle='rgba(30,15,5,.55)'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.font='800 34px ui-monospace,monospace'; ctx.fillText(txt,W/2,H/2-4);
+      ctx.font='600 18px -apple-system,sans-serif'; ctx.fillStyle='#ffe6c0'; ctx.fillText(sub,W/2,H/2+30); }
     function frame(t){
-      if(!running){ return; }
-      const dt = tPrev? Math.min((t-tPrev)/1000,0.05):0.016; tPrev=t;
-      px += (target-px)*Math.min(dt*10,1);
+      const dt=tPrev?Math.min((t-tPrev)/1000,0.05):0.016; tPrev=t;
+      const drift=target-px; px+=drift*Math.min(dt*10,1); lean+=(Math.max(-1,Math.min(1,drift*2))-lean)*Math.min(dt*8,1);
       if(!over){
-        speed += dt*0.03; dist += speed*dt*60;
-        for(const o of obs){ o.z += speed*dt; }
-        if(obs.length && obs[obs.length-1].z>0.28) spawn();
-        obs = obs.filter(o=>{
-          if(o.z>=0.97 && o.z<1.06 && Math.abs(o.lane-px)<0.42){ over=true; }
-          return o.z<1.2;
-        });
-        document.getElementById('score').textContent = (dist|0)+' m';
+        speed+=dt*0.03; dist+=speed*dt*60;
+        const carX=W/2+px*roadHalf(1)*0.82, carY=yAt(1)-8;
+        if(Math.abs(drift)>0.12){ skids.push({x:carX-20,y:carY,a:1}); skids.push({x:carX+20,y:carY,a:1}); }
+        for(const s of skids){ s.y+=speed*dt*120; s.a-=dt*1.4; } skids=skids.filter(s=>s.a>0&&s.y<H);
+        for(const o of obs) o.z+=speed*dt;
+        for(const o of stars){ o.z+=speed*dt; if(!o.got&&o.z>=0.95&&o.z<1.08&&Math.abs(o.lane-px)<0.5){o.got=true;dist+=25;} }
+        stars=stars.filter(o=>!o.got&&o.z<1.2);
+        if(obs.length&&obs[obs.length-1].z>0.3) spawn();
+        obs=obs.filter(o=>{ if(o.z>=0.97&&o.z<1.06&&Math.abs(o.lane-px)<0.4){ over=true; shake=0.45;
+          if((dist|0)>best){best=dist|0; try{localStorage.setItem('pr-best',best)}catch(e){}} } return o.z<1.2; });
+        document.getElementById('score').textContent=(dist|0)+' m · best '+best;
       }
-      road(); obs.sort((a,b)=>a.z-b.z); for(const o of obs) block(o); car();
-      if(over){ ctx.fillStyle='rgba(0,0,0,.55)'; ctx.fillRect(0,0,W,H);
-        ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.font='800 34px ui-monospace,monospace';
-        ctx.fillText('CRASHED · '+(dist|0)+' m', W/2, H/2-6);
-        ctx.font='600 18px -apple-system,sans-serif'; ctx.fillText('click / tap to restart', W/2, H/2+28); return; }
+      ctx.save(); if(shake>0){ shake-=dt; ctx.translate((Math.random()-.5)*shake*40,(Math.random()-.5)*shake*40); }
+      road(); drawSkids();
+      const items=[...obs.map(o=>({o,d:'b'})),...stars.map(o=>({o,d:'s'}))].sort((a,b)=>a.o.z-b.o.z);
+      for(const it of items){ it.d==='b'?block(it.o):star(it.o); } car(); ctx.restore();
+      if(!started) overlay('◀ ▶ TO STEER','drag / arrows / A D — dodge the blocks, grab stars');
+      if(over) overlay('CRASHED · '+(dist|0)+' m','click / tap to restart');
       requestAnimationFrame(frame);
     }
-    function start(){ reset(); if(reduce){ road(); car(); } else requestAnimationFrame(frame); }
-    // input
-    const set=(v)=>target=Math.max(-1,Math.min(1,v));
+    const set=v=>{ target=Math.max(-1,Math.min(1,v)); started=true; };
     addEventListener('keydown',e=>{ if(e.key==='ArrowLeft'||e.key==='a')set(-1); if(e.key==='ArrowRight'||e.key==='d')set(1); });
-    addEventListener('keyup',e=>{ if(['ArrowLeft','ArrowRight','a','d'].includes(e.key))set(0); });
-    document.getElementById('gleft').onpointerdown=()=>set(-1);
-    document.getElementById('gright').onpointerdown=()=>set(1);
-    ['gleft','gright'].forEach(id=>document.getElementById(id).onpointerup=()=>set(0));
+    addEventListener('keyup',e=>{ if(['ArrowLeft','ArrowRight','a','d'].includes(e.key))target=0; });
+    const gl=document.getElementById('gleft'), gr=document.getElementById('gright');
+    gl.onpointerdown=()=>set(-1); gr.onpointerdown=()=>set(1); gl.onpointerup=gr.onpointerup=()=>target=0;
     cv.addEventListener('pointermove',e=>{ if(e.buttons){ const r=cv.getBoundingClientRect(); set(((e.clientX-r.left)/r.width-0.5)*2.2); }});
-    cv.addEventListener('pointerup',()=>set(0));
-    cv.addEventListener('click',()=>{ if(over||!running) start(); });
-    start();
+    cv.addEventListener('pointerup',()=>target=0);
+    cv.addEventListener('click',()=>{ if(over){ reset(); } });
+    reset(); requestAnimationFrame(frame);
   })();
 </script>
 </body>
