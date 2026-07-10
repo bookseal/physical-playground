@@ -86,6 +86,43 @@ A dedicated `ed25519` keypair scoped to deploys only:
     everything else → `physical-spark-svc`. Same-origin so the auth cookie is
     first-party. Manifest: [`auth/k8s/ingress.yaml`](../../auth/k8s/ingress.yaml).
 
+## Watching a deploy
+
+`gh run watch` streams the run's step status live and refreshes until it finishes
+(≈7s for a static-only change; longer when `auth/` rebuilds the image):
+
+```console
+$ gh run watch -R bookseal/physical-spark
+✓ main Deploy to physical-spark.bit-habit.com · 29113072093
+Triggered via workflow_dispatch less than a minute ago
+
+JOBS
+✓ deploy in 7s (ID 86429790717)
+  ✓ Set up job
+  ✓ Load deploy key
+  ✓ Trigger server deploy
+  ✓ Post Load deploy key
+  ✓ Complete job
+```
+
+The step statuses (`✓`/`*`/`X`) update in place; add `--exit-status` to make the
+command exit non-zero if the run fails (handy in scripts). If you didn't catch
+it live, pass an explicit run id — grab the newest with
+`gh run list --workflow deploy.yml --limit 1`.
+
+To see **what the server actually did** — the deploy script's output — read the
+log of the `Trigger server deploy` step (the forced command streams its stdout
+back into the job):
+
+```console
+$ gh run view 29113072093 -R bookseal/physical-spark --log | grep "physical-spark updated"
+… Trigger server deploy … physical-spark updated to 3a974eb at 2026-07-10T17:51:53Z
+```
+
+> Note: runs currently log a harmless warning that `webfactory/ssh-agent@v0.9.0`
+> targets Node 20 (auto-run on Node 24). It doesn't affect the deploy; bump the
+> action version when convenient.
+
 ## Runbook
 
 **Rotate / revoke the deploy key**
@@ -98,6 +135,5 @@ ssh-keygen -t ed25519 -f deploy_key -N '' -C physical-spark-ci-deploy
 gh secret set DEPLOY_KEY -R bookseal/physical-spark < deploy_key
 ```
 
-**Watch a deploy:** `gh run watch -R bookseal/physical-spark`
 **Auth didn't update?** It only rebuilds when `auth/` changed; force it with
 `ssh bithabit "cd ~/workspace/physical-spark && docker build -t localhost:5000/pr-auth:latest auth/ && docker push localhost:5000/pr-auth:latest && sudo -n k3s kubectl rollout restart deploy/pr-auth"`.
