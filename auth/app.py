@@ -1,4 +1,4 @@
-"""Physical Revolt — passwordless auth (email magic-link). MVP.
+"""Physical Spark — passwordless auth (email magic-link). MVP.
 
 Flow:
   POST /api/auth/start   {email}          -> emails a one-time magic link
@@ -25,9 +25,9 @@ from pydantic import BaseModel, EmailStr
 
 from nicknames import generate_nickname
 
-DB_PATH = os.environ.get("PR_AUTH_DB", "/data/auth.db")
-SITE = os.environ.get("PR_SITE", "https://physical-revolt.bit-habit.com")
-COOKIE_DOMAIN = os.environ.get("PR_COOKIE_DOMAIN", ".bit-habit.com")
+DB_PATH = os.environ.get("PS_AUTH_DB", "/data/auth.db")
+SITE = os.environ.get("PS_SITE", "https://physical-spark.bit-habit.com")
+COOKIE_DOMAIN = os.environ.get("PS_COOKIE_DOMAIN", ".bit-habit.com")
 TOKEN_TTL = 15 * 60          # magic link valid 15 min
 SESSION_TTL = 30 * 24 * 3600  # session valid 30 days
 RESEND_COOLDOWN = 30          # min seconds between links per email
@@ -136,7 +136,7 @@ def start(req: StartReq):
     link = f"{SITE}/api/auth/verify?token={token}"
     send_email(
         email,
-        "Sign in to Physical Revolt",
+        "Sign in to Physical Spark",
         f"Click to sign in (valid 15 minutes):\n\n{link}\n\n"
         f"If you didn't request this, you can ignore this email.",
     )
@@ -225,7 +225,7 @@ def health():
     return {"ok": True}
 
 
-# ---- arcade scoreboard (Physical Revolt mini-game) ------------------------
+# ---- arcade scoreboard (Physical Spark mini-game) ------------------------
 
 def _clean_name(raw: str) -> str:
     # keep it arcade-simple: printable, trimmed, max 16 chars; fall back to AAA

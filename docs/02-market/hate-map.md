@@ -62,7 +62,7 @@ Robotics*) leave you on your own between videos.
 
 ## The Map — every hate → our opening
 
-| What they hate | Who | Physical Playground's counter |
+| What they hate | Who | Physical Spark's counter |
 |---|---|---|
 | Tutorials/examples silently broken, you get stuck | Makeblock | **A human peer reviews your run** — you're not alone with dead docs; and the curriculum is community-curated, so broken steps get fixed by the crowd. |
 | Support ignores you; forums are graveyards | Makeblock | The platform *is* the support — **peers answer, and a gallery of working solutions** shows you what "done" looks like. |

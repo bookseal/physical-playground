@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Physical Playground · Playbook</title>
+<title>Physical Spark · Playbook</title>
 <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
 <style>
   :root {
@@ -136,7 +136,7 @@
 <body>
 <nav id="side">
   <header>
-    <h1 onclick="goHome()">🕹️ Physical Playground<span class="pbsub">Playbook · project OS</span></h1>
+    <h1 onclick="goHome()">🕹️ Physical Spark<span class="pbsub">Playbook · project OS</span></h1>
     <input id="search" type="search" placeholder="Search files…">
   </header>
   <div id="tree"></div>
@@ -259,7 +259,7 @@ function renderTree(filter) {
 
 function goHome() {
   current = null; location.hash = ''; editing = false; diffMode = false;
-  document.getElementById('curpath').textContent = 'Physical Playground — Playbook';
+  document.getElementById('curpath').textContent = 'Physical Spark — Playbook';
   document.getElementById('curtime').textContent = '';
   document.getElementById('btn-edit').disabled = true;
   const db = document.getElementById('btn-diff'); db.disabled = true; db.classList.remove('on');
@@ -270,12 +270,12 @@ function goHome() {
   home.id = 'home';
   const totalN = allFiles.length;
   const unreadN = allFiles.filter(f => unreadState(f)).length;
-  home.innerHTML = `<h2 class="htitle">🕹️ Physical Playground — Playbook</h2>` +
+  home.innerHTML = `<h2 class="htitle">🕹️ Physical Spark — Playbook</h2>` +
     `<div class="hsub">The founder's playbook — almost every reference needed to build this business: product concept, market, positioning, hands-on labs, and strategy.</div>` +
     `<div class="qlinks">` +
       `<a class="ql" href="/landing" target="_blank">🚀 Landing page</a>` +
       `<a class="ql" href="/raw?path=design%2Fmoodboard.html" target="_blank">🎨 Moodboard</a>` +
-      `<a class="ql" href="https://github.com/bookseal/physical-playground" target="_blank">🐙 GitHub repo</a>` +
+      `<a class="ql" href="https://github.com/bookseal/physical-spark" target="_blank">🐙 GitHub repo</a>` +
       `<span class="qstat">${totalN} docs${unreadN ? ` · <b>${unreadN} unread</b>` : ''}</span>` +
     `</div>`;
   const board = document.createElement('div');

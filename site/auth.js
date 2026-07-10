@@ -1,4 +1,4 @@
-/* Physical Revolt — passwordless sign-in widget (vanilla, no deps).
+/* Physical Spark — passwordless sign-in widget (vanilla, no deps).
    Renders into any element with id="pr-auth-slot". Talks to same-origin /api/auth. */
 (function () {
   var API = "/api/auth";

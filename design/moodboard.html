@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Physical Playground — Design Moodboard & Prompt Studio</title>
+<title>Physical Spark — Design Moodboard & Prompt Studio</title>
 <style>
   :root{ --bg:#0c0e14; --bg2:#12151f; --fg:#eef1f7; --muted:#9aa3b5; --line:#242a38; --card:#141826;
     --teal:#39e0c8; --pink:#ff5d8f; --gold:#ffcf4d; --blue:#2ec4ff; }
@@ -55,12 +55,15 @@
 <body>
 <div class="wrap">
   <h1>🎨 Design Moodboard & Prompt Studio</h1>
-  <div class="sub">Re-Volt "playground" vibe for Physical Playground. Drop reference shots (Re-Volt screenshots you
+  <div class="sub">Re-Volt "playground" vibe for Physical Spark. Drop reference shots (Re-Volt screenshots you
     save, or your own generations) into the named slots below, then say things like <b>"RV-03's lighting"</b> when
     you talk to Claude. Prompts up top are starting points for Gemini/ChatGPT video &amp; image gen.</div>
 
   <h2>🎮 Downloaded Re-Volt references (name-tagged — say "RV-01" to me)</h2>
   <div class="refgrid" id="refgrid"></div>
+
+  <h2>🎬 Generated hero videos (say "VID-01" to me)</h2>
+  <div class="refgrid" id="vidgrid"></div>
 
   <h2>① Prompt Studio — landing hero (slightly-moving loop)</h2>
   <div class="prompts" id="promptWrap"></div>
@@ -113,12 +116,28 @@
     ["Icon set (still image) · palette from RV-01", "used",
       "A set of 6 minimal glossy 3D toy-plastic icons on transparent background: RC car, robot arm, checkered flag, trophy, joystick, wrench. Molded-plastic look with soft studio lighting, bright primary colours pulled from a 90s toy aisle (red, yellow, blue) plus a teal accent, consistent isometric style, no text."],
 
-    ["SO-101 #1 — How-it-works (real setup)", "new",
+    ["SO-101 #1 — How-it-works (real setup) → gen-6", "used",
       "A small white-and-black 3D-printed 6-DOF desktop robot arm (SO-101 / LeRobot style) with a simple two-finger gripper and Feetech servos, clamped to the edge of a warm honey-wood desk, next to an open laptop screen showing a robot simulator. Playful but credible product photography, warm nostalgic toy-world lighting, soft red/yellow/blue toy accents blurred in the background, shallow depth of field. 16:9, no on-screen text, negative space on the right for a headline."],
-    ["SO-101 #2 — Mission card (macro grip)", "new",
+    ["SO-101 #2 — Mission card (macro grip) → gen-7", "used",
       "Extreme close-up of a white-and-black 3D-printed 6-DOF robot arm (SO-101) two-finger gripper gently picking up a small colourful wooden toy block on a glossy honey-wood desk. Warm amber toy-world lighting, primary-colour bokeh (red/yellow/blue) behind, macro, very shallow focus, tactile and friendly. 1:1 square, no text."],
-    ["SO-101 #3 — Diptych (dream ↔ reality)", "new",
-      "A side-by-side diptych with a consistent warm Re-Volt-inspired colour grade across both halves. LEFT: a whimsical toy RC car topped with a robot arm in a bright festive toy-world (the dream). RIGHT: the real setup — a small white-and-black 3D-printed SO-101 desktop robot arm beside a laptop running a robot simulator on a wooden desk (the reality). Playful yet credible, warm honey and primary-colour palette. 16:9, no text."]
+    ["SO-101 #3 — Diptych (dream ↔ reality) → gen-8", "used",
+      "A side-by-side diptych with a consistent warm Re-Volt-inspired colour grade across both halves. LEFT: a whimsical toy RC car topped with a robot arm in a bright festive toy-world (the dream). RIGHT: the real setup — a small white-and-black 3D-printed SO-101 desktop robot arm beside a laptop running a robot simulator on a wooden desk (the reality). Playful yet credible, warm honey and primary-colour palette. 16:9, no text."],
+
+    ["VIDEO #1 — Hero: wake-up & grab (dynamic, ref gen-6)", "new",
+      "Cinemagraph-style video of a small white-and-black 3D-printed 6-DOF desktop robot arm (SO-101 / LeRobot style) with a two-finger gripper, clamped to a warm honey-wood desk next to an open laptop showing a robot simulator. The arm springs to life: joints unfold upward with quick, springy, slightly imperfect hobby-servo motion, swings right, and confidently picks up a small blue wooden toy block, lifting it into frame. Camera does a slow 20-degree orbit around the arm at desk height, shallow depth of field, red/yellow/blue toy bokeh in the warm background. Energetic but charming, real product-video feel with warm nostalgic toy-world lighting. 6 seconds, 16:9, no on-screen text, keep the right third clean for a headline, end on a hold so it can freeze-frame."],
+    ["VIDEO #2 — Hero: block rally loop (fast pick & place, ref gen-7)", "new",
+      "Macro tracking shot of a white-and-black 3D-printed SO-101 robot arm gripper rapidly but precisely picking up colourful wooden toy blocks (red, yellow, blue) one by one and stacking them into a small tower on a glossy honey-wood desk. Snappy, rhythmic robotic motion with tiny satisfying pauses at each grab, like a speedrun. Camera slides sideways following the gripper, very shallow focus, warm amber toy-world lighting with primary-colour bokeh. Playful kinetic energy, ASMR-like tactility. Seamless 5-second loop, 16:9, no text, upper-left area clear for a headline."],
+    ["VIDEO #3 — Hero: red-light freeze (무궁화 moment, dramatic)", "new",
+      "A small white-and-black 3D-printed desktop robot arm (SO-101) on a warm honey-wood floor among oversized toy blocks, creeping forward joint by joint like a kid playing red-light-green-light — quick eager scoots of motion. Suddenly it FREEZES mid-pose, one joint raised, holding perfectly still; only dust motes drift and the warm amber light flickers softly. Then one more sneaky scoot and freeze again. Tilt-shift macro so the room feels giant, nostalgic warm toy-world grade, playful suspense like a game of statues. 8 seconds, 16:9, no text, negative space on the right for a headline."],
+
+    ["LOGO A — glossy toy-plastic app icon", "new",
+      "A single logo mark for a playful robotics learning brand called Physical Spark: a glossy molded-plastic toy robot arm, white body with black joints, raising its two-finger gripper triumphantly like a tiny raised fist, inside a rounded-square badge in warm cream. Three small toy blocks (red, yellow, blue) at its base. Soft studio lighting, 3D toy-plastic look straight from a late-90s toy aisle, single centered badge on a plain background, generous empty margin, no text anywhere."],
+    ["LOGO B — retro racing crest → gen-9·10", "used",
+      "A flat vector emblem in the style of a late-90s arcade racing game: a shield-shaped crest with a stylised white robot arm silhouette gripping a checkered racing flag, bold chunky black outlines, warm cream field with red-and-yellow diagonal stripes and small blue star accents. Slightly worn screen-print sticker texture. One centered crest on a plain background, an empty banner ribbon at the bottom left blank for a wordmark, no text."],
+    ["LOGO C — minimal geometric mark (favicon-ready) → gen-11", "used",
+      "A minimal flat geometric logo mark: a robot arm abstracted into three rounded rectangles and one circle joint, silhouetted so it also reads as a raised fist — a playful revolt. Two colours only: warm red shape on cream background, with a single yellow circle joint. Extremely simple, no gradients, no shadows, no outlines, legible at 16 pixels as a favicon, one centered mark, plain background, no text."],
+    ["LOGO D — mascot: the gripper buddy", "new",
+      "A cute flat-vector mascot for a kid-friendly robotics school: a small white robot arm character whose two-finger gripper is its face — two round eyes and a cheeky open smile between the fingers — waving hello. Black joints, red/yellow/blue accent bolts, thick friendly outlines like a Saturday-morning-cartoon sticker. One centered character on a plain warm cream background, nothing else in frame, no text."]
   ];
   const SERVED = location.protocol !== 'file:';
   const imgSrc = (name) => SERVED ? ('/raw?path=' + encodeURIComponent('design/_refs/' + name)) : ('_refs/' + name);
@@ -132,6 +151,16 @@
     ["rv-yt-1.jpg","RV-07 · Video thumbnail"],
     ["rv-yt-2.jpg","RV-08 · Video thumbnail"],
     ["rv-yt-3.jpg","RV-09 · Video thumbnail"],
+    ["gen-1.png","GEN-01 · Hero A Toy World — RC car + arm, bright playful (2026-07-07)"],
+    ["gen-2.png","GEN-02 · Hero B Museum — amber spotlights, moody (2026-07-07)"],
+    ["gen-3.png","GEN-03 · Hero C Playroom — toy-scale wonder (2026-07-07)"],
+    ["gen-5.png","GEN-05 · Icon set — glossy toy-plastic 3D icons (2026-07-07)"],
+    ["gen-6.png","GEN-06 · SO-101 #1 how-it-works — real setup + simulator (2026-07-08)"],
+    ["gen-7.png","GEN-07 · SO-101 #2 macro grip — blue block, 1:1 (2026-07-08)"],
+    ["gen-8.png","GEN-08 · SO-101 #3 diptych — dream ↔ reality (2026-07-08)"],
+    ["gen-9.png","GEN-09 · LOGO B crest v1 — cream shield, robot fist + checkered flag, blank ribbon (2026-07-08)"],
+    ["gen-10.png","GEN-10 · LOGO B crest v2 — yellow shield, yellow ribbon (2026-07-08)"],
+    ["gen-11.png","GEN-11 · LOGO C minimal mark — red robot fist, yellow joint, favicon-ready (2026-07-08)"],
   ];
   const pw = document.getElementById('promptWrap');
   PROMPTS.forEach(([n,status,t]) => {
@@ -143,9 +172,21 @@
   });
 
   // Re-Volt reference gallery (local _refs, gitignored)
+  // arrays stay chronological (append new items at the bottom); rendering reverses → newest shows first
   const rg = document.getElementById('refgrid');
-  REFS.forEach(([f,cap]) => { const d=document.createElement('div'); d.className='rc';
+  [...REFS].reverse().forEach(([f,cap]) => { const d=document.createElement('div'); d.className='rc';
     d.innerHTML=`<img loading="lazy" src="${imgSrc(f)}" alt="${cap}"><div class="cap">${cap}</div>`; rg.appendChild(d); });
+
+  // Generated video gallery (local _refs, gitignored)
+  const VIDS = [
+    ["vid-1-wakeup.mp4","VID-01 · Wake-up & grab — orbit, ends on a hold (10s, from VIDEO #1)"],
+    ["vid-2-rally.mp4","VID-02 · Block rally loop — fast pick & place (10s, from VIDEO #2) ★ 랜딩 히어로 채택"],
+    ["vid-3-freeze.mp4","VID-03 · Red-light freeze — 무궁화 moment (10s, from VIDEO #3)"],
+  ];
+  const vg = document.getElementById('vidgrid');
+  [...VIDS].reverse().forEach(([f,cap]) => { const d=document.createElement('div'); d.className='rc';
+    d.innerHTML=`<video src="${imgSrc(f)}" controls muted loop playsinline preload="metadata"
+      style="width:100%; aspect-ratio:16/10; object-fit:cover; display:block; background:var(--bg2);"></video><div class="cap">${cap}</div>`; vg.appendChild(d); });
 
   // ── Named reference slots ──
   const SLOTS = [

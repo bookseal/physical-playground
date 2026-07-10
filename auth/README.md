@@ -1,12 +1,12 @@
 # pr-auth — passwordless email magic-link auth (MVP)
 
-Small FastAPI service that gives Physical Revolt accounts with **no passwords**: you enter your email,
+Small FastAPI service that gives Physical Spark accounts with **no passwords**: you enter your email,
 get a one-time link, click it, and you're in (a random English nickname is minted on first sign-in).
 Runs on the k3s cluster next to the static site, same-origin under `/api/auth/*`.
 
 - `app.py` — the service (start / verify / me / logout).
 - `nicknames.py` — random nickname generator (`brave-otter-42`).
-- `k8s/` — Deployment, Service, and the `physical-revolt` Ingress with the `/api/auth` path added.
+- `k8s/` — Deployment, Service, and the `physical-spark` Ingress with the `/api/auth` path added.
 
 ## Endpoints
 | method | path | purpose |
@@ -18,7 +18,7 @@ Runs on the k3s cluster next to the static site, same-origin under `/api/auth/*`
 
 ## Deploy (on the `bithabit` server)
 ```bash
-cd ~/workspace/physical-revolt          # the cloned repo
+cd ~/workspace/physical-spark          # the cloned repo
 # 1) build + push to the cluster's local registry
 docker build -t localhost:5000/pr-auth:latest auth/
 docker push localhost:5000/pr-auth:latest
@@ -36,7 +36,7 @@ service runs in **dev mode** and just prints the magic link to the pod log, so t
 sudo k3s kubectl create secret generic pr-auth-email \
   --from-literal=SMTP_HOST=... --from-literal=SMTP_PORT=587 \
   --from-literal=SMTP_USER=... --from-literal=SMTP_PASS=... \
-  --from-literal=SMTP_FROM='Physical Revolt <no-reply@bit-habit.com>'
+  --from-literal=SMTP_FROM='Physical Spark <no-reply@bit-habit.com>'
 sudo k3s kubectl rollout restart deploy/pr-auth
 ```
 (Point these at whatever the existing habit-formation service already uses.)

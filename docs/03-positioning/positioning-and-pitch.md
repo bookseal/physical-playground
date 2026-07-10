@@ -1,6 +1,6 @@
 # 포지셔닝 & 피치 — Value Proposition + Madlibs Pitch
 
-> 스타트업 트레이닝 과정의 포지셔닝 실습을, 우리 프로젝트(**Physical Playground** — Physical AI 피어리뷰 학교)에
+> 스타트업 트레이닝 과정의 포지셔닝 실습을, 우리 프로젝트(**Physical Spark** — Physical AI 피어리뷰 학교)에
 > 맞춰 푼 작업 기록.
 
 ---
@@ -93,14 +93,14 @@
 
 ### 확정 (발표용)
 
-> 안녕하세요, 저는 **이기찬**이고 제 프로젝트는 **Physical Playground** 입니다.
+> 안녕하세요, 저는 **이기찬**이고 제 프로젝트는 **Physical Spark** 입니다.
 > 제가 푸는 문제는 **"저 자신을 포함한 수많은 소프트웨어 개발자들이 Physical AI가 미래인 건 알지만, 하드웨어가 막막하고
 > 두려워 시작조차 못 하는 문제"** 입니다.
 > 우리 제품은 **기본 로봇팔로 할 수 있는 재밌는 미션을 주고, 서로의 결과물을 공유·자랑하며 피드백을 주고받는 놀이터**이며,
 > **스트레스 없이 재밌게 Physical AI에 입문하고 싶은 소프트웨어 개발자**를 위해 설계되었습니다.
 
 *(English — for class)*
-> Hi, I'm **Gichan Lee**, and my project is **Physical Playground**.
+> Hi, I'm **Gichan Lee**, and my project is **Physical Spark**.
 > The problem I'm solving: software developers *know* Physical AI is the future, but they're too
 > **intimidated** by hardware to even start.
 > Our product is a **playground** — you get a basic robot arm, tackle fun missions, and get peer feedback.

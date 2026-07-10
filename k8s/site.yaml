@@ -1,0 +1,40 @@
+# Static site (Physical Spark): nginx serves the repo's `site/` dir from a
+# hostPath checkout on the node (git pull -> nginx). Renamed from `physical-revolt`.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: physical-spark
+  namespace: default
+  labels: { app: physical-spark }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: physical-spark }
+  template:
+    metadata:
+      labels: { app: physical-spark }
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - { mountPath: /usr/share/nginx/html, name: html, readOnly: true }
+      volumes:
+      - name: html
+        hostPath:
+          path: /home/ubuntu/workspace/physical-spark/site
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: physical-spark-svc
+  namespace: default
+  labels: { app: physical-spark }
+spec:
+  selector: { app: physical-spark }
+  ports:
+  - { port: 80, targetPort: 80 }

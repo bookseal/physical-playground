@@ -10,7 +10,7 @@ The project mixes **public** material (product concept, market, positioning, lab
 and **private** material (personal context, external research notes, raw drafts, funding strategy).
 
 Current state (set up mid-session): private content was moved out of the working directory into a **separate
-sibling git repo** `../physical-playground-private/` (local-only, never pushed). Plus defense-in-depth:
+sibling git repo** `../physical-spark-private/` (local-only, never pushed). Plus defense-in-depth:
 `.gitignore` structure, a gitleaks pre-commit hook, and sensitive identifiers scrubbed from anything public.
 
 This is **maximally secure but operationally confusing**:
@@ -40,7 +40,7 @@ Because the private material is mostly **documents**, not code:
   is a filtered export). Fixes the "Claude can't auto-see private" friction *and* keeps security.
 - If the founder wants private notes out of git entirely → **Option 1** (notes/strategy → Notion/Drive).
 - Lowest-effort fallback → **Option 4** kept, plus a working convention: Claude explicitly opens
-  `../physical-playground-private/` whenever private notes/strategy are relevant.
+  `../physical-spark-private/` whenever private notes/strategy are relevant.
 
 ## Consequences (by option)
 - **1:** cleanest repo; context now spans git + Notion. Need a Notion home + a pointer from `CLAUDE.md`.

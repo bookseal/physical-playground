@@ -1,17 +1,17 @@
-# Physical Revolt
+# Physical Spark
 
-*(product name; the repo keeps its original `physical-playground` name)*
+*(product name; the repo keeps its original `physical-spark` name)*
 
 A peer-review school for **Physical AI** — **a revolt against boring tutorials**, for developers who want to break into robotics.
 
-> 🌐 **Live:** **https://physical-revolt.bit-habit.com** — playable landing, courses, and the join page.
-> 👋 **New here?** Start with **[ONBOARDING.md](ONBOARDING.md)** (a guided map of every doc) or **[why join us](https://physical-revolt.bit-habit.com/join.html)**.
+> 🌐 **Live:** **https://physical-spark.bit-habit.com** — playable landing, courses, and the join page.
+> 👋 **New here?** Start with **[ONBOARDING.md](ONBOARDING.md)** (a guided map of every doc) or **[why join us](https://physical-spark.bit-habit.com/join.html)**.
 
 We give a student a robot-arm mission. They build it, they solve it, and
 they upload a short video of the result. Then students review each other's
 work. The solutions that get the most likes rise to the top of the gallery.
 
-![Physical Playground — landing page](assets/screenshot-landing.png)
+![Physical Spark — landing page](assets/screenshot-landing.png)
 
 The idea mixes two things:
 
@@ -66,7 +66,7 @@ into a browsable, searchable board (built with zero dependencies — a tiny Pyth
 Decisions are logged as [ADRs](decisions/), the public/private boundary is enforced by structure, and the
 whole thing doubles as a build-in-public trail.
 
-![Physical Playground — Playbook dashboard](assets/screenshot-playbook.png)
+![Physical Spark — Playbook dashboard](assets/screenshot-playbook.png)
 
 ## The thinking (building in public)
 
@@ -86,13 +86,13 @@ run as a system.
 
 ## Live & in progress (building in public)
 
-The site is live at **https://physical-revolt.bit-habit.com** and grows one piece at a time — here's the running state:
+The site is live at **https://physical-spark.bit-habit.com** and grows one piece at a time — here's the running state:
 
 - ✅ **Landing** — warm Re-Volt theme + a playable mini-game.
-- ✅ **Courses** ([`/courses`](https://physical-revolt.bit-habit.com/courses/)) — dynamic curriculum:
+- ✅ **Courses** ([`/courses`](https://physical-spark.bit-habit.com/courses/)) — dynamic curriculum:
   **Mission 0 — Setup & First Simulation** (install LeRobot on a Mac, run your first MuJoCo sim), then Missions 1–3
   (Pat me → Pick & place → Red Light, Green Light).
-- ✅ **Join page** ([`/join.html`](https://physical-revolt.bit-habit.com/join.html)) — the pitch, market, and advisor.
+- ✅ **Join page** ([`/join.html`](https://physical-spark.bit-habit.com/join.html)) — the pitch, market, and advisor.
 - ✅ **Hosting** — self-hosted on k3s (Traefik + cert-manager), `git push` → deploy.
 - 🔨 **In progress:** passwordless **sign-in** (email magic-link, random English nickname).
 - 🗺️ **Next:** peer-review upload + gallery; more course lessons; Apple passkey login.

@@ -1,6 +1,6 @@
 # Product Concept — "Pat me on the back" → "Red Light, Green Light"
 
-> Building-in-public notes for **Physical Playground** — a peer-review school for Physical AI.
+> Building-in-public notes for **Physical Spark** — a peer-review school for Physical AI.
 > Premise: **client #1 is us.** We buy a low-cost robot arm, assemble it ourselves, and turn
 > the act of learning into the product itself.
 

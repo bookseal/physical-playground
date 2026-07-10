@@ -1,4 +1,4 @@
-"""Random English nickname generation for new Physical Revolt accounts.
+"""Random English nickname generation for new Physical Spark accounts.
 
 On first sign-in a user has no name yet, so we mint a friendly, URL-safe English
 handle like `brave-otter-42`. The wordlists below are curated to be positive,
