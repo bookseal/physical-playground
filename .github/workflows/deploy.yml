@@ -1,0 +1,34 @@
+name: Deploy to physical-spark.bit-habit.com
+
+# CD: on every push to main, tell the bit-habit server to deploy.
+# The static site (nginx hostPath) goes live the instant the server pulls; the
+# auth service is rebuilt + restarted only when auth/ changed. Both are handled
+# by physical-spark-deploy.sh, which the server's authorized_keys entry FORCES
+# this deploy key to run — so the command we send below ("true") is ignored and
+# the script's output is streamed back into this job's log.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+# Never let two deploys overlap; a newer push cancels an in-flight one.
+concurrency:
+  group: deploy-physical-spark
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Load the forced-command deploy key (repo secret, masked in logs) into
+      # an ssh-agent for this run.
+      - name: Load deploy key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+
+      # The key is locked server-side to physical-spark-deploy.sh, so this SSH
+      # runs that script regardless of the "true" we ask for.
+      - name: Trigger server deploy
+        run: |
+          ssh -o StrictHostKeyChecking=accept-new ubuntu@158.180.71.122 true

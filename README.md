@@ -93,7 +93,7 @@ The site is live at **https://physical-spark.bit-habit.com** and grows one piece
   **Mission 0 — Setup & First Simulation** (install LeRobot on a Mac, run your first MuJoCo sim), then Missions 1–3
   (Pat me → Pick & place → Red Light, Green Light).
 - ✅ **Join page** ([`/join.html`](https://physical-spark.bit-habit.com/join.html)) — the pitch, market, and advisor.
-- ✅ **Hosting** — self-hosted on k3s (Traefik + cert-manager), `git push` → deploy.
+- ✅ **Hosting** — self-hosted on k3s (Traefik + cert-manager); `git push` → GitHub Actions → deploy ([how it works](docs/04-ops/deployment.md)).
 - 🔨 **In progress:** passwordless **sign-in** (email magic-link, random English nickname).
 - 🗺️ **Next:** peer-review upload + gallery; more course lessons; Apple passkey login.
 
