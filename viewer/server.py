@@ -1,8 +1,16 @@
 #!/usr/bin/env python3
-"""physical-ai-edu 문서 뷰어 — 워크스페이스의 .md/.txt를 브라우저에서 본다.
+"""Physical Spark — 랜딩 페이지 + 문서 뷰어를 한 프로세스가 서빙한다.
 
-실행:  python3 viewer/server.py   →  http://localhost:8766
-(다른 워크스페이스 뷰어와 겹치지 않게 :8766 사용 — 동시 실행 가능)
+  /        랜딩 페이지 (site/index.html)
+  /docs    문서 뷰어 — 레포의 .md/.txt를 브라우저에서 읽는다
+  /api/*   뷰어가 쓰는 파일 트리·내용 API
+  그 외    site/ 정적 파일 (courses/, assets/, auth.js …)
+
+로컬:  python3 viewer/server.py            → http://localhost:8766  (편집 가능)
+배포:  k8s가 python:3.12-alpine 안에서 이 파일을 실행하고, READ_ONLY=1을 준다.
+       레포는 hostPath로 마운트되므로 git pull 하면 문서가 곧바로 반영된다.
+
+공개 서버에서 편집을 열어두면 아무나 문서를 덮어쓸 수 있다 — READ_ONLY가 그걸 막는다.
 의존성 없음 (Python 표준 라이브러리만 사용).
 """
 import json
@@ -12,7 +20,9 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PORT = 8766
+HOST = os.environ.get("HOST", "127.0.0.1")  # 컨테이너에선 0.0.0.0
+PORT = int(os.environ.get("PORT", "8766"))
+READ_ONLY = os.environ.get("READ_ONLY") == "1"
 EXCLUDE_DIRS = {".git", "node_modules", "__pycache__", ".DS_Store", "viewer"}
 EXCLUDE_PREFIXES = ("backup_",)
 EXTENSIONS = (".md", ".txt", ".html")
@@ -60,28 +70,22 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def send_html(self, full):
+        with open(full, "rb") as f:
+            body = f.read()
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
     def do_GET(self):
         url = urlparse(self.path)
-        if url.path == "/":
-            with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html"), "rb") as f:
-                body = f.read()
-            self.send_response(200)
-            self.send_header("Content-Type", "text/html; charset=utf-8")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
-        elif url.path == "/landing":
-            landing = os.path.join(ROOT, "site", "index.html")
-            if not os.path.isfile(landing):
-                self.send_json({"error": "landing not found"}, 404)
-                return
-            with open(landing, "rb") as f:
-                body = f.read()
-            self.send_response(200)
-            self.send_header("Content-Type", "text/html; charset=utf-8")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
+        if url.path in ("/docs", "/docs/"):
+            self.send_html(os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html"))
+        elif url.path == "/api/config":
+            # 뷰어가 켜질 때 물어본다 — 읽기 전용이면 Save 버튼을 감춘다.
+            self.send_json({"read_only": READ_ONLY})
         elif url.path.startswith("/assets/"):  # 랜딩 페이지의 상대 이미지 서빙 (site/assets/)
             full = safe_path("site" + url.path)
             if not full:
@@ -146,6 +150,11 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         url = urlparse(self.path)
         if url.path == "/api/save":
+            # 진짜 방어선. 클라이언트에서 Save 버튼을 감추는 것만으론 부족하다 —
+            # curl 한 줄이면 우회되므로, 배포 환경에선 서버가 직접 거절해야 한다.
+            if READ_ONLY:
+                self.send_json({"error": "read-only server — editing is local only"}, 403)
+                return
             length = int(self.headers.get("Content-Length", 0))
             try:
                 payload = json.loads(self.rfile.read(length) or b"{}")

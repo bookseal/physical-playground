@@ -273,7 +273,7 @@ function goHome() {
   home.innerHTML = `<h2 class="htitle">🕹️ Physical Spark — Playbook</h2>` +
     `<div class="hsub">The founder's playbook — almost every reference needed to build this business: product concept, market, positioning, hands-on labs, and strategy.</div>` +
     `<div class="qlinks">` +
-      `<a class="ql" href="/landing" target="_blank">🚀 Landing page</a>` +
+      `<a class="ql" href="/">🚀 Landing page</a>` +
       `<a class="ql" href="/raw?path=design%2Fmoodboard.html" target="_blank">🎨 Moodboard</a>` +
       `<a class="ql" href="https://github.com/bookseal/physical-spark" target="_blank">🐙 GitHub repo</a>` +
       `<span class="qstat">${totalN} docs${unreadN ? ` · <b>${unreadN} unread</b>` : ''}</span>` +
@@ -483,6 +483,16 @@ async function loadTree() {
   if (current) renderTree(document.getElementById('search').value.trim());
   else goHome();
 }
+
+// 배포된 서버는 읽기 전용이다. 버튼을 감추는 건 어디까지나 UI 정리용 —
+// 진짜 차단은 서버의 /api/save가 403으로 거절하는 것이다 (viewer/server.py).
+async function loadConfig() {
+  try {
+    const cfg = await (await fetch('/api/config')).json();
+    if (cfg.read_only) document.getElementById('btn-edit').style.display = 'none';
+  } catch (e) {}
+}
+loadConfig();
 
 setInterval(async () => {
   if (!current || editing) return;

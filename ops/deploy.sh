@@ -21,9 +21,15 @@ changed() {
   git diff --name-only "$before" HEAD | grep -q "^$1"
 }
 
-# --- static site -------------------------------------------------------------
-# Nothing to do: nginx serves site/ straight off this checkout via a hostPath
-# mount, so the git reset in the bootstrap already put it live.
+# --- site + docs playbook ----------------------------------------------------
+# viewer/server.py serves both, reading this checkout through a hostPath mount,
+# so new pages and new docs are live the moment the bootstrap's git reset lands.
+# Its CODE, though, is loaded into memory at startup — so a change to the server
+# itself only takes effect after a restart. Content: free. Code: one restart.
+if changed viewer/; then
+  echo "viewer/ changed -> restart the site pod to reload server.py"
+  sudo -n k3s kubectl rollout restart deploy/physical-spark
+fi
 
 # --- auth service ------------------------------------------------------------
 # A real container image, so it needs a build + a rollout to pick up new code.

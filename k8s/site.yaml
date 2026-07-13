@@ -1,5 +1,18 @@
-# Static site (Physical Spark): nginx serves the repo's `site/` dir from a
-# hostPath checkout on the node (git pull -> nginx). Renamed from `physical-revolt`.
+# Physical Spark — landing page + docs playbook, served by ONE process.
+#
+# Previously nginx served site/ alone. Now viewer/server.py serves both:
+#   /       the landing page (site/index.html)
+#   /docs   the playbook — every .md in the repo, rendered in the browser
+#   /api/*  the playbook's file-tree + file-content API
+#
+# There is no image to build: server.py is pure stdlib, so we run the stock
+# python:alpine image over a hostPath mount of the repo checkout. A `git pull`
+# therefore publishes new docs instantly — only a change to server.py itself
+# needs a pod restart (ops/deploy.sh does that).
+#
+# READ_ONLY=1 is what makes this safe to expose: server.py's /api/save is an
+# UNAUTHENTICATED write endpoint, fine on 127.0.0.1 but a free-for-all on the
+# public internet. With the flag set it answers 403. Never drop it here.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,17 +28,26 @@ spec:
       labels: { app: physical-spark }
     spec:
       containers:
-      - name: nginx
-        image: nginx:alpine
+      - name: viewer
+        image: python:3.12-alpine
         imagePullPolicy: IfNotPresent
+        command: ["python3", "/srv/viewer/server.py"]
+        env:
+        - { name: HOST, value: "0.0.0.0" }   # 127.0.0.1 would be unreachable from outside the pod
+        - { name: PORT, value: "80" }
+        - { name: READ_ONLY, value: "1" }    # see the note above — do not remove
         ports:
         - containerPort: 80
         volumeMounts:
-        - { mountPath: /usr/share/nginx/html, name: html, readOnly: true }
+        - { mountPath: /srv, name: repo, readOnly: true }
+        readinessProbe:
+          httpGet: { path: /, port: 80 }
+          initialDelaySeconds: 2
+          periodSeconds: 10
       volumes:
-      - name: html
+      - name: repo
         hostPath:
-          path: /home/ubuntu/workspace/physical-spark/site
+          path: /home/ubuntu/workspace/physical-spark
           type: Directory
 ---
 apiVersion: v1
