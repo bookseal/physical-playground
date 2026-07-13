@@ -175,6 +175,7 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    server = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
-    print(f"문서 뷰어: http://localhost:{PORT}  (루트: {ROOT})")
+    server = ThreadingHTTPServer((HOST, PORT), Handler)
+    mode = "읽기 전용" if READ_ONLY else "편집 가능"
+    print(f"Physical Spark: http://{HOST}:{PORT}  (루트: {ROOT}, {mode})", flush=True)
     server.serve_forever()
