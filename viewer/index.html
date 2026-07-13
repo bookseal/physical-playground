@@ -122,6 +122,20 @@
   .node .count .u { color: #16a34a; font-weight: 800; }
 
   /* 홈 칸반 보드 — 폴더 구조/흐름 시각화 */
+  /* 홈 상단의 폴더 지도 — 폴더가 많아지면 칸반만으론 구조가 안 보인다 */
+  .maphead { font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 8px; }
+  .tree { font: 12.5px/1.85 ui-monospace, SFMono-Regular, Menlo, monospace;
+    border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 24px;
+    overflow-x: auto; }
+  .tree .row { white-space: pre; }
+  .tree .tw { color: var(--muted); opacity: .55; }              /* └─ ├─ 가지 */
+  .tree .fold { color: var(--accent); font-weight: 700; cursor: pointer; }
+  .tree .fold:hover { text-decoration: underline; }
+  .tree .n { color: var(--muted); font-size: 11px; }            /* 파일 개수 */
+  .tree .d { color: var(--muted); }                             /* 설명 */
+  .tree .kind { font-size: 10px; font-weight: 800; letter-spacing: .04em; padding: 1px 5px;
+    border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
   .kanban { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 10px; align-items: flex-start; }
   .kcol { flex: 0 0 300px; background: var(--side-bg); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
   .kcol .khead { font-size: 14px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; }
@@ -169,6 +183,76 @@ const DESCS = {
   'auth': 'The auth service — passwordless email login',
   'private': 'Private working folder (not on GitHub)',
 };
+/* 폴더 지도 — 폴더 경로별 한 줄 소개. 종류(kind)는 문서의 성격을 구분한다:
+   REF  = 레퍼런스. "지금 사실은 이렇다" — 틀리면 고친다. 과거는 git이 안다.
+   LOG  = 기록. "그때 이렇게 결정했다" — 낡아도 고치지 않는다.
+   자세히: docs/05-workflow/github-workflow.md */
+const FOLDERS = {
+  'docs/01-concept':    ['',    'What the product is — missions, peer review, the ladder'],
+  'docs/02-market':     ['',    'Who else is out there, and what people hate about them'],
+  'docs/03-positioning': ['',   'Who we are and how we pitch it'],
+  'docs/04-ops':        ['REF', 'How it runs — deploys, CD, the server'],
+  'docs/05-workflow':   ['REF', 'How we work — issues, PRs, boards, ADRs'],
+  'docs/05-career':     ['LOCAL', 'Not on GitHub — the career track lives in another repo'],
+  'docs/engineering':   ['LOG', 'How things were built, and what broke on the way'],
+  'decisions':          ['ADR', 'Choices that are hard to reverse — and why'],
+  'knowledge':          ['',    'Background research — the industry, the money, the jobs'],
+  'lab':                ['',    'Hands-on Physical AI — sim tutorials, hardware notes'],
+  'logs':               ['LOG', 'Time-ordered journal — what happened, when'],
+  'design':             ['',    'Visual direction — theme and moodboard'],
+  'site':               ['',    'The landing page itself'],
+  'auth':               ['',    'The passwordless email login service'],
+  'Root':               ['',    'README, onboarding, credits'],
+};
+
+/* 홈 상단의 폴더 지도를 실제 파일 목록에서 만든다 — 새 폴더가 생기면 저절로 나타난다. */
+function buildTree() {
+  const dirs = {};                       // 폴더 경로 -> 파일 수
+  for (const f of allFiles) {
+    const parts = f.path.split('/');
+    const dir = parts.length === 1 ? 'Root' : parts.slice(0, -1).join('/');
+    dirs[dir] = (dirs[dir] || 0) + 1;
+  }
+  const tops = {};                       // 최상위 -> 하위 폴더 목록
+  for (const d of Object.keys(dirs)) {
+    const top = d === 'Root' ? 'Root' : d.split('/')[0];
+    (tops[top] ||= []).push(d);
+  }
+  const order = Object.keys(tops).sort((a, b) => groupRank(a) - groupRank(b) || a.localeCompare(b));
+
+  const line = (branch, path, label, count) => {
+    const [kind, desc] = FOLDERS[path] || ['', ''];
+    return `<div class="row"><span class="tw">${branch}</span>` +
+      `<span class="fold" onclick="filterTo('${path === 'Root' ? '' : path}')">${label}</span>` +
+      `<span class="n"> ${count}</span>` +
+      (kind ? ` <span class="kind">${kind}</span>` : '') +
+      (desc ? ` <span class="d">— ${desc}</span>` : '') + `</div>`;
+  };
+
+  let html = `<div class="maphead">📁 What lives where</div><div class="tree">`;
+  order.forEach((top, i) => {
+    const last = i === order.length - 1;
+    const subs = tops[top].filter(d => d !== top && d !== 'Root').sort();
+    const own = dirs[top] || dirs['Root'] || 0;
+    const total = tops[top].reduce((n, d) => n + dirs[d], 0);
+    html += line(last ? '└─ ' : '├─ ', top, top === 'Root' ? '/' : top + '/', total);
+    subs.forEach((d, j) => {
+      const stem = last ? '   ' : '│  ';
+      html += line(stem + (j === subs.length - 1 ? '└─ ' : '├─ '), d, d.split('/').slice(1).join('/') + '/', dirs[d]);
+    });
+    if (subs.length && own && dirs[top]) { /* 최상위에 직접 놓인 파일도 있음 — 개수에 이미 포함 */ }
+  });
+  return html + `</div>`;
+}
+
+/* 폴더를 누르면 사이드바를 그 폴더로 좁힌다 */
+function filterTo(path) {
+  const s = document.getElementById('search');
+  s.value = path;
+  renderTree(path);
+  s.focus();
+}
+
 function groupKey(p) {
   const parts = p.split('/');
   if (parts.length === 1) return 'Root';
@@ -283,7 +367,8 @@ function goHome() {
       `<a class="ql" href="/raw?path=design%2Fmoodboard.html" target="_blank">🎨 Moodboard</a>` +
       `<a class="ql" href="https://github.com/bookseal/physical-spark" target="_blank">🐙 GitHub repo</a>` +
       `<span class="qstat">${totalN} docs${unreadN ? ` · <b>${unreadN} unread</b>` : ''}</span>` +
-    `</div>`;
+    `</div>` +
+    buildTree();
   const board = document.createElement('div');
   board.className = 'kanban';
   const groups = {};
