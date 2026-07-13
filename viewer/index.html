@@ -156,11 +156,17 @@
 
 <script>
 /* 그룹: 최상위 폴더 자동 (reference는 2단계). 새 폴더가 생기면 자동으로 나타난다. */
-const GROUP_ORDER = ['Root', 'docs', 'lab', 'private'];
+const GROUP_ORDER = ['Root', 'docs', 'decisions', 'knowledge', 'lab', 'logs', 'design', 'site', 'auth', 'private'];
 const DESCS = {
   'Root': 'README · project overview',
-  'docs': 'Public docs — product concept · market scan · positioning',
+  'docs': 'Concept · market · positioning · ops · workflow · engineering write-ups',
+  'decisions': 'ADRs — choices that are hard to reverse, and why we made them',
+  'knowledge': 'Background research — the industry, the job market, who pays whom',
   'lab': 'Hands-on Physical AI — sim tutorials · references',
+  'logs': 'Time-ordered work journal — what happened, when',
+  'design': 'Visual direction — theme and moodboard',
+  'site': 'The landing page itself (the HTML you are one click away from)',
+  'auth': 'The auth service — passwordless email login',
   'private': 'Private working folder (not on GitHub)',
 };
 function groupKey(p) {
