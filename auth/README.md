@@ -16,7 +16,7 @@ Runs on the k3s cluster next to the static site, same-origin under `/api/auth/*`
 | GET | `/api/auth/me` | `{email, nickname}` or 401 |
 | POST | `/api/auth/logout` | clear session |
 
-## Deploy (on the `bithabit` server)
+## Deploy (on the `bit-habit` server)
 ```bash
 cd ~/workspace/physical-spark          # the cloned repo
 # 1) build + push to the cluster's local registry

@@ -12,8 +12,15 @@ node_modules/
 # gitleaks config holds the sensitive terms it guards against — keep it local
 /.gitleaks.toml
 
-# Re-Volt reference screenshots — copyright, local design study only
-/design/_refs/
+# Design references. The folder used to be excluded wholesale, which also hid our
+# OWN artwork from the published moodboard. Now only the copyrighted material is
+# ignored, file by file. NOTE: you cannot re-include a file whose parent directory
+# is ignored, which is exactly why this is a file pattern and not `/design/_refs/`.
+#
+# Re-Volt (1999, Acclaim) screenshots — copyright. Local design study only; never ship.
+/design/_refs/rv-*
+# Our own AI-generated art: the .webp versions ship, the heavy originals stay here.
+/design/_refs/gen-*.png
 
 # Obsidian local vault config (machine-specific)
 /.obsidian/
