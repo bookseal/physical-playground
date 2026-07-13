@@ -23,7 +23,7 @@ You can also trigger it by hand from the repo's **Actions** tab
 (`workflow_dispatch`), or run it directly on the box:
 
 ```
-ssh bithabit ~/workspace/physical-spark-deploy.sh
+ssh bit-habit ~/workspace/physical-spark-deploy.sh
 ```
 
 ## The CD pattern (shared across the cluster)
@@ -107,7 +107,7 @@ A dedicated `ed25519` keypair scoped to deploys only:
 
 ## Infra facts
 
-- **Host:** `158.180.71.122` (SSH alias `bithabit`), single-node **k3s**,
+- **Host:** `158.180.71.122` (SSH alias `bit-habit`), single-node **k3s**,
   Traefik ingress.
 - **DNS:** `*.bit-habit.com` is a wildcard → new subdomains resolve with no DNS
   change. **TLS:** wildcard `*.bit-habit.com` cert (`tls-secret`) covers them too.
@@ -169,11 +169,11 @@ $ gh run view 29113072093 -R bookseal/physical-spark --log | grep "physical-spar
 
 ```bash
 # revoke: drop the pinned line from the server
-ssh bithabit "sed -i '/physical-spark-ci-deploy/d' ~/.ssh/authorized_keys"
+ssh bit-habit "sed -i '/physical-spark-ci-deploy/d' ~/.ssh/authorized_keys"
 # rotate: regenerate, then re-add the public key + reset the GitHub secret
 ssh-keygen -t ed25519 -f deploy_key -N '' -C physical-spark-ci-deploy
 gh secret set DEPLOY_KEY -R bookseal/physical-spark < deploy_key
 ```
 
 **Auth didn't update?** It only rebuilds when `auth/` changed; force it with
-`ssh bithabit "cd ~/workspace/physical-spark && docker build -t localhost:5000/pr-auth:latest auth/ && docker push localhost:5000/pr-auth:latest && sudo -n k3s kubectl rollout restart deploy/pr-auth"`.
+`ssh bit-habit "cd ~/workspace/physical-spark && docker build -t localhost:5000/pr-auth:latest auth/ && docker push localhost:5000/pr-auth:latest && sudo -n k3s kubectl rollout restart deploy/pr-auth"`.

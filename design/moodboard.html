@@ -31,6 +31,11 @@
   .refgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:12px;}
   .rc{background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden;}
   .rc img{width:100%; aspect-ratio:16/10; object-fit:cover; display:block; background:var(--bg2);}
+  /* 공개 사이트에서는 저작권 자료 대신 이 자리표시자가 뜬다 (로컬 체크아웃에선 실제 이미지) */
+  .rc-missing{width:100%; aspect-ratio:16/10; display:flex; flex-direction:column; align-items:center;
+    justify-content:center; gap:6px; background:var(--bg2); border-bottom:1px dashed var(--line);
+    color:var(--muted); font-size:12px; font-weight:800; text-align:center; padding:10px;}
+  .rc-missing span{font-weight:500; font-size:11px; opacity:.75;}
   .rc .cap{font-size:11px; color:var(--muted); padding:7px 9px; font-family:ui-monospace,monospace;}
   .tips code{background:var(--card); padding:1px 6px; border-radius:5px; font-size:12px;}
 
@@ -151,16 +156,16 @@
     ["rv-yt-1.jpg","RV-07 · Video thumbnail"],
     ["rv-yt-2.jpg","RV-08 · Video thumbnail"],
     ["rv-yt-3.jpg","RV-09 · Video thumbnail"],
-    ["gen-1.png","GEN-01 · Hero A Toy World — RC car + arm, bright playful (2026-07-07)"],
-    ["gen-2.png","GEN-02 · Hero B Museum — amber spotlights, moody (2026-07-07)"],
-    ["gen-3.png","GEN-03 · Hero C Playroom — toy-scale wonder (2026-07-07)"],
-    ["gen-5.png","GEN-05 · Icon set — glossy toy-plastic 3D icons (2026-07-07)"],
-    ["gen-6.png","GEN-06 · SO-101 #1 how-it-works — real setup + simulator (2026-07-08)"],
-    ["gen-7.png","GEN-07 · SO-101 #2 macro grip — blue block, 1:1 (2026-07-08)"],
-    ["gen-8.png","GEN-08 · SO-101 #3 diptych — dream ↔ reality (2026-07-08)"],
-    ["gen-9.png","GEN-09 · LOGO B crest v1 — cream shield, robot fist + checkered flag, blank ribbon (2026-07-08)"],
-    ["gen-10.png","GEN-10 · LOGO B crest v2 — yellow shield, yellow ribbon (2026-07-08)"],
-    ["gen-11.png","GEN-11 · LOGO C minimal mark — red robot fist, yellow joint, favicon-ready (2026-07-08)"],
+    ["gen-1.webp","GEN-01 · Hero A Toy World — RC car + arm, bright playful (2026-07-07)"],
+    ["gen-2.webp","GEN-02 · Hero B Museum — amber spotlights, moody (2026-07-07)"],
+    ["gen-3.webp","GEN-03 · Hero C Playroom — toy-scale wonder (2026-07-07)"],
+    ["gen-5.webp","GEN-05 · Icon set — glossy toy-plastic 3D icons (2026-07-07)"],
+    ["gen-6.webp","GEN-06 · SO-101 #1 how-it-works — real setup + simulator (2026-07-08)"],
+    ["gen-7.webp","GEN-07 · SO-101 #2 macro grip — blue block, 1:1 (2026-07-08)"],
+    ["gen-8.webp","GEN-08 · SO-101 #3 diptych — dream ↔ reality (2026-07-08)"],
+    ["gen-9.webp","GEN-09 · LOGO B crest v1 — cream shield, robot fist + checkered flag, blank ribbon (2026-07-08)"],
+    ["gen-10.webp","GEN-10 · LOGO B crest v2 — yellow shield, yellow ribbon (2026-07-08)"],
+    ["gen-11.webp","GEN-11 · LOGO C minimal mark — red robot fist, yellow joint, favicon-ready (2026-07-08)"],
   ];
   const pw = document.getElementById('promptWrap');
   PROMPTS.forEach(([n,status,t]) => {
@@ -171,11 +176,16 @@
     pw.appendChild(d);
   });
 
-  // Re-Volt reference gallery (local _refs, gitignored)
-  // arrays stay chronological (append new items at the bottom); rendering reverses → newest shows first
+  // Reference gallery. rv-* are Re-Volt (1999, Acclaim) screenshots — copyright, so they
+  // are gitignored and exist ONLY on a local checkout. On the published site they cannot
+  // load at all, so render an honest placeholder instead of a broken image. See CREDITS.md.
+  const localOnly = (f) => f.startsWith('rv-');
   const rg = document.getElementById('refgrid');
   [...REFS].reverse().forEach(([f,cap]) => { const d=document.createElement('div'); d.className='rc';
-    d.innerHTML=`<img loading="lazy" src="${imgSrc(f)}" alt="${cap}"><div class="cap">${cap}</div>`; rg.appendChild(d); });
+    const body = (SERVED && localOnly(f))
+      ? `<div class="rc-missing">🔒 local only<br><span>Re-Volt screenshot — copyright, not published</span></div>`
+      : `<img loading="lazy" src="${imgSrc(f)}" alt="${cap}">`;
+    d.innerHTML=`${body}<div class="cap">${cap}</div>`; rg.appendChild(d); });
 
   // Generated video gallery (local _refs, gitignored)
   const VIDS = [
