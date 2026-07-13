@@ -27,6 +27,13 @@ EXCLUDE_DIRS = {".git", "node_modules", "__pycache__", ".DS_Store", "viewer"}
 EXCLUDE_PREFIXES = ("backup_",)
 EXTENSIONS = (".md", ".txt", ".html")
 
+# mimetypes는 OS의 MIME 데이터베이스를 읽는다. macOS엔 webp가 있지만 컨테이너의
+# alpine 이미지엔 /etc/mime.types 자체가 없어서, 로컬에선 image/webp로 잘 나가던
+# 파일이 배포하면 application/octet-stream이 된다. OS에 기대지 말고 직접 등록한다.
+for _ext, _type in ((".webp", "image/webp"), (".svg", "image/svg+xml"),
+                    (".mp4", "video/mp4"), (".md", "text/markdown")):
+    mimetypes.add_type(_type, _ext)
+
 
 def scan_files():
     files = []
