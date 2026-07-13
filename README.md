@@ -50,9 +50,11 @@ builds up over time.
 ## Notes (building in public)
 
 - [Product concept](docs/01-concept/product-concept.md) — the missions, and why "textbook vs. platform" is the fork in the road.
+- [**Curriculum vision — start and end**](docs/01-concept/curriculum-vision.md) — the ladder from a \$0 MacBook sim to the graduation mission ("say *pick that up* and it does"), and — more importantly — [what we deliberately cut](docs/01-concept/curriculum-vision.md#3-무엇을-빼는가-이게-더-중요하다): ROS, embedded, LiDAR, five-finger hands.
 - [Market landscape](docs/02-market/market-landscape.md) — US & China scan: HF/LeRobot, NVIDIA, Makeblock, DJI, and the gaps.
 - [The "Hate" Map](docs/02-market/hate-map.md) — mined negative reviews of competitors, clustered into pain themes → our openings.
 - [Positioning & pitch](docs/03-positioning/positioning-and-pitch.md) — value proposition, a glossary for developers, and the pitch.
+- [**Career track & services**](docs/06-career/career-and-services.md) — why Physical AI, told honestly: Korea is #1 in the world in robot density and has made "Physical AI #1 by 2030" a national goal — *and* robotics job postings are still one-fifth of React's. The money arrived before the hiring. That lag is the window.
 
 ## Hands-on lab (learning in public)
 
@@ -83,6 +85,12 @@ really hard to make the learning **fun**. This repo keeps the trail of that thin
   [0002 — handling private elements](decisions/0002-handling-private-elements.md).
 - **[Foundations map](knowledge/00-foundations.md)** — the "two worlds" (classical ROS vs. learning-based
   Physical AI) I had to draw for myself before any course made sense.
+- **[A robot's anatomy — arm, hand, eye](knowledge/04-arm-hand-eye.md)** — cutting the robot by *part*
+  instead of by *layer*, and fact-checking the folklore against 2026 sources. **The arm really is a
+  commodity** and **the hand really is the IP** (Tesla sued its Optimus *hand* lead for trade secrets —
+  nobody sues over an arm). But the most repeated line in robotics — **"LiDAR is the robot's eye,
+  cameras will never work"** — **is wrong for manipulation**: π0.5, GR00T, Figure Helix and Optimus
+  are all RGB-only. That claim is about the robot's *legs*. We teach its *hands*.
 - **Industry & job-market notes** — where the money and the jobs actually are:
   [job market: ROS vs Physical AI](knowledge/01-job-market-ros-vs-physical-ai.md) ·
   [robot industry landscape](knowledge/02-robot-industry-landscape.md) ·
