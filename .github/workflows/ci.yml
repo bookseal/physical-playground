@@ -1,0 +1,91 @@
+name: CI
+
+# The gate. deploy.yml ships whatever reaches main; this decides what is ALLOWED to
+# reach main. With one maintainer there is no second pair of eyes on a PR — so these
+# checks ARE the reviewer, and they must run before the merge button, not after.
+#
+# Every step here is a script you can run yourself, on your own machine, in seconds.
+# That is deliberate: a check you cannot reproduce locally is a check you learn to
+# ignore. See docs/05-workflow/ci-gates.md.
+on:
+  pull_request:
+  push:
+    branches: [main]      # also on main, so a direct push (or a bad merge) still gets caught
+  workflow_dispatch: {}
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: checks
+    runs-on: ubuntu-latest
+    steps:
+      # fetch-depth: 0 — the publishable check asks git what is TRACKED, so it needs
+      # real history, not the shallow clone Actions gives by default.
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+
+      # This repo is the deploy artifact: the server serves its own checkout. So a file
+      # landing in git IS a publication. Copyright, weight, privacy — checked here.
+      - name: Nothing unpublishable is tracked
+        run: ops/ci/check-publishable.sh
+
+      # The playbook is public and leans on cross-links; a dead one is a 404 in a
+      # visitor's face. External links are not checked — see the script for why.
+      - name: Every relative doc link resolves
+        run: python3 ops/ci/check-links.py
+
+      # Would have caught today's `HOST` bug? No — that one was valid Python. This
+      # catches the cheaper class: a typo that only explodes when the pod restarts.
+      - name: Python compiles
+        run: |
+          python3 -m py_compile viewer/server.py auth/*.py
+          echo "✓ python compiles"
+
+      # deploy.sh runs on the server as a forced command. A syntax error there means a
+      # deploy that dies halfway, and the site is mid-update when it does.
+      - name: Shell scripts parse
+        run: |
+          for f in ops/deploy.sh ops/ci/*.sh; do bash -n "$f" && echo "  ✓ $f"; done
+
+      # ops/deploy.sh applies these on EVERY deploy. An invalid manifest would be
+      # rejected by the cluster at deploy time — i.e. after merge. Catch it before.
+      #
+      # NOT `kubectl apply --dry-run=client`: despite the name, that still reaches for
+      # a cluster to fetch the OpenAPI schema, and fails without one. (It failed here
+      # exactly that way on the first run of this workflow.) kubeconform validates
+      # against bundled schemas — genuinely offline, so CI never needs cluster
+      # credentials. Being unable to touch the cluster is the point, not a limitation.
+      - name: k8s manifests are valid
+        run: |
+          curl -sSL -o /tmp/kubeconform.tar.gz \
+            https://github.com/yannh/kubeconform/releases/download/v0.6.7/kubeconform-linux-amd64.tar.gz
+          tar -xzf /tmp/kubeconform.tar.gz -C /tmp kubeconform
+          /tmp/kubeconform -strict -summary k8s/site.yaml auth/k8s/
+
+      # The site is public and its /api/save is a write endpoint. READ_ONLY=1 is the
+      # only thing making that safe — so treat deleting it as a build break, not a nit.
+      - name: READ_ONLY is still set on the public pod
+        run: |
+          grep -q 'name: READ_ONLY' k8s/site.yaml && grep -q 'value: "1"' k8s/site.yaml \
+            && echo "✓ READ_ONLY=1 present" \
+            || { echo "✗ READ_ONLY=1 missing from k8s/site.yaml — /api/save would accept writes from anyone"; exit 1; }
+
+  # Secret scanning runs as its own job so it reports as its own check: a leaked
+  # credential is a different kind of failure from a broken link, and should look it.
+  # Local commits already hit a gitleaks pre-commit hook; this catches whatever was
+  # committed without it (a GitHub web edit, another machine, --no-verify).
+  secrets:
+    name: secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      # Runs gitleaks' default ruleset. Our .gitleaks.toml is deliberately NOT tracked
+      # (it names the very terms it guards), so CI cannot reuse it — the local hook is
+      # still the one with project-specific rules. This is the generic safety net.
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
