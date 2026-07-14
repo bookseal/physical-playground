@@ -52,11 +52,18 @@ jobs:
 
       # ops/deploy.sh applies these on EVERY deploy. An invalid manifest would be
       # rejected by the cluster at deploy time — i.e. after merge. Catch it before.
-      # --dry-run=client validates locally; it needs no cluster and no credentials.
+      #
+      # NOT `kubectl apply --dry-run=client`: despite the name, that still reaches for
+      # a cluster to fetch the OpenAPI schema, and fails without one. (It failed here
+      # exactly that way on the first run of this workflow.) kubeconform validates
+      # against bundled schemas — genuinely offline, so CI never needs cluster
+      # credentials. Being unable to touch the cluster is the point, not a limitation.
       - name: k8s manifests are valid
         run: |
-          kubectl apply --dry-run=client -f k8s/site.yaml -f auth/k8s/
-          echo "✓ manifests valid"
+          curl -sSL -o /tmp/kubeconform.tar.gz \
+            https://github.com/yannh/kubeconform/releases/download/v0.6.7/kubeconform-linux-amd64.tar.gz
+          tar -xzf /tmp/kubeconform.tar.gz -C /tmp kubeconform
+          /tmp/kubeconform -strict -summary k8s/site.yaml auth/k8s/
 
       # The site is public and its /api/save is a write endpoint. READ_ONLY=1 is the
       # only thing making that safe — so treat deleting it as a build break, not a nit.
