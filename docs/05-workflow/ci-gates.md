@@ -186,19 +186,78 @@ CI를 붙였다고 안전해진 게 아니다. 오늘 겪은 버그 두 개는 *
 ## 5. 브랜치 보호 — 검사를 "게이트"로 만들기
 
 **검사가 돌기만 하면 게이트가 아니다.** 빨간불인데도 머지 버튼이 눌리면 아무 의미가 없다.
-`main` 브랜치 보호를 켜야 비로소 게이트가 된다.
+지금 우리 상태가 정확히 그렇다 — CI는 돌지만 **`main` 보호가 꺼져 있어서**, 실패한 PR도
+머지할 수 있고 `main`에 직접 push도 된다. 이 절을 따라 켜면 비로소 게이트가 된다.
 
-1인 개발의 올바른 설정:
+> **이건 GitHub 웹 설정이라 코드로 안 된다.** 레포 소유자(창님)가 직접 눌러야 한다.
+> Claude는 대신 못 켠다 — 그래서 순서를 하나하나 적는다.
 
-| 설정 | 값 | 이유 |
+### 켜는 법 — 클릭 경로 (약 2분)
+
+1. 레포 → **Settings** 탭 → 왼쪽 **Branches** →
+   **Add branch ruleset** (또는 구식 UI면 *Add branch protection rule*).
+   - 요즘 GitHub은 **Rulesets**가 기본이다. 아래는 Ruleset 기준.
+2. **Ruleset Name**: `main` (아무 이름이나 되지만 알아보기 쉽게).
+   **Enforcement status**: **Active** — 이걸 안 켜면 규칙이 "기록만 하고 안 막는다".
+3. **Target branches** → *Add target* → **Include default branch**
+   (= `main`을 자동으로 가리킨다. 브랜치명을 오타낼 일이 없다).
+4. **Rules** 체크박스를 아래 표대로 켠다.
+
+| 규칙 | 값 | 왜 |
 |---|---|---|
-| Require a pull request before merging | ✅ | main 직접 push 차단 |
-| Require approvals | **0** | ⚠️ **자기 PR은 자기가 승인 못 한다** — 1로 켜면 영원히 잠긴다 |
-| Require status checks to pass | ✅ **`checks`, `secret scan`** | **이게 진짜 게이트** |
-| Require branches to be up to date | ✅ | 낡은 브랜치가 main을 깨는 것 방지 |
-| Allow force push / deletion | ❌ | 히스토리 보호 |
+| **Require a pull request before merging** | ✅ | `main` 직접 push 차단. 모든 변경이 PR을 거친다 |
+| └ Required approvals | **0** | ⚠️ **함정** — 아래 설명 |
+| **Require status checks to pass** | ✅ | **이게 진짜 게이트** |
+| └ 검사 선택 | **`checks`**, **`secret scan`** | 아래 "정확한 이름" 참고 |
+| └ Require branches to be up to date | ✅ | 낡은 브랜치가 통과했다 머지 후 `main`을 깨는 것 방지 |
+| **Block force pushes** | ✅ | 히스토리 보호 (Ruleset은 기본으로 켜져 있다) |
 
-> 승인 0 + 검사 필수. **사람 리뷰어의 빈자리를 검사가 채운다.**
+5. 맨 아래 **Create** (또는 *Save changes*).
+
+### ⚠️ 함정 1 — Required approvals는 반드시 **0**
+
+가장 많이 하는 실수다. "리뷰 필수니까 1"로 켜는 순간 —
+
+> **GitHub은 자기 PR을 자기가 승인하는 걸 금지한다.**
+> 1인 레포에서 1로 켜면 **아무도 승인할 수 없어 영원히 머지 불가**가 된다.
+
+승인은 0으로 둔다. **리뷰어의 빈자리는 사람이 아니라 status check가 채운다.**
+(나중에 아내나 기여자가 합류하면 그때 1로 올리면 된다.)
+
+### ⚠️ 함정 2 — `deploy`를 필수 검사로 고르지 마라
+
+status check 목록에는 **`checks` · `secret scan` · `deploy`** 세 개가 뜬다.
+`deploy`는 **CD**다 — `main`에 들어온 *뒤* 도는 배포. 이걸 "머지 전 필수"로 걸면
+논리가 뒤집힌다("배포돼야 머지 가능"). **`checks`와 `secret scan`만** 고른다.
+
+> 검사 이름이 목록에 안 보이면, 그 워크플로가 **아직 한 번도 안 돈** 것이다.
+> PR을 한 번 열어 CI를 돌리면 이름이 등록되고, 그때 고를 수 있다.
+> (그래서 브랜치 보호는 CI를 먼저 붙인 *다음에* 켠다 — 순서가 중요하다.)
+
+### 켜졌는지 확인 — 일부러 뚫어본다
+
+설정은 "저장했다"가 아니라 "실제로 막나"로 확인한다.
+
+```bash
+# main에 직접 push가 막히나?
+echo "test" >> README.md && git commit -qam "test: should be blocked"
+git push origin main
+#  → ! [remote rejected] main -> main (protected branch hook declined)  이러면 성공
+git reset --hard @~1      # 되돌리기
+```
+
+막히면 게이트가 살아있는 것이다. 통과되면 3번(Enforcement: Active)이나
+1번(Require a pull request)을 다시 확인한다.
+
+> API로도 볼 수 있다: `gh api repos/OWNER/REPO/rulesets`.
+> 규칙이 하나도 없으면 `[]` — 지금 우리가 그 상태다.
+
+### 켠 뒤 달라지는 것
+
+- `main`에 직접 커밋 → **거부**된다. 브랜치를 파고 PR을 열어야 한다.
+- CI 빨간불인 PR → **머지 버튼이 회색**으로 잠긴다.
+- 이게 오늘 내가 두 번 저지른 "브랜치 착각하고 main에 push" 사고를
+  **구조적으로 불가능**하게 만든다. 사람의 습관이 아니라 시스템이 막는다.
 
 ---
 
@@ -218,6 +277,21 @@ CI를 붙였다고 안전해진 게 아니다. 오늘 겪은 버그 두 개는 *
 ```bash
 ops/ci/check-publishable.sh     # 여기서 초록불이면 CI에서도 초록불
 ```
+
+---
+
+## ✅ 지금 남은 일 (이 문서를 읽는 창님에게)
+
+CI는 붙었고 돌고 있다. **하지만 게이트는 아직 안 잠겼다.** 남은 건 클릭 두 번이다.
+
+- [ ] **§5를 따라 `main` 브랜치 보호를 켠다** — 지금은 실패한 PR도 머지되고
+      `main` 직접 push도 된다. Settings → Branches → Add branch ruleset.
+- [ ] status check는 **`checks`와 `secret scan`만**. `deploy`는 고르지 마라(§5 함정 2).
+- [ ] Required approvals는 **0**(§5 함정 1).
+- [ ] 켠 뒤 §5의 "일부러 뚫어본다"로 실제로 막히는지 확인.
+
+이 두 가지가 끝나면, 다음 계층은 **스모크 테스트**(§4) — 오늘의 `HOST`·MIME 버그처럼
+"컴파일은 되는데 동작은 안 하는" 버그를 잡는 층이다.
 
 ---
 
