@@ -31,9 +31,11 @@
 
 ### 1. 분야 이해 (헤매지 않으려면 이걸 먼저)
 - **[기초 지식 지도](knowledge/00-foundations.md)** ⭐ — ROS 세계 vs 학습 세계, 스택 6층, 용어사전
+- [로봇은 어떻게 배우나 (러닝 사다리)](knowledge/06-robot-learning-ladder.md) — RL·모방·VLA를 줄기부터 (LeRobot 튜토리얼 요약)
 - [잡마켓: ROS vs Physical AI](knowledge/01-job-market-ros-vs-physical-ai.md)
 - [로봇 산업 지형](knowledge/02-robot-industry-landscape.md)
 - [플레이어와 돈 (뇌 vs 몸)](knowledge/03-physical-ai-players-and-money.md)
+- [기업 지도 (버티컬별 아틀라스)](knowledge/05-robotics-company-atlas.md) — 국방·제조·휴머노이드·우주… 40여 개 기업, 출처검증
 
 ### 2. 우리 벤처
 - [제품 컨셉](docs/01-concept/product-concept.md) — 미션 시퀀스, "교재 vs 플랫폼"

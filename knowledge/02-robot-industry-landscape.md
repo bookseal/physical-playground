@@ -39,6 +39,7 @@
 ## 관련 (Related)
 - [[00-foundations|기초 지도]]
 - [[03-physical-ai-players-and-money|플레이어와 돈]]
+- [[05-robotics-company-atlas|기업 지도 (버티컬별)]]
 - [[01-job-market-ros-vs-physical-ai|잡마켓]]
 - [[market-landscape|경쟁사 스캔]]
 - [[hate-map|Hate Map]]

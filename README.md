@@ -91,10 +91,14 @@ really hard to make the learning **fun**. This repo keeps the trail of that thin
   nobody sues over an arm). But the most repeated line in robotics — **"LiDAR is the robot's eye,
   cameras will never work"** — **is wrong for manipulation**: π0.5, GR00T, Figure Helix and Optimus
   are all RGB-only. That claim is about the robot's *legs*. We teach its *hands*.
+- **[How robots learn — the learning ladder](knowledge/06-robot-learning-ladder.md)** — the trunk of the
+  LeRobot "Robot Learning" tutorial, digested: from classical control up through RL, imitation learning
+  (ACT / Diffusion Policy) to VLA foundation models (π0, SmolVLA). **Rules shrink, data grows** as you climb.
 - **Industry & job-market notes** — where the money and the jobs actually are:
   [job market: ROS vs Physical AI](knowledge/01-job-market-ros-vs-physical-ai.md) ·
   [robot industry landscape](knowledge/02-robot-industry-landscape.md) ·
-  [players & the money](knowledge/03-physical-ai-players-and-money.md).
+  [players & the money](knowledge/03-physical-ai-players-and-money.md) ·
+  [company atlas by vertical](knowledge/05-robotics-company-atlas.md).
 
 The bet: *how* someone learns to build should itself be built with care and joy. This whole workspace is that,
 run as a system.

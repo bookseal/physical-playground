@@ -106,6 +106,7 @@
 ---
 
 ## 관련 (Related)
+- [[06-robot-learning-ladder|로봇 러닝 사다리]] — 🅱 학습 세계를 한 단계 깊게 (RL→모방→VLA)
 - [[01-job-market-ros-vs-physical-ai|잡마켓: ROS vs Physical AI]]
 - [[02-robot-industry-landscape|로봇 산업 지형]]
 - [[03-physical-ai-players-and-money|플레이어와 돈]]

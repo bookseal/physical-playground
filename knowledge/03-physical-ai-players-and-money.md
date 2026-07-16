@@ -45,4 +45,5 @@
 ## 관련 (Related)
 - [[00-foundations|기초 지도]]
 - [[02-robot-industry-landscape|산업 지형]]
+- [[05-robotics-company-atlas|기업 지도 (버티컬별)]]
 - [[market-landscape|경쟁사 스캔]]
