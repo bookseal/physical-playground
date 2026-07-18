@@ -97,7 +97,7 @@
 </div></nav>
 <div id="app"></div>
 <div class="toast" id="toast"></div>
-<footer><div class="wrap mono">PHYSICAL SPARK · curriculum v0 · building in public</div></footer>
+<footer><div class="wrap mono">PHYSICAL SPARK · curriculum v0 · building in public · <a href="study-map.html">Study Map</a> · <a href="../funding.html">국비 지원</a></div></footer>
 
 <script>
 
@@ -161,7 +161,7 @@ const COURSES = [
         code:'# LeRobot records episodes to a dataset you can replay/train on\n# (exact CLI evolves — check the LeRobot docs for lerobot-record)\nlerobot-record --help',
         note:'Exact commands shift between LeRobot versions — always cross-check the current docs. Concept is stable: teleop → episodes → dataset.',
         chk:'You recorded (or replayed) at least one episode.'},
-      {t:'Peek: imitation learning', c:'With a dataset, a small policy can <b>learn to imitate</b> your demos (behavioral cloning). You don\'t have to train one yet — just know this is the bridge from "I did it" to "the robot does it". More in the foundations map.',
+      {t:'Peek: imitation learning', c:'With a dataset, a small policy can <b>learn to imitate</b> your demos (behavioral cloning). You don\'t have to train one yet — just know this is the bridge from "I did it" to "the robot does it". Read the deep-dive: <a href="imitation-learning.html">Learning by Showing</a> (behavioral cloning → ACT → diffusion → VLA), or see the whole path in the <a href="study-map.html">Study Map</a>.',
         chk:'You know a dataset can train a policy to imitate you.'},
     ]},
   { id:'m3', num:3, color:'var(--gold)', title:'Red Light, Green Light', sub:'The robot moves while you speak, and freezes the instant you stop. The one Squid Game made famous.',
