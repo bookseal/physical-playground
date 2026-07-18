@@ -218,6 +218,18 @@ function renderHub(){
         <div class="ring-wrap"><div class="ring" style="--p:${op}"><div><b>${op}%</b><small>your run</small></div></div></div>
       </div>
       <div class="cards">${cards}</div>
+      <h2 style="text-align:center;margin:44px 0 0;font-size:20px;font-weight:900;text-transform:uppercase;letter-spacing:.02em;">Companion <b style="color:var(--red)">guides</b></h2>
+      <p style="text-align:center;color:var(--muted);margin:6px auto 20px;max-width:540px;">Optional deep-dive reads that pair with the missions — learn the theory, then follow the hands-on.</p>
+      <div class="cards" style="padding-top:0">
+        <a class="mcard" style="--c:var(--teal)" href="ground-school.html">
+          <div class="top"><span class="n">📚</span><div><h3>Ground School</h3><div class="sub">Read-first background — every concept, the math, and ~80 pre-solved pitfalls. Skim before you build.</div></div></div>
+          <div class="meta">Companion · ~10 hours · read-first</div>
+        </a>
+        <a class="mcard" style="--c:var(--red)" href="pat-me-on-the-back.html">
+          <div class="top"><span class="n">🦾</span><div><h3>Pat me on the back — hands-on</h3><div class="sub">A click-through, checkpoint-by-checkpoint walk of Mission 1 — do it in your terminal.</div></div></div>
+          <div class="meta">Companion · hands-on · step by step</div>
+        </a>
+      </div>
     </div>`;
   requestAnimationFrame(()=>document.querySelectorAll('.bar > i').forEach(i=>i.style.width=i.style.width));
 }
