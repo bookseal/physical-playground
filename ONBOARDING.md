@@ -42,6 +42,7 @@
 - [시장 스캔 (미·중 경쟁사)](docs/02-market/market-landscape.md)
 - [Hate Map (경쟁사 혹평 → 우리 기회)](docs/02-market/hate-map.md)
 - [포지셔닝 & 피치](docs/03-positioning/positioning-and-pitch.md)
+- [**Physical AI 코리아 플레이북**](docs/07-strategy/physical-ai-korea-playbook.md) — 엔지니어링 베이스 없이 이기는 전략 · Plug and Play 판단 · 국비/딥테크 펀딩 사다리 · 멘토 조언 교차검증
 
 ### 3. 직접 해보기 (손으로)
 - **[시뮬 세팅 튜토리얼](lab/tutorials/00_sim-setup-before-pat-me.md)** — Mac에서 오늘 당장 "pat me 직전"까지

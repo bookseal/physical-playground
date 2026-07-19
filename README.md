@@ -55,6 +55,7 @@ builds up over time.
 - [The "Hate" Map](docs/02-market/hate-map.md) — mined negative reviews of competitors, clustered into pain themes → our openings.
 - [Positioning & pitch](docs/03-positioning/positioning-and-pitch.md) — value proposition, a glossary for developers, and the pitch.
 - [**Career track & services**](docs/06-career/career-and-services.md) — why Physical AI, told honestly: Korea is #1 in the world in robot density and has made "Physical AI #1 by 2030" a national goal — *and* robotics job postings are still one-fifth of React's. The money arrived before the hiring. That lag is the window.
+- [**Physical AI Korea playbook**](docs/07-strategy/physical-ai-korea-playbook.md) — strategy for a non-engineering founder: winning without an engineering base, a Plug-and-Play go/no-go, the real Korean funding ladder (딥테크 예비창업패키지 → 블루포인트/퓨처플레이 → TIPS → YC), and a mentor's advice **cross-verified against sources** — where it's wrong, it says so.
 
 ## Hands-on lab (learning in public)
 
