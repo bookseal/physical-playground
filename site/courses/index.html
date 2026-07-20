@@ -85,6 +85,21 @@
   .toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(80px); background:var(--red); color:#fff;
     padding:12px 20px; border-radius:12px; font-weight:800; box-shadow:0 12px 30px var(--shadow); transition:transform .3s cubic-bezier(.3,1.5,.5,1); z-index:40;}
   .toast.show{transform:translateX(-50%) translateY(0);}
+  /* chapter pager — walks the reading path in order (shared with index/join/funding).
+     Static markup outside #app, so route() decides when it should show. */
+  .chapnav{display:flex; gap:12px; align-items:stretch; margin:40px 0 34px;}
+  .chapnav>*{flex:1; min-width:0;}
+  .chapnav a{display:flex; flex-direction:column; gap:3px; justify-content:center;
+    background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 18px;
+    color:var(--fg, var(--ink)); text-decoration:none; transition:border-color .15s, transform .1s ease;}
+  .chapnav a:hover{border-color:var(--accent); transform:translateY(-1px);}
+  .chapnav .cn-k{font-family:ui-monospace,monospace; font-size:11px; font-weight:700; color:var(--muted);
+    text-transform:uppercase; letter-spacing:.09em;}
+  .chapnav .cn-t{font-size:15px; font-weight:800;}
+  .chapnav .next{text-align:right; align-items:flex-end;}
+  .chapnav .next .cn-t{color:var(--accent);}
+  @media(max-width:560px){.chapnav{flex-direction:column;} .chapnav span.prev{display:none;}}
+
   footer{border-top:1px solid var(--line); padding:26px 0; text-align:center; color:var(--muted); font-size:13px;}
 </style>
 </head>
@@ -99,6 +114,10 @@
   <a class="back" href="../index.html#read">← landing</a>
 </div></nav>
 <div id="app"></div>
+<div class="wrap"><nav class="chapnav" id="chapnav">
+  <a class="prev" href="../funding.html"><span class="cn-k">← 2장</span><span class="cn-t">사업 전략</span></a>
+  <a class="next" href="/docs"><span class="cn-k">4장 →</span><span class="cn-t">더 깊이 · Playbook</span></a>
+</nav></div>
 <div class="toast" id="toast"></div>
 <footer><div class="wrap mono">PHYSICAL SPARK · curriculum v0 · <a href="study-map.html">Study Map</a> · <a href="../join.html">Join</a> · <a href="../funding.html">국비 지원</a> · <a href="/docs">Playbook</a></div></footer>
 
@@ -284,6 +303,14 @@ function route(){
   const h=location.hash.replace(/^#\//,'');
   const m=COURSES.find(c=>c.id===h);
   if(m) renderMission(m); else renderHub();
+
+  // The chapter pager is static markup outside #app, so it survives every re-render.
+  // Mission views carry their own .mnav, so showing both would stack two pagers —
+  // hide it mid-curriculum and bring it back on the last mission, where finishing the
+  // course and finishing this chapter of the reading path are the same moment.
+  const last = COURSES[COURSES.length-1];
+  document.getElementById('chapnav').style.display = (!m || m.id===last.id) ? '' : 'none';
+
   scrollTo(0,0);
 }
 addEventListener('hashchange',route); route();
