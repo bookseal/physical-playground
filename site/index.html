@@ -130,17 +130,25 @@
 
   /* reading map — the "read it one by one" path */
   .readmap{display:grid; gap:12px;}
-  .rcard{display:flex; gap:16px; align-items:flex-start; background:var(--card); border:1px solid var(--line);
+  /* The card is a <div>, not an <a>: card 2 carries its own guide links, and an <a>
+     inside an <a> is invalid — the parser closes the outer one early and the layout
+     falls apart from that card on. The title link is stretched over the whole card
+     instead, so the card stays fully clickable with valid markup. */
+  .rcard{position:relative; display:flex; gap:16px; align-items:flex-start; background:var(--card); border:1px solid var(--line);
     border-left:5px solid var(--c); border-radius:14px; padding:16px 18px; box-shadow:0 6px 18px var(--shadow);
     color:var(--fg); transition:transform .1s ease, box-shadow .2s;}
   .rcard:hover{transform:translateY(-2px); box-shadow:0 12px 30px var(--shadow); border-left-color:var(--c);}
   .rcard .rn{font-family:ui-monospace,monospace; font-size:26px; font-weight:900; color:var(--c); line-height:1; flex:0 0 auto; min-width:34px;}
   .rcard .rbody{flex:1; min-width:0;}
   .rcard h4{margin:0 0 3px; font-size:17px; display:flex; align-items:baseline; gap:9px; flex-wrap:wrap;}
+  .rcard h4 a{color:var(--fg);}
+  .rcard h4 a::after{content:""; position:absolute; inset:0; border-radius:14px;}  /* stretched link */
+  .rcard:hover h4 a{color:var(--c);}
   .rcard h4 .rmeta{font-family:ui-monospace,monospace; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.08em;}
   .rcard p{margin:0; color:var(--muted); font-size:14px;}
   .rcard .rgo{color:var(--c); font-weight:800; font-size:20px; align-self:center; flex:0 0 auto;}
-  .rcard .sub-links{margin-top:7px; font-size:12.5px;}
+  /* sits above the stretched overlay so the guide links stay separately clickable */
+  .rcard .sub-links{position:relative; z-index:1; margin-top:7px; font-size:12.5px;}
   .rcard .sub-links a{color:var(--muted); font-weight:600; border-bottom:1px dashed var(--line);}
   .rcard .sub-links a:hover{color:var(--c); border-color:var(--c);}
 
@@ -299,19 +307,19 @@
     위에서 아래로 읽어 내려가면 이 프로젝트의 전체 그림이 잡힙니다. 대부분 5~10분이면 충분해요.</p>
 
   <div class="readmap">
-    <a class="rcard" style="--c:var(--red)" href="join.html">
+    <div class="rcard" style="--c:var(--red)">
       <span class="rn">1</span>
       <div class="rbody">
-        <h4>왜 지금인가 — 합류 안내 <span class="rmeta">약 5분 · 소개</span></h4>
+        <h4><a href="join.html">왜 지금인가 — 합류 안내</a> <span class="rmeta">약 5분 · 소개</span></h4>
         <p>SaaS가 흔들리고 Physical AI가 폭발하는 지금, 우리가 <b>뭘·왜</b> 만드는지. 시장·우리의 각(wedge)·이미 만든 것.</p>
       </div>
       <span class="rgo">→</span>
-    </a>
+    </div>
 
-    <a class="rcard" style="--c:var(--blue)" href="courses/">
+    <div class="rcard" style="--c:var(--blue)">
       <span class="rn">2</span>
       <div class="rbody">
-        <h4>직접 해보기 — 미션 <span class="rmeta">핸즈온 · 시뮬 우선</span></h4>
+        <h4><a href="courses/">직접 해보기 — 미션</a> <span class="rmeta">핸즈온 · 시뮬 우선</span></h4>
         <p>로봇팔 미션 3종을 노트북 시뮬로 직접. 진도가 저장되는 코스, 그리고 이론을 먼저 훑는 동반 가이드.</p>
         <div class="sub-links">가이드:
           <a href="courses/ground-school.html">Ground School</a> ·
@@ -319,25 +327,25 @@
           <a href="courses/study-map.html">Study Map</a></div>
       </div>
       <span class="rgo">→</span>
-    </a>
+    </div>
 
-    <a class="rcard" style="--c:var(--teal)" href="/docs">
+    <div class="rcard" style="--c:var(--teal)">
       <span class="rn">3</span>
       <div class="rbody">
-        <h4>더 깊이 — Playbook <span class="rmeta">문서 · 리서치</span></h4>
+        <h4><a href="/docs">더 깊이 — Playbook</a> <span class="rmeta">문서 · 리서치</span></h4>
         <p>제품 컨셉·시장 스캔·분야 기초·의사결정(ADR)·랩 노트를 한 보드에서. 분야가 낯설면 <b>knowledge/ 기초</b>부터.</p>
       </div>
       <span class="rgo">→</span>
-    </a>
+    </div>
 
-    <a class="rcard" style="--c:var(--gold)" href="funding.html">
+    <div class="rcard" style="--c:var(--gold)">
       <span class="rn">4</span>
       <div class="rbody">
-        <h4>사업 전략 — 국비 지원 <span class="rmeta">전략 · 한국</span></h4>
+        <h4><a href="funding.html">사업 전략 — 국비 지원</a> <span class="rmeta">전략 · 한국</span></h4>
         <p>내일배움카드·KDT·새싹 같은 국비지원을 이 온라인 학교로 활용하는 현실적인 길과 채널 전략.</p>
       </div>
       <span class="rgo">→</span>
-    </a>
+    </div>
   </div>
 </div></section>
 
