@@ -58,6 +58,20 @@
   .cta{background:var(--accent); color:#fff; text-align:center; border-radius:18px; padding:34px 22px; margin:30px 0;}
   .cta h2{color:#fff;} .cta p{color:#ffe6d8;}
   .btn{display:inline-block; margin-top:14px; background:#fff; color:var(--accent); font-weight:800; border-radius:12px; padding:12px 24px;}
+  /* chapter pager — walks the reading path in order (shared with index/funding/courses) */
+  .chapnav{display:flex; gap:12px; align-items:stretch; margin:40px 0 34px;}
+  .chapnav>*{flex:1; min-width:0;}
+  .chapnav a{display:flex; flex-direction:column; gap:3px; justify-content:center;
+    background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 18px;
+    color:var(--fg, var(--ink)); text-decoration:none; transition:border-color .15s, transform .1s ease;}
+  .chapnav a:hover{border-color:var(--accent); transform:translateY(-1px);}
+  .chapnav .cn-k{font-family:ui-monospace,monospace; font-size:11px; font-weight:700; color:var(--muted);
+    text-transform:uppercase; letter-spacing:.09em;}
+  .chapnav .cn-t{font-size:15px; font-weight:800;}
+  .chapnav .next{text-align:right; align-items:flex-end;}
+  .chapnav .next .cn-t{color:var(--accent);}
+  @media(max-width:560px){.chapnav{flex-direction:column;} .chapnav span.prev{display:none;}}
+
   footer{border-top:1px solid var(--line); padding:26px 0; text-align:center; color:var(--muted); font-size:13px;}
 </style>
 </head>
@@ -289,6 +303,11 @@
   <a class="btn" href="https://github.com/bookseal/physical-spark" target="_blank">GitHub에서 연락하기 →</a>
   <p class="mono" style="font-size:12px; margin-top:14px;">이슈를 열거나, repo를 둘러보고 DM 주셔도 됩니다.</p>
 </div></div>
+
+<div class="wrap"><nav class="chapnav">
+  <a class="prev" href="index.html"><span class="cn-k">← 랜딩</span><span class="cn-t">읽는 순서로</span></a>
+  <a class="next" href="funding.html"><span class="cn-k">2장 →</span><span class="cn-t">사업 전략</span></a>
+</nav></div>
 
 <footer><div class="wrap mono">PHYSICAL SPARK · building in public · <a href="https://github.com/bookseal">github.com/bookseal</a></div></footer>
 

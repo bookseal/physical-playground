@@ -83,6 +83,21 @@
   .srcs .s-u{font-family:var(--mono); font-size:12px; color:var(--faint); word-break:break-all;}
 
   .disc{font-size:13.5px; color:var(--faint); margin:22px 0 0;}
+  /* chapter pager — walks the reading path in order (shared with index/join/courses).
+     This page names its text token --ink, so the shared rule falls back to it. */
+  .chapnav{display:flex; gap:12px; align-items:stretch; margin:40px 0 34px;}
+  .chapnav>*{flex:1; min-width:0;}
+  .chapnav a{display:flex; flex-direction:column; gap:3px; justify-content:center;
+    background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 18px;
+    color:var(--fg, var(--ink)); text-decoration:none; transition:border-color .15s, transform .1s ease;}
+  .chapnav a:hover{border-color:var(--accent); transform:translateY(-1px);}
+  .chapnav .cn-k{font-family:var(--mono); font-size:11px; font-weight:700; color:var(--muted);
+    text-transform:uppercase; letter-spacing:.09em;}
+  .chapnav .cn-t{font-size:15px; font-weight:800;}
+  .chapnav .next{text-align:right; align-items:flex-end;}
+  .chapnav .next .cn-t{color:var(--accent);}
+  @media(max-width:560px){.chapnav{flex-direction:column;} .chapnav span.prev{display:none;}}
+
   .footer{margin-top:56px; padding-top:22px; border-top:1px solid var(--line); text-align:center; font-family:var(--mono); font-size:12.5px; color:var(--faint);}
 </style>
 </head>
@@ -228,6 +243,11 @@
     </div>
     <p class="disc">※ 이 문서는 2026-07 기준 리서치 요약이며 법·제도 자문이 아니다. 새싹 교육파트너의 정확한 자격요건, KDT 운영기관 재무·심사 배점, 원격훈련 인증 등급/주기는 각 공고 첨부문서로 최종 확인할 것. ksqa.or.kr·e-simsa.or.kr은 국내 IP만 접속되는 경우가 있다.</p>
   </section>
+
+  <nav class="chapnav">
+    <a class="prev" href="join.html"><span class="cn-k">← 1장</span><span class="cn-t">왜 지금인가</span></a>
+    <a class="next" href="courses/"><span class="cn-k">3장 →</span><span class="cn-t">직접 해보기</span></a>
+  </nav>
 
   <p class="footer">Physical Spark · 국비 지원 가이드 · 정부는 병렬 채널, 제품은 직접 모델</p>
 </div>

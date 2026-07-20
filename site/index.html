@@ -152,6 +152,22 @@
   .rcard .sub-links a{color:var(--muted); font-weight:600; border-bottom:1px dashed var(--line);}
   .rcard .sub-links a:hover{color:var(--c); border-color:var(--c);}
 
+  /* chapter pager — walks the reading path in order. Lives inside a .wrap on every page,
+     so it carries no max-width/padding of its own. Body colour uses a fallback chain
+     because funding.html names its text token --ink while the rest use --fg. */
+  .chapnav{display:flex; gap:12px; align-items:stretch; margin:40px 0 34px;}
+  .chapnav>*{flex:1; min-width:0;}
+  .chapnav a{display:flex; flex-direction:column; gap:3px; justify-content:center;
+    background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 18px;
+    color:var(--fg, var(--ink)); text-decoration:none; transition:border-color .15s, transform .1s ease;}
+  .chapnav a:hover{border-color:var(--accent); transform:translateY(-1px);}
+  .chapnav .cn-k{font-family:ui-monospace,monospace; font-size:11px; font-weight:700; color:var(--muted);
+    text-transform:uppercase; letter-spacing:.09em;}
+  .chapnav .cn-t{font-size:15px; font-weight:800;}
+  .chapnav .next{text-align:right; align-items:flex-end;}
+  .chapnav .next .cn-t{color:var(--accent);}
+  @media(max-width:560px){.chapnav{flex-direction:column;} .chapnav span.prev{display:none;}}
+
   footer{border-top:1px solid var(--line); padding:30px 0; color:var(--muted); font-size:13px; text-align:center;}
 </style>
 </head>
@@ -303,7 +319,7 @@
   <h2 class="sec">Read the project · 읽는 순서</h2>
   <h3 class="lead">궁금해졌다면 — 여기서부터, 하나씩.</h3>
   <p style="color:var(--muted); max-width:640px; margin:-14px 0 24px; font-size:15px;">
-    게임은 여기까지. 이제 <b style="color:var(--fg)">왜 지금인지</b>부터 직접 해보기, 깊은 리서치, 사업 전략까지 —
+    게임은 여기까지. 이제 <b style="color:var(--fg)">왜 지금인지</b>부터 사업 전략, 직접 해보기, 깊은 리서치까지 —
     위에서 아래로 읽어 내려가면 이 프로젝트의 전체 그림이 잡힙니다. 대부분 5~10분이면 충분해요.</p>
 
   <div class="readmap">
@@ -316,8 +332,17 @@
       <span class="rgo">→</span>
     </div>
 
-    <div class="rcard" style="--c:var(--blue)">
+    <div class="rcard" style="--c:var(--gold)">
       <span class="rn">2</span>
+      <div class="rbody">
+        <h4><a href="funding.html">사업 전략 — 국비 지원</a> <span class="rmeta">전략 · 한국</span></h4>
+        <p>내일배움카드·KDT·새싹 같은 국비지원을 이 온라인 학교로 활용하는 현실적인 길과 채널 전략.</p>
+      </div>
+      <span class="rgo">→</span>
+    </div>
+
+    <div class="rcard" style="--c:var(--blue)">
+      <span class="rn">3</span>
       <div class="rbody">
         <h4><a href="courses/">직접 해보기 — 미션</a> <span class="rmeta">핸즈온 · 시뮬 우선</span></h4>
         <p>로봇팔 미션 3종을 노트북 시뮬로 직접. 진도가 저장되는 코스, 그리고 이론을 먼저 훑는 동반 가이드.</p>
@@ -330,23 +355,19 @@
     </div>
 
     <div class="rcard" style="--c:var(--teal)">
-      <span class="rn">3</span>
+      <span class="rn">4</span>
       <div class="rbody">
         <h4><a href="/docs">더 깊이 — Playbook</a> <span class="rmeta">문서 · 리서치</span></h4>
         <p>제품 컨셉·시장 스캔·분야 기초·의사결정(ADR)·랩 노트를 한 보드에서. 분야가 낯설면 <b>knowledge/ 기초</b>부터.</p>
       </div>
       <span class="rgo">→</span>
     </div>
-
-    <div class="rcard" style="--c:var(--gold)">
-      <span class="rn">4</span>
-      <div class="rbody">
-        <h4><a href="funding.html">사업 전략 — 국비 지원</a> <span class="rmeta">전략 · 한국</span></h4>
-        <p>내일배움카드·KDT·새싹 같은 국비지원을 이 온라인 학교로 활용하는 현실적인 길과 채널 전략.</p>
-      </div>
-      <span class="rgo">→</span>
-    </div>
   </div>
+
+  <nav class="chapnav">
+    <span class="prev"></span>
+    <a class="next" href="join.html"><span class="cn-k">1장 →</span><span class="cn-t">왜 지금인가</span></a>
+  </nav>
 </div></section>
 
 <footer>
